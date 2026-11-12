@@ -18,3 +18,5 @@ src/data/processed/*
 *.pth
 *.joblib
 *.zip
+Optiver_QR_Assessment_Prep.pdf
+.gitignore
