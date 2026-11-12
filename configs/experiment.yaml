@@ -1,0 +1,29 @@
+# This file records intended/default experiment parameters; container CLI is source of truth until config binding is implemented.
+version: 1
+seed: 20261112
+# The configuration describes a safe, bounded lab and is NOT evidence of executed research.
+lab:
+  requests_per_episode: 12
+  max_requests_per_episode: 32
+  max_payload_bytes: 4096
+  gateway_url: http://gateway:8080
+  topology: bridge_two_segment_v1
+experiment:
+  policies: [fixed, random, strategic, test]
+  malicious_profiles: [paced, bursty, fanout]
+  # No real exploit code, malware, credentials, or external internet traffic.
+  benign_runs_per_policy: 12
+  scenario_runs_per_policy: 12
+  independent_test_benign: 12
+  independent_test_scenarios: 12
+features:
+  observation_events: 4
+  stride: 1
+  min_events: 3
+warning:
+  persistence: 1
+  max_false_positive_episodes: 0.15
+  # Choose threshold on validation only.
+models:
+  random_forest_trees: 150
+  optuna_trials: 0  # set to 10+ on verified real dataset; 0 is smoke-only
