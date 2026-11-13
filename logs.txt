@@ -1,53 +1,4 @@
-VSCODE TERMINAL :
-fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$  source /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/activate
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ RUN=pilot_20261113T083155Z_61354
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ wc -l "src/data/raw/runs/$RUN/episodes.jsonl"
-32 src/data/raw/runs/pilot_20261113T083155Z_61354/episodes.jsonl
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ls -lh "src/data/raw/runs/$RUN/"
-total 621K
--rwxrwxrwx 1 root root  15K Nov 13 08:56 episodes.jsonl
--rwxrwxrwx 1 root root 2.5K Nov 13 08:55 game_rounds.jsonl
--rwxrwxrwx 1 root root  340 Nov 13 08:56 runner.log
--rwxrwxrwx 1 root root   97 Nov 13 08:55 tcpdump.log
--rwxrwxrwx 1 root root 600K Nov 13 08:56 traffic.pcap
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker compose ps -a
-permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo docker compose ps -a
-NAME                              IMAGE              COMMAND                  SERVICE    CREATED             STATUS             PORTS
-phase3-adaptive-nids-gateway-1    python:3.12-slim   "python -m lab.http_…"   gateway    About an hour ago   Up About an hour   
-phase3-adaptive-nids-server_a-1   python:3.12-slim   "python -m lab.http_…"   server_a   About an hour ago   Up About an hour   
-phase3-adaptive-nids-server_b-1   python:3.12-slim   "python -m lab.http_…"   server_b   About an hour ago   Up About an hour   
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot|[d]ocker compose|[s]rc.code.pipeline'
-
-  61354   59720 S+      01:47:13 bash ./setup/university_pilot.sh --episodes 4 --capture
-  70566   61354 S+      01:23:29 sudo -n tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T083155Z_61354/traffic.pcap tcp port 8080
-  70568   70566 Ss+     01:23:29 sudo -n tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T083155Z_61354/traffic.pcap tcp port 8080
-  70569   70568 S       01:23:29 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T083155Z_61354/traffic.pcap tcp port 8080
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo pgrep -a -x tcpdump
-70569 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T083155Z_61354/traffic.pcap tcp port 8080
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill -INT  70569
-kill: (70569): Permission denied
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ kill -INT  70569
-bash: kill: (70569) - Operation not permitted
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill -INT  70569
-kill: (70569): Permission denied
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill  70569
-kill: (70569): Permission denied
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -o pid,ppid,stat,etime,args -p 70569
-    PID    PPID STAT     ELAPSED COMMAND
-  70569   70568 S       01:26:43 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/s
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill -9 70569
-kill: (70569): Permission denied
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
-
-
-IN UBUNTU TERMINAL:
-fastlab@gup-admin-Precision-3680:~$ sudo kill -9 70569
-fastlab@gup-admin-Precision-3680:~$ 
-
-
-AFTER THIS I DID THIS BACK IN THE VSCODE TERMINAL:
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ unzip -n Phase3_Pilot_Recovery_Patch.zip -d .
+VSCODE TERMINAL 1:(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ unzip -n Phase3_Pilot_Recovery_Patch.zip -d .
 Archive:  Phase3_Pilot_Recovery_Patch.zip
   inflating: ./setup/university_pilot_v2.sh  
   inflating: ./setup/university_finish_existing.sh  
@@ -110,10 +61,12 @@ Capturing ONLY lab bridge interface br-9cd72e468a25 (TCP 8080)
 Stopping this run's tcpdump gracefully (PID 80058)
 Warning: graceful stop timed out; terminating this capture only
 Warning: stopping stuck capture wrapper after child termination
+^C^Z
+[1]+  Stopped                 ./setup/university_pilot_v2.sh --episodes 12 --capture
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
 
 
-
-ON THE OTHER SIDE ITS STILL THE SAME WAY:
+VSCODE TERMINL 2:
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_check.sh
 ===== UNIVERSITY PHASE 3 READINESS =====
@@ -229,5 +182,222 @@ Capturing ONLY lab bridge interface br-9cd72e468a25 (TCP 8080)
  Container phase3-adaptive-nids-runner-run-62b83d072775 Creating 
  Container phase3-adaptive-nids-runner-run-62b83d072775 Created 
 /out/runs/pilot_20261113T102313Z_74502/episodes.jsonl
+^C^Z
+[1]+  Stopped                 ./setup/university_pilot.sh --episodes 12 --capture
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
 
 
+
+NO LET US START PARRALEL RESEARCH SPRINT KIT:
+fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$  source /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/activate
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ unzip -n Phase3_Parallel_Research_Sprint.zip -d .
+Archive:  Phase3_Parallel_Research_Sprint.zip
+  inflating: ./src/code/temporal_gru_sprint.py  
+  inflating: ./setup/university_pilot_v3.sh  
+  inflating: ./setup/sprint_hpo.py   
+  inflating: ./setup/zeek_from_pcap_v3.sh  
+  inflating: ./setup/sprint_audit.py  
+  inflating: ./setup/sprint_status.sh  
+  inflating: ./setup/sprint_start.sh  
+  inflating: ./setup/sprint_zeek_eval.py  
+  inflating: ./tests/test_sprint_modules.py  
+  inflating: ./docs/RUNBOOK.md       
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ chmod +x setup/sprint_*.sh setup/university_pilot_v3.sh setup/zeek_from_pcap_v3.sh
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python -m pytest -q tests/test_sprint_modules.py 
+..                                                                                                                                               [100%]
+2 passed in 6.76s
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/sprint_start.sh pilot_20261113T083155Z_61354 --hpo-trials 30 --gru-epochs 60
+zeek : tmux=p3_86317_zeek log=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/sprints/pilot_20261113T083155Z_61354/20261113T110030Z_86317/zeek.log
+hpo : tmux=p3_86317_hpo log=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/sprints/pilot_20261113T083155Z_61354/20261113T110030Z_86317/hpo.log
+gru : tmux=p3_86317_gru log=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/sprints/pilot_20261113T083155Z_61354/20261113T110030Z_86317/gru.log
+
+Monitor: tmux ls ; tail -f "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/sprints/pilot_20261113T083155Z_61354/20261113T110030Z_86317/gru.log"
+Run-specific outputs persist across shutdown; active processes do NOT survive shutdown. Rerun completed-safe GPU jobs; HPO invocation adds trials.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ tmux ls
+p3_86317_gru: 1 windows (created Fri Nov 13 11:00:30 2026)
+p3_86317_hpo: 1 windows (created Fri Nov 13 11:00:30 2026)
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ tmux ls
+p3_86317_hpo: 1 windows (created Fri Nov 13 11:00:30 2026)
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/sprint_status.sh
+SPRINT DIRECTORY: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/sprints/pilot_20261113T083155Z_61354/20261113T110030Z_86317
+=== zeek ===
+exit code: 0
+  "zeek_conn_records": 384,
+  "zeek_episodes_with_conn": 32,
+  "zeek_positive_orig_bytes": 384,
+  "zeek_positive_resp_bytes": 384,
+  "zeek_returncode": 0,
+  "zeek_stderr_tail": "",
+  "zeek_unaligned_conn": 0
+}
+
+ZEEK_NETWORK_BASELINE_COMPLETE: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/sprints/pilot_20261113T083155Z_61354/20261113T110030Z_86317/zeek_results episodes 32 events 384
+=== hpo ===
+running or terminated without exit marker
+[I 2026-11-13 11:01:54,469] Trial 29 finished with value: 1.0 and parameters: {'n_estimators': 60, 'max_depth': 6, 'min_samples_leaf': 2, 'max_features': 0.9291716979008307}. Best is trial 0 with value: 1.0.
+random complete: {'run_id': 'pilot_20261113T083155Z_61354', 'policy': 'random', 'best_params': {'n_estimators': 60, 'max_depth': 4, 'min_samples_leaf':2, 'max_features': 0.7263181640163625}, 'best_validation_pr_auc': 1.0, 'finished_trials': 30, 'study_db': '/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/hpo/sprints/pilot_20261113T083155Z_61354/random.sqlite3', 'note': 'Validation-only tuning on tiny controlled lab data, NOT a claimed real-intrusion result'}
+[I 2026-11-13 11:01:56,610] A new study created in RDB with name: phase3_pilot_20261113T083155Z_61354_strategic_rf
+[I 2026-11-13 11:01:57,605] Trial 0 finished with value: 1.0 and parameters: {'n_estimators': 60, 'max_depth': 4, 'min_samples_leaf': 2, 'max_features': 0.7263181640163625}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:01:58,567] Trial 1 finished with value: 1.0 and parameters: {'n_estimators': 60, 'max_depth': 16, 'min_samples_leaf': 2, 'max_features': 0.8037547821624512}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:01:59,825] Trial 2 finished with value: 1.0 and parameters: {'n_estimators': 140, 'max_depth': 14, 'min_samples_leaf': 3, 'max_features': 0.9357552334128876}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:00,771] Trial 3 finished with value: 1.0 and parameters: {'n_estimators': 60, 'max_depth': 6, 'min_samples_leaf': 4, 'max_features': 0.925570905915579}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:01,882] Trial 4 finished with value: 1.0 and parameters: {'n_estimators': 140, 'max_depth': 7, 'min_samples_leaf': 2, 'max_features': 0.9663744212347295}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:02,841] Trial 5 finished with value: 1.0 and parameters: {'n_estimators': 100, 'max_depth': 7, 'min_samples_leaf': 3, 'max_features': 0.6031204919704147}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:03,993] Trial 6 finished with value: 1.0 and parameters: {'n_estimators': 140, 'max_depth': 11, 'min_samples_leaf': 1, 'max_features': 0.9033338734177401}. Best is trial 0 with value: 1.0.
+=== gru ===
+exit code: 0
+random finished; output outputs/model/sprints/pilot_20261113T083155Z_61354/random/complete.json
+strategic epoch 1 train BCE 0.6573
+strategic epoch 10 train BCE 0.4935
+strategic epoch 20 train BCE 0.3047
+strategic epoch 30 train BCE 0.1535
+strategic epoch 40 train BCE 0.0942
+strategic epoch 50 train BCE 0.0667
+strategic epoch 60 train BCE 0.0518
+strategic finished; output outputs/model/sprints/pilot_20261113T083155Z_61354/strategic/complete.json
+GRU_FINISHED
+
+ACTIVE TMUX SESSIONS
+p3_86317_hpo: 1 windows (created Fri Nov 13 11:00:30 2026)
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ nvidia-smi
+Fri Nov 13 11:02:11 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA RTX 4000 Ada Gene...    Off |   00000000:01:00.0  On |                  Off |
+| 30%   34C    P8             12W /  130W |     577MiB /  20475MiB |      9%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            2768      G   /usr/bin/gnome-shell                    201MiB |
+|    0   N/A  N/A           41174      G   /usr/bin/nautilus                        48MiB |
+|    0   N/A  N/A           41532      G   /usr/bin/Xwayland                         7MiB |
+|    0   N/A  N/A           54732    C+G   ...rack-uuid=3190708988185955192         71MiB |
+|    0   N/A  N/A           84296      G   ...rack-uuid=3190708988185955192        142MiB |
++-----------------------------------------------------------------------------------------+
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ tmux ls
+p3_86317_hpo: 1 windows (created Fri Nov 13 11:00:30 2026)
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ RUN=pilot_20261113T102813Z_79699
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ wc -l "src/data/raw/runs/$RUN/episodes.jsonl"
+96 src/data/raw/runs/pilot_20261113T102813Z_79699/episodes.jsonl
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot'
+
+  74852    2472 S          39:25 sudo -n tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102313Z_74502/traffic.pcap tcp port 8080
+  74854   74852 Ss+        39:25 sudo -n tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102313Z_74502/traffic.pcap tcp port 8080
+  74855   74854 S          39:25 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102313Z_74502/traffic.pcap tcp port 8080
+  80055    2472 S          34:25 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261113T102813Z_79699/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102813Z_79699/traffic.pcap
+  80057   80055 Ss+        34:25 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261113T102813Z_79699/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102813Z_79699/traffic.pcap
+  80058   80057 S          34:25 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102813Z_79699/traffic.pcap tcp port 8080
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_finish_existing.sh pilot_20261113T102813Z_79699
+Complete experiment manifest: 96 episodes, 1152 expected requests
+{
+  "status": "validated_observed_gateway_subset_not_real_attack_data",
+  "episodes": 96,
+  "events": 1152,
+  "output": "src/data/raw/runs/pilot_20261113T102813Z_79699/gateway_subset.jsonl"
+}
+fixed/rf: evaluated
+fixed/isolation_forest: evaluated
+random/rf: evaluated
+random/isolation_forest: evaluated
+strategic/rf: evaluated
+strategic/isolation_forest: evaluated
+Wrote outputs/results/pilot_20261113T102813Z_79699_postprocess_20261113T110338Z_93002/results.json
+{
+  "status": "validated_structure_and_finiteness",
+  "policies": 3,
+  "held_out_episodes": 24,
+  "experimental_validity": "not_established_by_this_checker"
+}
+outputs/figs/pilot_20261113T102813Z_79699_postprocess_20261113T110338Z_93002/early_warning_coverage.png
+outputs/figs/pilot_20261113T102813Z_79699_postprocess_20261113T110338Z_93002/false_positive_episode_rate.png
+1794565706.273839 warning in /opt/zeek/share/zeek/base/misc/find-checksum-offloading.zeek, line 54: Your trace file likely has invalid TCP checksums, most likely from NIC checksum offloading.  By default, packets with invalid checksums are discarded by Zeek unless using the -C command-line option or toggling the 'ignore_checksums' variable.  Alternatively, disable checksum offloading by the network adapter to ensure Zeek analyzes the actual checksums that are transmitted.
+1794565757.321088 warning in /opt/zeek/share/zeek/base/misc/find-filtered-trace.zeek, line 69: The analyzed trace file was determined to contain only TCP control packets, which may indicate it's been pre-filtered.  By default, Zeek reports the missing segments for this type of trace, but the 'detect_filtered_trace' option may be toggled if that's not desired.
+Zeek JSON connection log: outputs/logs/zeek/pilot_20261113T102813Z_79699/conn.log
+
+POSTPROCESS COMPLETED: pilot_20261113T102813Z_79699
+Results: outputs/results/pilot_20261113T102813Z_79699_postprocess_20261113T110338Z_93002
+Gateway baseline and Zeek PCAP remain DISTINCT data sources. This is not verified real intrusion evidence.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo -v
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_pilot_v3.sh --episodes 12 --seed 20261114 --capture
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+Cannot use Docker daemon
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo usermod -aG  docker fastlab
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ newgrp docker 
+fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ source .venv-cuda/bin/activate
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ id -nG
+docker sudo users fastlab
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED       STATUS       PORTS     NAMES
+631e6c1d5b89   python:3.12-slim   "python -m lab.http_…"   2 hours ago   Up 2 hours             phase3-adaptive-nids-gateway-1
+d522a2c2f430   python:3.12-slim   "python -m lab.http_…"   2 hours ago   Up 2 hours             phase3-adaptive-nids-server_b-1
+7fecfbe9c87d   python:3.12-slim   "python -m lab.http_…"   2 hours ago   Up 2 hours             phase3-adaptive-nids-server_a-1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_pilot_v2.sh --episodes 12 --capture
+Starting independent pilot: pilot_20261113T110555Z_94176
+[+] up 3/3
+ ✔ Container phase3-adaptive-nids-server_b-1 Running                                                                                                0.0s
+ ✔ Container phase3-adaptive-nids-gateway-1  Running                                                                                                0.0s
+ ✔ Container phase3-adaptive-nids-server_a-1 Running                                                                                                0.0s
+Capturing ONLY lab bridge interface br-9cd72e468a25 (TCP 8080)
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-runner-run-32ea776f96f5 Creating 
+ Container phase3-adaptive-nids-runner-run-32ea776f96f5 Created 
+/out/runs/pilot_20261113T110555Z_94176/episodes.jsonl
+Stopping this run's tcpdump gracefully (PID 94532)
+Warning: graceful stop timed out; terminating this capture only
+Warning: stopping stuck capture wrapper after child termination
+^C^Z
+[1]+  Stopped                 ./setup/university_pilot_v2.sh --episodes 12 --capture
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/sprint_status.sh
+SPRINT DIRECTORY: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/sprints/pilot_20261113T083155Z_61354/20261113T110030Z_86317
+=== zeek ===
+exit code: 0
+  "zeek_conn_records": 384,
+  "zeek_episodes_with_conn": 32,
+  "zeek_positive_orig_bytes": 384,
+  "zeek_positive_resp_bytes": 384,
+  "zeek_returncode": 0,
+  "zeek_stderr_tail": "",
+  "zeek_unaligned_conn": 0
+}
+
+ZEEK_NETWORK_BASELINE_COMPLETE: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/sprints/pilot_20261113T083155Z_61354/20261113T110030Z_86317/zeek_results episodes 32 events 384
+=== hpo ===
+exit code: 0
+[I 2026-11-13 11:02:21,790] Trial 22 finished with value: 1.0 and parameters: {'n_estimators': 220, 'max_depth': 15, 'min_samples_leaf': 2, 'max_features': 0.7108992773401495}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:23,289] Trial 23 finished with value: 1.0 and parameters: {'n_estimators': 180, 'max_depth': 14, 'min_samples_leaf': 2, 'max_features': 0.9952653977867337}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:24,461] Trial 24 finished with value: 1.0 and parameters: {'n_estimators': 140, 'max_depth': 16, 'min_samples_leaf': 3, 'max_features': 0.7813264083636158}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:25,856] Trial 25 finished with value: 1.0 and parameters: {'n_estimators': 180, 'max_depth': 13, 'min_samples_leaf': 5, 'max_features': 0.637245799464915}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:27,046] Trial 26 finished with value: 1.0 and parameters: {'n_estimators': 140, 'max_depth': 15, 'min_samples_leaf': 3, 'max_features': 0.8866274631155068}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:28,172] Trial 27 finished with value: 1.0 and parameters: {'n_estimators': 100, 'max_depth': 12, 'min_samples_leaf': 4, 'max_features': 0.9975076596199122}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:29,140] Trial 28 finished with value: 1.0 and parameters: {'n_estimators': 60, 'max_depth': 15, 'min_samples_leaf': 6, 'max_features': 0.7225087768593985}. Best is trial 0 with value: 1.0.
+[I 2026-11-13 11:02:30,150] Trial 29 finished with value: 1.0 and parameters: {'n_estimators': 60, 'max_depth': 6, 'min_samples_leaf': 2, 'max_features': 0.9291716979008307}. Best is trial 0 with value: 1.0.
+strategic complete: {'run_id': 'pilot_20261113T083155Z_61354', 'policy': 'strategic', 'best_params': {'n_estimators': 60, 'max_depth': 4, 'min_samples_leaf': 2, 'max_features': 0.7263181640163625}, 'best_validation_pr_auc': 1.0, 'finished_trials': 30, 'study_db': '/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/hpo/sprints/pilot_20261113T083155Z_61354/strategic.sqlite3', 'note': 'Validation-only tuning on tiny controlled lab data, NOT a claimed real-intrusion result'}
+HPO_FINISHED
+=== gru ===
+exit code: 0
+random finished; output outputs/model/sprints/pilot_20261113T083155Z_61354/random/complete.json
+strategic epoch 1 train BCE 0.6573
+strategic epoch 10 train BCE 0.4935
+strategic epoch 20 train BCE 0.3047
+strategic epoch 30 train BCE 0.1535
+strategic epoch 40 train BCE 0.0942
+strategic epoch 50 train BCE 0.0667
+strategic epoch 60 train BCE 0.0518
+strategic finished; output outputs/model/sprints/pilot_20261113T083155Z_61354/strategic/complete.json
+GRU_FINISHED
+
+ACTIVE TMUX SESSIONS
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 

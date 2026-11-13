@@ -4,7 +4,13 @@ __pycache__/
 .pytest_cache/
 *.py[cod]
 .DS_Store
-outputs/*
+# outputs
+# outputs/
+outputs/results/**/model/
+# outputs/hpo/**/**/
+*.sqlite*
+*.pt*
+
 !outputs/.gitkeep
 src/data/raw/*
 !src/data/raw/.gitkeep
