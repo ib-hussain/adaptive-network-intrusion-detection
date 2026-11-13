@@ -1,3 +1,119 @@
+VSCODE TERMINAL :
+fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$  source /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/activate
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ RUN=pilot_20261113T083155Z_61354
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ wc -l "src/data/raw/runs/$RUN/episodes.jsonl"
+32 src/data/raw/runs/pilot_20261113T083155Z_61354/episodes.jsonl
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ls -lh "src/data/raw/runs/$RUN/"
+total 621K
+-rwxrwxrwx 1 root root  15K Nov 13 08:56 episodes.jsonl
+-rwxrwxrwx 1 root root 2.5K Nov 13 08:55 game_rounds.jsonl
+-rwxrwxrwx 1 root root  340 Nov 13 08:56 runner.log
+-rwxrwxrwx 1 root root   97 Nov 13 08:55 tcpdump.log
+-rwxrwxrwx 1 root root 600K Nov 13 08:56 traffic.pcap
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker compose ps -a
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo docker compose ps -a
+NAME                              IMAGE              COMMAND                  SERVICE    CREATED             STATUS             PORTS
+phase3-adaptive-nids-gateway-1    python:3.12-slim   "python -m lab.http_…"   gateway    About an hour ago   Up About an hour   
+phase3-adaptive-nids-server_a-1   python:3.12-slim   "python -m lab.http_…"   server_a   About an hour ago   Up About an hour   
+phase3-adaptive-nids-server_b-1   python:3.12-slim   "python -m lab.http_…"   server_b   About an hour ago   Up About an hour   
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot|[d]ocker compose|[s]rc.code.pipeline'
+
+  61354   59720 S+      01:47:13 bash ./setup/university_pilot.sh --episodes 4 --capture
+  70566   61354 S+      01:23:29 sudo -n tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T083155Z_61354/traffic.pcap tcp port 8080
+  70568   70566 Ss+     01:23:29 sudo -n tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T083155Z_61354/traffic.pcap tcp port 8080
+  70569   70568 S       01:23:29 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T083155Z_61354/traffic.pcap tcp port 8080
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo pgrep -a -x tcpdump
+70569 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T083155Z_61354/traffic.pcap tcp port 8080
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill -INT  70569
+kill: (70569): Permission denied
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ kill -INT  70569
+bash: kill: (70569) - Operation not permitted
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill -INT  70569
+kill: (70569): Permission denied
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill  70569
+kill: (70569): Permission denied
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -o pid,ppid,stat,etime,args -p 70569
+    PID    PPID STAT     ELAPSED COMMAND
+  70569   70568 S       01:26:43 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/s
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill -9 70569
+kill: (70569): Permission denied
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+
+
+IN UBUNTU TERMINAL:
+fastlab@gup-admin-Precision-3680:~$ sudo kill -9 70569
+fastlab@gup-admin-Precision-3680:~$ 
+
+
+AFTER THIS I DID THIS BACK IN THE VSCODE TERMINAL:
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ unzip -n Phase3_Pilot_Recovery_Patch.zip -d .
+Archive:  Phase3_Pilot_Recovery_Patch.zip
+  inflating: ./setup/university_pilot_v2.sh  
+  inflating: ./setup/university_finish_existing.sh  
+  inflating: ./docs/RECOVERY_INSTRUCTIONS.md  
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ chmod +x setup/university_{finish_existing,pilot_v2}.sh
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_finish_existing.sh pilot_20261113T083155Z_61354
+
+Complete experiment manifest: 32 episodes, 384 expected requests
+Existing gateway subset preserved; checking per-episode counts and HTTP status.
+Existing gateway subset validated.
+fixed/rf: evaluated
+fixed/isolation_forest: evaluated
+random/rf: evaluated
+random/isolation_forest: evaluated
+strategic/rf: evaluated
+strategic/isolation_forest: evaluated
+Wrote outputs/results/pilot_20261113T083155Z_61354_postprocess_20261113T102524Z_78279/results.json
+{
+  "status": "validated_structure_and_finiteness",
+  "policies": 3,
+  "held_out_episodes": 8,
+  "experimental_validity": "not_established_by_this_checker"
+}
+outputs/figs/pilot_20261113T083155Z_61354_postprocess_20261113T102524Z_78279/early_warning_coverage.png
+outputs/figs/pilot_20261113T083155Z_61354_postprocess_20261113T102524Z_78279/false_positive_episode_rate.png
+Existing Zeek conn.log preserved in outputs/logs/zeek/pilot_20261113T083155Z_61354
+
+POSTPROCESS COMPLETED: pilot_20261113T083155Z_61354
+Results: outputs/results/pilot_20261113T083155Z_61354_postprocess_20261113T102524Z_78279
+Gateway baseline and Zeek PCAP remain DISTINCT data sources. This is not verified real intrusion evidence.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_pilot_v2.sh --episodes 12 --capture
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+Cannot use Docker daemon
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo usermod -aG sudo fastlab
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ newgrp docker 
+fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ source .venv-cuda/bin/activate
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo usermod -aG  docker fastlab
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ id -nG
+docker sudo users fastlab
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED       STATUS       PORTS     NAMES
+631e6c1d5b89   python:3.12-slim   "python -m lab.http_…"   2 hours ago   Up 2 hours             phase3-adaptive-nids-gateway-1
+d522a2c2f430   python:3.12-slim   "python -m lab.http_…"   2 hours ago   Up 2 hours             phase3-adaptive-nids-server_b-1
+7fecfbe9c87d   python:3.12-slim   "python -m lab.http_…"   2 hours ago   Up 2 hours             phase3-adaptive-nids-server_a-1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_pilot_v2.sh --episodes 12 --capture
+Starting independent pilot: pilot_20261113T102813Z_79699
+[+] up 3/3
+ ✔ Container phase3-adaptive-nids-server_b-1 Running                                                                                           0.0s
+ ✔ Container phase3-adaptive-nids-gateway-1  Running                                                                                           0.0s
+ ✔ Container phase3-adaptive-nids-server_a-1 Running                                                                                           0.0s
+Capturing ONLY lab bridge interface br-9cd72e468a25 (TCP 8080)
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-runner-run-6e0f1fbcfd37 Creating 
+ Container phase3-adaptive-nids-runner-run-6e0f1fbcfd37 Created 
+/out/runs/pilot_20261113T102813Z_79699/episodes.jsonl
+Stopping this run's tcpdump gracefully (PID 80058)
+Warning: graceful stop timed out; terminating this capture only
+Warning: stopping stuck capture wrapper after child termination
+
+
+
+ON THE OTHER SIDE ITS STILL THE SAME WAY:
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_check.sh
 ===== UNIVERSITY PHASE 3 READINESS =====
@@ -71,3 +187,47 @@ Capturing ONLY lab bridge interface br-9cd72e468a25 (TCP 8080)
  Container phase3-adaptive-nids-runner-run-bef60a86bb22 Creating 
  Container phase3-adaptive-nids-runner-run-bef60a86bb22 Created 
 /out/runs/pilot_20261113T083155Z_61354/episodes.jsonl
+{
+  "status": "validated_observed_gateway_subset_not_real_attack_data",
+  "episodes": 32,
+  "events": 384,
+  "output": "src/data/raw/runs/pilot_20261113T083155Z_61354/gateway_subset.jsonl"
+}
+fixed/rf: evaluated
+fixed/isolation_forest: evaluated
+random/rf: evaluated
+random/isolation_forest: evaluated
+strategic/rf: evaluated
+strategic/isolation_forest: evaluated
+Wrote outputs/results/pilot_20261113T083155Z_61354/results.json
+{
+  "status": "validated_structure_and_finiteness",
+  "policies": 3,
+  "held_out_episodes": 8,
+  "experimental_validity": "not_established_by_this_checker"
+}
+outputs/figs/pilot_20261113T083155Z_61354/early_warning_coverage.png
+outputs/figs/pilot_20261113T083155Z_61354/false_positive_episode_rate.png
+1794560151.935721 warning in /opt/zeek/share/zeek/base/misc/find-checksum-offloading.zeek, line 54: Your trace file likely has invalid TCP checksums, most likely from NIC checksum offloading.  By default, packets with invalid checksums are discarded by Zeek unless using the -C command-line option or toggling the 'ignore_checksums' variable.  Alternatively, disable checksum offloading by the network adapter to ensure Zeek analyzes the actual checksums that are transmitted.
+1794560163.148598 warning in /opt/zeek/share/zeek/base/misc/find-filtered-trace.zeek, line 69: The analyzed trace file was determined to contain only TCP control packets, which may indicate it's been pre-filtered.  By default, Zeek reports the missing segments for this type of trace, but the 'detect_filtered_trace' option may be toggled if that's not desired.
+Zeek JSON connection log: outputs/logs/zeek/pilot_20261113T083155Z_61354/conn.log
+Zeek log created; alignment with manifest and gateway MUST be validated before scientific conclusions.
+
+SUCCESS: pilot pilot_20261113T083155Z_61354
+Raw run: src/data/raw/runs/pilot_20261113T083155Z_61354
+Results: outputs/results/pilot_20261113T083155Z_61354
+NOT a real intrusion detection validation; traffic profiles are harmless.
+Starting independent pilot: pilot_20261113T102313Z_74502
+[+] up 3/3
+ ✔ Container phase3-adaptive-nids-server_b-1 Running                                                                                           0.0s
+ ✔ Container phase3-adaptive-nids-gateway-1  Running                                                                                           0.0s
+ ✔ Container phase3-adaptive-nids-server_a-1 Running                                                                                           0.0s
+Capturing ONLY lab bridge interface br-9cd72e468a25 (TCP 8080)
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-runner-run-62b83d072775 Creating 
+ Container phase3-adaptive-nids-runner-run-62b83d072775 Created 
+/out/runs/pilot_20261113T102313Z_74502/episodes.jsonl
+
+
