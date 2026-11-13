@@ -1,9 +1,73 @@
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash setup/university_pilot.sh  --episodes 
-4 --capture 
-permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
-Cannot use Docker daemon
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo docker ps
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
-permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_check.sh
+===== UNIVERSITY PHASE 3 READINESS =====
+Working directory: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
+Python 3.12.3
+docker         /usr/bin/docker
+zeek           /opt/zeek/bin/zeek
+tcpdump        /usr/bin/tcpdump
+sudo           /usr/bin/sudo
+rsync          /usr/bin/rsync
+tmux           /usr/bin/tmux
+nvidia-smi     /usr/bin/nvidia-smi
+
+DISK: PROJECT
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1       1.9T  601G  1.3T  33% /home/fastlab/deepFakeDetection
+
+DISK: DOCKER
+Docker root: /var/lib/docker
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6   82G   62G   17G  80% /
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          1         1         36.94kB   0B (0%)
+Containers      1         0         4.096kB   4.096kB (100%)
+Local Volumes   0         0         0B        0B
+Build Cache     0         0         0B        0B
+
+COMPOSE SYNTAX
+valid
+
+GPU
+NVIDIA RTX 4000 Ada Generation, 20475 MiB, 19437 MiB, 580.178.04
+
+RESEARCH CAUTION: Current RF/IsolationForest models are CPU-only.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/preflight.sh
+== PHASE 3 PREFLIGHT ==
+Python 3.12.3
+numpy: installed
+pandas: installed
+sklearn: installed
+optuna: installed
+pytest: installed
+torch: installed
+CUDA available: True
+GPU: NVIDIA RTX 4000 Ada Generation
+CPUs: 28 Docker: True Zeek: True
+.............                                                                                                                               [100%]
+13 passed in 0.68s
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_pilot.sh --episodes 4 --capture
+
+Starting independent pilot: pilot_20261113T083009Z_60539
+[+] up 4/7
+ ⠙ Image python:3.12-slim [⣿⣿⠀⠀⣿⣿] Pulling                                                                                                    86.2s
+^C
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_pilot.sh --episodes 4 --capture && ./setup/university_pilot.sh --episodes 12 --capture && ./setup/university_pilot.sh --episodes 24  --capture
+Starting independent pilot: pilot_20261113T083155Z_61354
+[+] up 0/1
+ ⠦ Image python:3.12-slim Pulling                                                                                              
+ ⠼ Image python:3.12-slim Pulling                                                                                                            742.5s
+[+] up 6/6
+ ✔ Image python:3.12-slim                    Pulled                                                                                         1420.9s
+ ✔ Network phase3-adaptive-nids_clients      Created                                                                                           0.0s
+ ✔ Network phase3-adaptive-nids_services     Created                                                                                           0.0s
+ ✔ Container phase3-adaptive-nids-server_a-1 Started                                                                                           0.3s
+ ✔ Container phase3-adaptive-nids-server_b-1 Started                                                                                           0.4s
+ ✔ Container phase3-adaptive-nids-gateway-1  Started                                                                                           0.4s
+Capturing ONLY lab bridge interface br-9cd72e468a25 (TCP 8080)
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-runner-run-bef60a86bb22 Creating 
+ Container phase3-adaptive-nids-runner-run-bef60a86bb22 Created 
+/out/runs/pilot_20261113T083155Z_61354/episodes.jsonl
