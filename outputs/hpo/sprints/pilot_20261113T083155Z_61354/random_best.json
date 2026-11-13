@@ -1,0 +1,14 @@
+{
+  "best_params": {
+    "max_depth": 4,
+    "max_features": 0.7263181640163625,
+    "min_samples_leaf": 2,
+    "n_estimators": 60
+  },
+  "best_validation_pr_auc": 1.0,
+  "finished_trials": 30,
+  "note": "Validation-only tuning on tiny controlled lab data, NOT a claimed real-intrusion result",
+  "policy": "random",
+  "run_id": "pilot_20261113T083155Z_61354",
+  "study_db": "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/hpo/sprints/pilot_20261113T083155Z_61354/random.sqlite3"
+}
