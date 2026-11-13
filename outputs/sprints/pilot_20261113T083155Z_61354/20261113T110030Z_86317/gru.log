@@ -1,0 +1,26 @@
+GPU temporal baseline: cuda episodes 32 training windows 304
+fixed epoch 1 train BCE 0.6333
+fixed epoch 10 train BCE 0.4795
+fixed epoch 20 train BCE 0.2878
+fixed epoch 30 train BCE 0.1489
+fixed epoch 40 train BCE 0.0948
+fixed epoch 50 train BCE 0.0691
+fixed epoch 60 train BCE 0.0536
+fixed finished; output outputs/model/sprints/pilot_20261113T083155Z_61354/fixed/complete.json
+random epoch 1 train BCE 0.6487
+random epoch 10 train BCE 0.4527
+random epoch 20 train BCE 0.2605
+random epoch 30 train BCE 0.1401
+random epoch 40 train BCE 0.0899
+random epoch 50 train BCE 0.066
+random epoch 60 train BCE 0.0511
+random finished; output outputs/model/sprints/pilot_20261113T083155Z_61354/random/complete.json
+strategic epoch 1 train BCE 0.6573
+strategic epoch 10 train BCE 0.4935
+strategic epoch 20 train BCE 0.3047
+strategic epoch 30 train BCE 0.1535
+strategic epoch 40 train BCE 0.0942
+strategic epoch 50 train BCE 0.0667
+strategic epoch 60 train BCE 0.0518
+strategic finished; output outputs/model/sprints/pilot_20261113T083155Z_61354/strategic/complete.json
+GRU_FINISHED

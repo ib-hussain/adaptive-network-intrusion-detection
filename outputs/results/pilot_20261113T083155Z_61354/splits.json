@@ -1,0 +1,56 @@
+{
+  "fixed": {
+    "train": [
+      "fixed-0-ec8a65e371-incident",
+      "fixed-0-ec8a65e371-normal",
+      "fixed-1-2171ec1938-normal",
+      "fixed-2-c8f712c02a-incident",
+      "fixed-2-c8f712c02a-normal",
+      "fixed-3-38611bf3c5-incident"
+    ],
+    "validation": [
+      "fixed-1-2171ec1938-incident",
+      "fixed-3-38611bf3c5-normal"
+    ]
+  },
+  "random": {
+    "train": [
+      "random-0-dca8997c31-incident",
+      "random-0-dca8997c31-normal",
+      "random-1-9ec6eb06dc-normal",
+      "random-2-f0aeb26a72-incident",
+      "random-2-f0aeb26a72-normal",
+      "random-3-f8d57762b1-incident"
+    ],
+    "validation": [
+      "random-1-9ec6eb06dc-incident",
+      "random-3-f8d57762b1-normal"
+    ]
+  },
+  "strategic": {
+    "train": [
+      "strategic-0-90f15d980f-incident",
+      "strategic-0-90f15d980f-normal",
+      "strategic-1-a72e2369fa-normal",
+      "strategic-2-10665493ba-incident",
+      "strategic-2-10665493ba-normal",
+      "strategic-3-6a74013c3d-incident"
+    ],
+    "validation": [
+      "strategic-1-a72e2369fa-incident",
+      "strategic-3-6a74013c3d-normal"
+    ]
+  },
+  "test": {
+    "held_out": [
+      "test-0-696552cbbf-incident",
+      "test-0-696552cbbf-normal",
+      "test-1-5837f75f53-incident",
+      "test-1-5837f75f53-normal",
+      "test-2-51e18e9a4f-incident",
+      "test-2-51e18e9a4f-normal",
+      "test-3-184bc0483c-incident",
+      "test-3-184bc0483c-normal"
+    ]
+  }
+}

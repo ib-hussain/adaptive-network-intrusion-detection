@@ -1,0 +1,47 @@
+{
+  "classification": "LAB_NETWORK_TELEMETRY_DIAGNOSTIC_ONLY",
+  "condition_counts": {
+    "benign": 16,
+    "incident": 16
+  },
+  "gateway_episode_count_matches": true,
+  "gateway_events": 384,
+  "gateway_http_codes": {
+    "200": 384
+  },
+  "manifest_count": 32,
+  "manifest_sha256": "c32d2d5a675558f9e21e626283ba533eb0bf2b27b189ab45aad78f7cf53a2615",
+  "pcap": {
+    "captured_bytes": 527728,
+    "frames": 5376,
+    "frames_over_100_bytes": 784,
+    "linktype": 1,
+    "malformed_frames": 0,
+    "snaplen": 262144,
+    "supported": true
+  },
+  "pcap_bytes_on_disk": 613768,
+  "pcap_sha256": "c605bbaaebf94081bfcf08528f61bdf587b533c90a44d4827f9eee55a6fbe278",
+  "policy_counts": {
+    "fixed": 8,
+    "random": 8,
+    "strategic": 8,
+    "test": 8
+  },
+  "raw_gateway_subset_present": true,
+  "run_id": "pilot_20261113T083155Z_61354",
+  "warning": "Zeek connections can differ from gateway events: gateway -> server PCAP capture has distinct semantics. Inspect both directions and application payload independently.",
+  "zeek_ambiguous_conn": 0,
+  "zeek_conn_coverage_fraction": 1.0,
+  "zeek_conn_per_episode_summary": {
+    "max": 12,
+    "min": 12
+  },
+  "zeek_conn_records": 384,
+  "zeek_episodes_with_conn": 32,
+  "zeek_positive_orig_bytes": 384,
+  "zeek_positive_resp_bytes": 384,
+  "zeek_returncode": 0,
+  "zeek_stderr_tail": "",
+  "zeek_unaligned_conn": 0
+}
