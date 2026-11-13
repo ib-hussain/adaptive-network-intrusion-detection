@@ -1,103 +1,125 @@
-**We have made progress, but the pilot is not yet confirmed complete.** The line
+Ibrahim, we can start **multiple independent jobs in parallel**, but not multiple simultaneous captures on the same Docker network.
 
-```
-/out/runs/pilot_20261113T083155Z_61354/episodes.jsonl
-```
+Your logs establish:
 
-means the traffic generator reached its final output statement. It does not mean the complete pipeline has finished.
+- The first pilot completed 32 episodes, 384 gateway observations, three policy evaluations, and Zeek processing.
+- Docker permissions are now resolved.
+- The newer 12-episode run generated its manifest, but its capture-shutdown sequence has not been confirmed complete.
+- The original Zeek capture reported checksum and filtered-trace warnings. These need investigation before we rely on the PCAP-derived features.
 
-I inspected the actual deployment script. With `--episodes 4`, it should generate **32 episodes and 384 HTTP requests** across the four policies. Thirty minutes of silence after that output is abnormal.
+The most productive parallel workloads are **Zeek/PCAP validation, resumable CPU hyperparameter optimisation, and a first GPU temporal-model experiment**, while network collection runs as a separate, exclusive job.
 
-One likely cause is the packet-capture shutdown code: it signals the background `sudo` process and then waits for it. If the underlying `tcpdump` process does not exit, the script can remain blocked.
+Importantly, the present lab still generates harmless traffic profiles rather than actual malicious propagation. Any model scores at this stage are engineering diagnostics, not validated cybersecurity results.
 
-## **1. Check the running experiment**
+## **Parallel research package ready**
 
-Open a **second terminal**, leaving the original running for now, and execute:
+**Phase 3 — Parallel Research Sprint Kit**
+
+Additive ZIP patch · Three parallel research workers · Capture launcher v3 · Checkpointing · Tests
+
+Download the ZIP
+
+Complete execution runbook
+
+### **1. Start three jobs together — university terminal**
+
+Copy the ZIP into the Ubuntu machine's `~/Downloads` directory, then execute:
 
 ```
 cd /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
 
-RUN=pilot_20261113T083155Z_61354
+source .venv-cuda/bin/activate
+export PATH="/opt/zeek/bin:$PATH"
+export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+
+unzip -n ~/Downloads/Phase3_Parallel_Research_Sprint.zip -d .
+
+chmod +x setup/sprint_*.sh setup/university_pilot_v3.sh setup/zeek_from_pcap_v3.sh
+
+python -m pytest -q tests/test_sprint_modules.py
+
+./setup/sprint_start.sh pilot_20261113T083155Z_61354 --hpo-trials 30 --gru-epochs 60
+```
+
+This starts three independent `tmux` jobs:
+
+| Job                   | Workload                                                                      | Recovery mechanism                          |
+| --------------------- | ----------------------------------------------------------------------------- | ------------------------------------------- |
+| Zeek audit            | Reprocess PCAP, verify network observations, attempt gated Zeek-flow baseline | Separate immutable input and derived output |
+| CPU HPO               | 30 Optuna trials per policy, 90 trials total                                  | Persistent SQLite studies                   |
+| GPU temporal baseline | GRU training, 60 epochs per policy                                            | Checkpoint after every epoch                |
+
+The Zeek reprocessing uses `-C` to handle possible checksum-offloading artefacts, as documented by Zeek. That does not, by itself, prove the capture is complete.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://zeek.org\&sz=32)
+
+Zeek Network Security Monitor
+
+
+
+Optuna studies can resume from SQLite, though bit-for-bit identical sampler continuation is not guaranteed without preserving additional sampler state.&#x20;
+
+[image](https://www.google.com/s2/favicons?domain=https://optuna.readthedocs.io\&sz=32)
+
+Optuna 5.0.0 documentation
+
+
+
+### **2. Monitor all three jobs**
+
+```
+./setup/sprint_status.sh
+tmux ls
+nvidia-smi
+```
+
+The status script displays each worker's output and exit status. Results are stored separately under `outputs/sprints/`, `outputs/hpo/sprints/`, and `outputs/model/sprints/`.
+
+### **3. Recover the existing 12-episode collection**
+
+In another terminal:
+
+```
+RUN=pilot_20261113T102813Z_79699
 
 wc -l "src/data/raw/runs/$RUN/episodes.jsonl"
-ls -lh "src/data/raw/runs/$RUN/"
-docker compose ps -a
-ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot|[d]ocker compose|[s]rc.code.pipeline'
+
+ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot'
 ```
 
-If the manifest contains 32 records, the runner container has exited, and `tcpdump` remains active, that strongly supports the capture-shutdown diagnosis.
+A completed 12-episode-per-policy collection should contain **96 episode records and 1,152 HTTP observations**.
 
-**Do not delete the PCAP or restart the entire experiment.** The existing data may be recoverable without recollection.
-
-## **2. Recover the current run without losing its data**
-
-If the check confirms that the runner has finished but `tcpdump` is still recording, identify the actual capture process:
+If the runner has completed and the old capture processes are stopped, execute:
 
 ```
-sudo pgrep -a -x tcpdump
+./setup/university_finish_existing.sh pilot_20261113T102813Z_79699
 ```
 
-Find the entry containing:
+Do not start another capture while the previous one is active.
+
+### **4. Start a fresh network experiment**
+
+After the CPU-intensive model jobs finish and the previous capture is safely closed, use the revised launcher in a dedicated interactive terminal:
 
 ```
-pilot_20261113T083155Z_61354/traffic.pcap
+sudo -v
+./setup/university_pilot_v3.sh --episodes 12 --seed 20261114 --capture
 ```
 
-Stop **only that process**, replacing `PID` with its actual number:
+This launcher records the random seed, protects against overlapping v3 captures, and avoids the previous unbounded capture-process wait.
 
-```
-sudo kill -INT PID
-```
+I recommend keeping CPU-heavy training separate from new traffic collection on this shared machine. Otherwise, training load could change network timing measurements and confound our research comparison.
 
-This requests a graceful capture stop. The original script may then continue with model evaluation and Zeek processing.
+## **Validation status**
 
-Be aware that your original command contains `&&` followed by 12- and 24-episode runs. **If the four-episode run completes successfully, those commands will launch automatically.** I recommend cancelling that queued sequence and using the corrected launcher instead.
+**15 automated tests passed locally.**
 
-## **3. Corrected deployment and recovery package**
+**Optuna persistence and temporal-model epoch recovery tested locally.**
 
-I have prepared and locally tested a recovery patch.
+**University deployment and the revised capture launcher still require live verification.**
 
-**Phase 3 Pilot Recovery Patch**
+I cannot execute commands on your university machine directly. The package is ready for you to start there using the commands above.
 
-Download ZIP
+The GPU GRU is a **temporal baseline, not yet a GNN**. The next substantive research upgrade must introduce independently timed multi-stage incidents, meaningful unseen network behaviours, and topology variation. The existing EXP3 generator also remains episode-restartable rather than checkpoint-resumable.
 
-Recovery script, corrected pilot launcher, and instructions
-
-Once the original pilot process and capture have stopped, copy the ZIP to the university machine and install it in your project directory:
-
-```
-unzip -n ~/Downloads/Phase3_Pilot_Recovery_Patch.zip -d .
-chmod +x setup/university_{finish_existing,pilot_v2}.sh
-```
-
-If the original run stopped before completing its remaining processing, recover the existing observations:
-
-```
-./setup/university_finish_existing.sh pilot_20261113T083155Z_61354
-```
-
-This does not regenerate traffic or overwrite your raw recordings. It completes gateway-data extraction, baseline evaluation, output validation, and available Zeek processing.
-
-Recovery code tested against 32 completed loopback episodes and 384 observed requests. The revised Docker capture shutdown still requires validation on Ubuntu.
-
-## **4. Expanding the experiment**
-
-Once we have a successfully completed four-episode run, use the corrected launcher:
-
-```
-./setup/university_pilot_v2.sh --episodes 12 --capture
-```
-
-I would **not launch the 24-episode run yet**. The present generator reuses a fixed seed, the same three traffic profiles, and one topology. More repetitions will not establish generalisation to unseen network behaviours.
-
-Our next meaningful development targets are:
-
-1. Validate the recorded PCAP against Zeek `conn.log` and the experiment manifest.
-2. Introduce genuinely distinct, time-separated incident stages and richer benign network traffic.
-3. Make the scenario-game state and training recoverable after shutdown.
-4. Implement independent scenario/topology holdouts and temporal-network modelling.
-5. Perform matched fixed/random/strategic comparisons, measuring valid \\(T\_{\text{lead}}\\), detection recall, and false alarms.
-
-Also, while your project filesystem has 1.3 TB free, Docker's root filesystem has only **17 GB free**. Avoid unnecessary image downloads; retain experiment data on the larger project filesystem.
-
-**Current verdict:** The traffic-generation stage appears to have finished. We need to resolve the possible capture-shutdown hang and validate its outputs before treating the experiment as successful or scaling it.
+**Start with the command in Section 1.** It launches the three independent workers together without disturbing your existing completed pilot.
