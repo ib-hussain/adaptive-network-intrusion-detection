@@ -1,86 +1,9 @@
-===== UNIVERSITY PHASE 3 READINESS =====
-Working directory: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
-Python 3.12.3
-docker         /usr/bin/docker
-zeek           NOT INSTALLED
-tcpdump        /usr/bin/tcpdump
-sudo           /usr/bin/sudo
-rsync          /usr/bin/rsync
-tmux           /usr/bin/tmux
-nvidia-smi     /usr/bin/nvidia-smi
-
-DISK: PROJECT
-Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1       1.9T  601G  1.3T  33% /home/fastlab/deepFakeDetection
-
-DISK: DOCKER
-Docker daemon not usable by this account (check service/permissions).
-
-GPU
-NVIDIA RTX 4000 Ada Generation, 20475 MiB, 19597 MiB, 580.178.04
-
-RESEARCH CAUTION: Current RF/IsolationForest models are CPU-only.
-== PHASE 3 PREFLIGHT ==
-Python 3.12.3
-numpy: installed
-pandas: installed
-sklearn: installed
-optuna: installed
-pytest: installed
-torch: installed
-CUDA available: True
-GPU: NVIDIA RTX 4000 Ada Generation
-CPUs: 28 Docker: True Zeek: False
-Error while loading plugin "pytest11".
-/opt/ros/jazzy/lib/python3.12/site-packages/launch_testing/__init__.py:15: in <module>
-    from . import tools
-/opt/ros/jazzy/lib/python3.12/site-packages/launch_testing/tools/__init__.py:18: in <module>
-    from .process import launch_process
-/opt/ros/jazzy/lib/python3.12/site-packages/launch_testing/tools/process.py:17: in <module>
-    import launch
-/opt/ros/jazzy/lib/python3.12/site-packages/launch/__init__.py:17: in <module>
-    from . import actions
-/opt/ros/jazzy/lib/python3.12/site-packages/launch/actions/__init__.py:17: in <module>
-    from .declare_launch_argument import DeclareLaunchArgument
-/opt/ros/jazzy/lib/python3.12/site-packages/launch/actions/declare_launch_argument.py:24: in <module>
-    from ..frontend import Entity
-/opt/ros/jazzy/lib/python3.12/site-packages/launch/frontend/__init__.py:20: in <module>
-    from .parser import InvalidFrontendLaunchFileError, Parser
-/opt/ros/jazzy/lib/python3.12/site-packages/launch/frontend/parser.py:35: in <module>
-    from .parse_substitution import parse_if_substitutions
-/opt/ros/jazzy/lib/python3.12/site-packages/launch/frontend/parse_substitution.py:23: in <module>
-    from lark import Lark
-E   ModuleNotFoundError: No module named 'lark'
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ pip install lark && ./setup/preflight.sh &&
- sudo -v && ./setup/university_pilot.sh  --epsiodes 4 --capture && ./setup/university_pilot.sh  --epsiodes 12 --capture
-Collecting lark
-  Using cached lark-1.3.1-py3-none-any.whl.metadata (1.8 kB)
-Using cached lark-1.3.1-py3-none-any.whl (113 kB)
-Installing collected packages: lark
-Successfully installed lark-1.3.1
-== PHASE 3 PREFLIGHT ==
-Python 3.12.3
-numpy: installed
-pandas: installed
-sklearn: installed
-optuna: installed
-pytest: installed
-torch: installed
-CUDA available: True
-GPU: NVIDIA RTX 4000 Ada Generation
-CPUs: 28 Docker: True Zeek: False
-.............                                                                                                                               [100%]
-13 passed in 0.70s
-Unknown argument --epsiodes
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo -v 
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_pilot.sh  --help
-Unknown argument --help
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_pilot.sh  -h
-Unknown argument -h
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash setup/university_pilot.sh  --epsiodes 
-4 --capture && ./setup/university_pilot.sh  --epsiodes 12 --capture
-Unknown argument --epsiodes
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash setup/university_pilot.sh  --epsiodes 4 --capture 
-Unknown argument --epsiodes
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash setup/university_pilot.sh  --episodes 
+4 --capture 
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+Cannot use Docker daemon
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
-
