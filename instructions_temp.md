@@ -1,10 +1,14 @@
-The corrected logs reveal three problems: **OrgLab&#x20;**`tcpdump`**&#x20;lacks the UID/GID capabilities it needs, V3 times out during the 45-second probe command, and an older V2 pilot is suspended.** The 20- and 50-employee containers themselves started successfully.
+Your new logs confirm that **the OrgLab capability fix was applied successfully**. The remaining immediate issues are:
 
-I tested the OrgLab source correction locally: **6 tests passed**. Follow these commands in order. No new ZIP or Markdown files are needed.
+1. An old `university_pilot_v2.sh` process and its `tcpdump` child are still running.
+2. One test expects Docker's deprecated `--time` argument instead of the working `--timeout` argument.
+3. The new 20-node training run has not yet been launched after the fixes.
 
-### **1. Check and release the suspended V2 job**
+Execute these commands **in order on the university machine**. No new ZIPs or Markdown files.
 
-Run in the same terminal where the V2 job was suspended:
+### **Step 1 — Stop only the verified old capture process**
+
+This works from a new terminal. It does not rely on `%1` job control.
 
 ```
 cd /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
@@ -15,98 +19,78 @@ export PATH="/opt/zeek/bin:$PATH"
 export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
 export PYTHONUNBUFFERED=1
 
-jobs -l
+mapfile -t CAP_PIDS < <(
+  ps -eo pid=,comm=,args= |
+  awk '$2 == "tcpdump" && index($0, "/pilot_20261114T112937Z_251982/traffic.pcap") {print $1}'
+)
 
-ps -eo pid,ppid,stat,etime,args | grep -E '[u]niversity_pilot_v2|[s]taged_collect|[o]rglab_run|[t]cpdump' || true
+if (( ${#CAP_PIDS[@]} > 1 )); then
+  echo "STOP: Multiple matching captures. Inspect manually."
+elif (( ${#CAP_PIDS[@]} == 1 )); then
+  echo "Gracefully closing old capture PID ${CAP_PIDS[0]}"
+  sudo kill -INT "${CAP_PIDS[0]}"
+else
+  echo "Old capture already stopped."
+fi
+
+sleep 3
+
+if ps -p 251982 -o args= | grep -Fxq 'bash ./setup/university_pilot_v2.sh --episodes 4 --capture'; then
+  echo "Releasing suspended V2 launcher"
+  kill -TERM 251982
+  kill -CONT 251982 2>/dev/null || true
+fi
+
+sleep 3
+
+ps -eo pid,ppid,stat,etime,args |
+grep -E '[u]niversity_pilot_v2|[s]taged_collect|[o]rglab_run|[t]cpdump' || true
 
 docker ps --filter label=phase3.staged.capture=1
 ```
 
-**Only if job&#x20;**`[1]`**&#x20;is still the stopped&#x20;**`university_pilot_v2.sh`**&#x20;process**, execute:
+**Do not proceed if a capture or collection process is still active.** Preserve the old PCAP and logs.
+
+### **Step 2 — Fix the outdated test without reverting the Docker command**
 
 ```
-kill -TERM %1
-kill -CONT %1 2>/dev/null || true
-
-jobs -l
-
-ps -eo pid,ppid,stat,etime,args | grep -E '[u]niversity_pilot_v2|[s]taged_collect|[o]rglab_run|[t]cpdump' || true
-```
-
-Do not continue until the previous capture processes have stopped. Do not delete lock files.
-
-### **2. Apply both fixes with automatic backups**
-
-This changes only the restricted OrgLab capture capabilities, their existing test expectation, generated OrgLab Compose configurations, and the V3 probe timeout. It preserves all existing experiment outputs.
-
-```
-cd /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
-
-export FIX_BACKUP="outputs/backups/capture_runtime_fix_$(date -u +%Y%m%dT%H%M%SZ)"
-
 python - <<'PY'
-import os
-import json
-import shutil
 from pathlib import Path
+import shutil
+from datetime import datetime, timezone
 
-backup = Path(os.environ["FIX_BACKUP"])
-changes = {}
+source = Path("setup/staged_collect_v3.sh").read_text()
+test = Path("tests/test_v3_launcher_contract.py")
+content = test.read_text()
 
-def replace_exact(filename, old, new):
-    p = Path(filename)
-    s = p.read_text()
-    if new in s and old not in s:
-        print("ALREADY PATCHED:", p)
-        return
-    if s.count(old) != 1:
-        raise SystemExit(f"STOP: Unexpected content in {p}. No modifications applied.")
-    changes[p] = s.replace(old, new)
+old = "self.assertIn('docker stop --signal SIGINT --time 8', SRC)"
+new = "self.assertIn('docker stop --signal SIGINT --timeout 8', SRC)"
 
-replace_exact(
-    "orglab/composegen.py",
-    '"cap_add": ["NET_RAW"],',
-    '"cap_add": ["NET_RAW", "SETUID", "SETGID"],'
-)
+assert 'docker stop --signal SIGINT --timeout 8' in source
+assert 'step timeout 180s' in source
 
-replace_exact(
-    "tests/test_orglab.py",
-    'assert c["services"]["capture"]["cap_add"] == ["NET_RAW"]',
-    'assert c["services"]["capture"]["cap_add"] == ["NET_RAW", "SETUID", "SETGID"]'
-)
+if old in content:
+    backup = Path("outputs/backups") / (
+        "v3_test_fix_" +
+        datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    )
+    backup.mkdir(parents=True, exist_ok=False)
+    shutil.copy2(test, backup / test.name)
+    test.write_text(content.replace(old, new))
+    print("FIXED outdated Docker stop assertion")
+elif new in content:
+    print("Test already fixed")
+else:
+    raise SystemExit("STOP: Unexpected test content")
 
-replace_exact(
-    "setup/staged_collect_v3.sh",
-    'step timeout 45s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner python -c "$PROBE"',
-    'step timeout 180s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner python -c "$PROBE"'
-)
-
-for p in sorted(Path(".").glob("compose.orglab.*.json")):
-    obj = json.loads(p.read_text())
-    caps = obj["services"]["capture"]["cap_add"]
-    if caps == ["NET_RAW"]:
-        obj["services"]["capture"]["cap_add"] = ["NET_RAW", "SETUID", "SETGID"]
-        changes[p] = json.dumps(obj, indent=2) + "\n"
-    elif caps != ["NET_RAW", "SETUID", "SETGID"]:
-        raise SystemExit(f"STOP: Unexpected capabilities in {p}. No modifications applied.")
-
-for p, content in changes.items():
-    destination = backup / p
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(p, destination)
-    p.write_text(content)
-    print("PATCHED:", p, "| BACKUP:", destination)
-
-print("PATCH COMPLETE:", len(changes), "files changed")
+print("V3 timeout and Docker stop checks verified")
 PY
 ```
 
-The added `SETUID` and `SETGID` capabilities are confined to the capture container; no host networking privileges or `--privileged` flag are added. Use this configuration only where your university permits those scoped container capabilities.
-
-### **3. Verify the fixes**
+### **Step 3 — Run all tests**
 
 ```
-python -m compileall -q orglab
+python -m compileall -q orglab src setup
 
 bash -n setup/staged_collect_v3.sh
 
@@ -114,110 +98,79 @@ bash -n setup/orglab_run.sh
 
 bash -n setup/orglab_train_parallel.sh
 
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_orglab.py tests/test_v3_launcher_contract.py tests/test_staged_capture_audit.py
+python -m pytest -q tests/test_orglab.py tests/test_v3_launcher_contract.py tests/test_staged_capture_audit.py
 
-python - <<'PY'
-from orglab.composegen import build_compose
-
-for n in (20, 50):
-    for topology in ("flat", "departmental"):
-        c = build_compose(n, topology)
-        cap = c["services"]["capture"]
-        assert cap["cap_add"] == ["NET_RAW", "SETUID", "SETGID"]
-        assert cap["cap_drop"] == ["ALL"]
-        assert cap["security_opt"] == ["no-new-privileges:true"]
-        assert all(v["internal"] for v in c["networks"].values())
-        assert all(not s.get("ports") for s in c["services"].values())
-        print("VERIFIED", n, topology)
-
-print("SECURITY AND TOPOLOGY CHECKS PASSED")
-PY
+python -m pytest -q
 
 git diff --check
-
-git status --short
 ```
 
-**Proceed only if all checks pass.**
+Continue only if the tests pass.
 
-### **4. Run a new 20-node pilot with training**
+### **Step 4 — Launch the new 20-node captured-data pilot and training**
 
-The failed `org20_pilot_01`, `org20_main_01`, `org20_flat_01` and `org50_pilot_01` directories must remain preserved. Use a new run ID.
+This is a smaller first run to verify the entire capture → Zeek → CPU/GPU training pipeline without committing to a larger collection prematurely.
 
 ```
+SMOKE="org20_smoke_$(date -u +%m%d%H%M%S)"
+
+echo "RUN ID: $SMOKE"
+
 ./setup/orglab_run.sh \
-  --run-id org20_pilot_02 \
+  --run-id "$SMOKE" \
   --nodes 20 \
   --topology departmental \
-  --rounds 6 \
-  --test-rounds 6 \
-  --seed 20261117 \
-  --step-seconds 0.6 \
+  --rounds 4 \
+  --test-rounds 2 \
+  --seed 20261118 \
+  --step-seconds 0.2 \
   --train
 ```
 
-This should first collect and validate the network traffic, then launch the CPU baselines and GPU GraphSAGE–GRU training. **Do not start another capture while this command is running.**
+Expected workload: **28 episodes and 672 experimental HTTP requests**.
 
-### **5. Inspect the training and capture results**
+The `--train` option launches six CPU baseline jobs and three sequential GPU GraphSAGE–GRU models after collection and Zeek validation.
 
-Run after Step 4 finishes.
+### **Step 5 — Check the trained models**
 
 ```
-RUN=org20_pilot_02
+echo "CHECKING RUN: $SMOKE"
 
-cat "outputs/orglab/$RUN/status.json"
+cat "outputs/orglab/$SMOKE/status.json"
 
-cat "outputs/orglab/$RUN/zeek_audit.json"
+cat "outputs/orglab/$SMOKE/zeek_audit.json"
 
-cat "outputs/orglab/$RUN/training/training_summary.json"
+cat "outputs/orglab/$SMOKE/training/training_summary.json"
 
-find "outputs/orglab/$RUN/training/logs" -name '*.exitcode' -exec sh -c 'echo "$1: $(cat "$1")"' _ {} \;
+find "outputs/orglab/$SMOKE/training/logs" \
+  -name '*.exitcode' -print -exec cat {} \;
 
-find "outputs/orglab/$RUN/training/models" -type f \( -name 'results.json' -o -name 'latest.pt' -o -name 'best.pt' \) -print
+find "outputs/orglab/$SMOKE/training/models" \
+  -type f \( -name 'results.json' -o -name 'latest.pt' -o -name 'best.pt' -o -name 'inference.pt' \) -print
 
 nvidia-smi
 ```
 
-If Step 4 fails, **stop there and send its logs**. Do not attempt manual training on a header-only PCAP.
-
-### **6. Resume the original 96-episode V3 experiment**
-
-Execute only after the 20-node pilot and its training have stopped.
+### **Step 6 — Start the larger 20-node experiment only if Step 4 passes**
 
 ```
-./setup/staged_collect_v3.sh \
-  --run-id staged_v2_main_01 \
+MAIN="org20_main_$(date -u +%m%d%H%M%S)"
+
+echo "MAIN RUN ID: $MAIN"
+
+./setup/orglab_run.sh \
+  --run-id "$MAIN" \
+  --nodes 20 \
+  --topology departmental \
   --rounds 12 \
   --test-rounds 12 \
-  --seed 20261115 \
-  --capture \
-  --resume
+  --seed 20261119 \
+  --step-seconds 0.35 \
+  --train
 ```
 
-Then:
+This targets **96 episodes and 2,304 experimental HTTP requests**, followed by the parallel training workflow.
 
-```
-./setup/staged_v3_status.sh staged_v2_main_01
-```
+Do not run Steps 4 and 6 simultaneously.
 
-If it reports `COLLECTION_COMPLETE` with valid capture evidence, run:
-
-```
-./setup/staged_train_guard_v3.sh staged_v2_main_01 --hpo-trials 30 --gru-epochs 80
-```
-
-If it fails again, do not retry blindly. Inspect:
-
-```
-RUN=staged_v2_main_01
-
-tail -n 100 "$(ls -t src/data/raw/runs/$RUN/collector_v3_*.log | head -1)"
-
-ls -lh src/data/raw/runs/$RUN/*.pcap
-
-./setup/staged_v3_status.sh "$RUN"
-
-./setup/staged_status.sh
-```
-
-**Send me the Step 4 and Step 5 logs first.** Those will establish whether the capture capability correction works on the university machine and whether the multi-node data can pass the training gates.
+**If any command fails, stop at that step and send its output.** In particular, I need the capture and training logs from Step 4 before treating the new deployment as verified.
