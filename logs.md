@@ -1,125 +1,172 @@
-Ibrahim, we can start **multiple independent jobs in parallel**, but not multiple simultaneous captures on the same Docker network.
+## Repository audit: confirmed results
 
-Your logs establish:
+I inspected the uploaded repository and its saved research outputs.
 
-- The first pilot completed 32 episodes, 384 gateway observations, three policy evaluations, and Zeek processing.
-- Docker permissions are now resolved.
-- The newer 12-episode run generated its manifest, but its capture-shutdown sequence has not been confirmed complete.
-- The original Zeek capture reported checksum and filtered-trace warnings. These need investigation before we rely on the PCAP-derived features.
+| Component                         | Verified from files                                              | Assessment                 |
+| --------------------------------- | ---------------------------------------------------------------- | -------------------------- |
+| Initial network pilot             | 32 episodes, 384 HTTP observations                               | Completed                  |
+| Independent Zeek audit            | 384 connection records, all 32 episodes covered                  | Passed recorded checks     |
+| Random Forest HPO                 | 90 completed Optuna trials                                       | Completed                  |
+| GPU temporal GRU                  | 60 epochs per policy; completion records present                 | Completed                  |
+| Expanded pilot                    | 96 episodes, 1,152 gateway observations                          | Postprocessed successfully |
+| Additional captures               | Some stopped launchers and lingering `tcpdump` processes in logs | Requires cleanup           |
+| Unseen-attack generalisation      | Not established                                                  | Research gap               |
+| Genuine multi-stage early warning | Not established                                                  | Research gap               |
 
-The most productive parallel workloads are **Zeek/PCAP validation, resumable CPU hyperparameter optimisation, and a first GPU temporal-model experiment**, while network collection runs as a separate, exclusive job.
+The current Random Forest validation PR-AUC of 1.0 is **not proof of excellent intrusion detection**. The existing traffic profiles are small and deliberately distinguishable, and their incident milestone is artificially placed at the final request.
 
-Importantly, the present lab still generates harmless traffic profiles rather than actual malicious propagation. Any model scores at this stage are engineering diagnostics, not validated cybersecurity results.
+More HPO on those same profiles would have limited scientific value.
 
-## **Parallel research package ready**
+**I'm moving development to the next experiment version:** separately identifiable precursor and milestone events, an unseen held-out behaviour, causal labels, recoverable collection rounds, and independent capture-process management.
 
-**Phase 3 — Parallel Research Sprint Kit**
+Ibrahim, I've completed the next substantial Phase 3 development patch using your actual repository and university logs. **We are moving beyond the original pilots to a new, staged network experiment.**
 
-Additive ZIP patch · Three parallel research workers · Capture launcher v3 · Checkpointing · Tests
+## 1. Download the new development package
 
-Download the ZIP
+**Phase 3 — Staged Network Research V2**
 
-Complete execution runbook
+ZIP · 15 implementation and documentation files · Safe installer · Automated tests
 
-### **1. Start three jobs together — university terminal**
+[Download Phase 3 Research V2]\(/mnt/data/Phase3_Staged_Network_Research_V2.zip)
 
-Copy the ZIP into the Ubuntu machine's `~/Downloads` directory, then execute:
+---
+
+[Read the complete university execution runbook]\(/mnt/data/Phase3_Staged_Network_Research_V2/docs/STAGE_V2_RUNBOOK.md)
+
+### What has been implemented
+
+| Component                                                 | Development status                     |
+| --------------------------------------------------------- | -------------------------------------- |
+| Multi-stage network scenario generator                    | Implemented                            |
+| Independently timestamped onset, escalation and milestone | Implemented                            |
+| Previously unseen behavioural profile for testing         | Implemented                            |
+| Diverse benign traffic profiles                           | Implemented                            |
+| Restartable experiment rounds and EXP3 replay             | Implemented                            |
+| Causal feature labels and corrected early-warning metrics | Implemented                            |
+| Docker-based PCAP capture sidecar                         | Implemented; live verification pending |
+| Parallel CPU, GPU and Zeek evaluation                     | Implemented; live verification pending |
+| Safe patch installation and original-file backups         | Tested                                 |
+
+**18/18 tests passed**, including complete baseline evaluation and checkpoint recovery.
+
+## 2. Install it on the university machine
+
+Transfer the ZIP to the university machine's `~/Downloads` directory.
 
 ```
 cd /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
 
+mkdir -p /tmp/phase3-stage-v2
+
+unzip -q ~/Downloads/Phase3_Staged_Network_Research_V2.zip -d /tmp/phase3-stage-v2
+
+bash /tmp/phase3-stage-v2/install.sh "$PWD"
+
 source .venv-cuda/bin/activate
+
 export PATH="/opt/zeek/bin:$PATH"
 export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
 
-unzip -n ~/Downloads/Phase3_Parallel_Research_Sprint.zip -d .
-
-chmod +x setup/sprint_*.sh setup/university_pilot_v3.sh setup/zeek_from_pcap_v3.sh
-
-python -m pytest -q tests/test_sprint_modules.py
-
-./setup/sprint_start.sh pilot_20261113T083155Z_61354 --hpo-trials 30 --gru-epochs 60
+./setup/preflight.sh
 ```
 
-This starts three independent `tmux` jobs:
+The installer verifies file hashes before replacing the five modified source files. If university files differ from your uploaded laptop repository, it stops rather than overwriting unknown changes.
 
-| Job                   | Workload                                                                      | Recovery mechanism                          |
-| --------------------- | ----------------------------------------------------------------------------- | ------------------------------------------- |
-| Zeek audit            | Reprocess PCAP, verify network observations, attempt gated Zeek-flow baseline | Separate immutable input and derived output |
-| CPU HPO               | 30 Optuna trials per policy, 90 trials total                                  | Persistent SQLite studies                   |
-| GPU temporal baseline | GRU training, 60 epochs per policy                                            | Checkpoint after every epoch                |
+### Important: clear old captures first
 
-The Zeek reprocessing uses `-C` to handle possible checksum-offloading artefacts, as documented by Zeek. That does not, by itself, prove the capture is complete.&#x20;
+Your latest logs still show lingering captures from older pilot launchers.
 
-[image](https://www.google.com/s2/favicons?domain=https://zeek.org\&sz=32)
-
-Zeek Network Security Monitor
-
-
-
-Optuna studies can resume from SQLite, though bit-for-bit identical sampler continuation is not guaranteed without preserving additional sampler state.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://optuna.readthedocs.io\&sz=32)
-
-Optuna 5.0.0 documentation
-
-
-
-### **2. Monitor all three jobs**
+Run:
 
 ```
-./setup/sprint_status.sh
+pgrep -a -x tcpdump || true
+ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot' || true
+docker ps
+```
+
+If an old lab capture is still running, verify its PID and output path, then stop only that process from an authorised terminal. The new collector refuses to overlap an old host-bridge capture.
+
+## 3. Start the new network experiment
+
+First execute a short integration pilot:
+
+```
+./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture
+```
+
+This should produce 24 completed episodes and 480 observed HTTP requests.
+
+After successful collection and capture validation, begin the larger experiment:
+
+```
+./setup/staged_collect_v2.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture
+```
+
+MAIN EXPERIMENT TARGET
+
+# 96
+
+Experimental episodes
+
+# 1,920
+
+HTTP requests
+
+---
+
+Four policies, including the independent test set. Three controlled incident profiles for training, plus one held-out behavioural profile.
+
+The new capture system runs `tcpdump` inside a Docker sidecar sharing the gateway's network namespace, rather than maintaining a privileged host-side `tcpdump` process. Docker supports this namespace-sharing arrangement.
+
+This should address the earlier process-management problem, but it still needs validation on your machine.
+
+## 4. Start the heavy jobs together
+
+Once `staged_v2_main_01` completes and its observed events are validated, execute:
+
+```
+./setup/staged_train_start.sh staged_v2_main_01 --hpo-trials 30 --gru-epochs 80
+```
+
+This launches four workers in separate `tmux` sessions.
+
+| Parallel job | Task                                                                            |
+| ------------ | ------------------------------------------------------------------------------- |
+| CPU baseline | Train and evaluate RF/Isolation Forest using causal labels                      |
+| CPU HPO      | Persistent Optuna studies                                                       |
+| GPU          | Train checkpointed temporal GRU models                                          |
+| Zeek         | Independently process PCAPs, audit coverage and evaluate eligible network flows |
+
+Monitor them using:
+
+```
+./setup/staged_status.sh
 tmux ls
 nvidia-smi
 ```
 
-The status script displays each worker's output and exit status. Results are stored separately under `outputs/sprints/`, `outputs/hpo/sprints/`, and `outputs/model/sprints/`.
+The Zeek analysis uses its documented `-C` mode for locally captured traffic with checksum-offloading artefacts. This does not replace checking packet completeness or network visibility.
 
-### **3. Recover the existing 12-episode collection**
+Run the parallel training workers **after collection**, rather than during capture, to avoid introducing uncontrolled CPU-load changes into the traffic timings.
 
-In another terminal:
+## 5. Daily shutdown and recovery
 
-```
-RUN=pilot_20261113T102813Z_79699
-
-wc -l "src/data/raw/runs/$RUN/episodes.jsonl"
-
-ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot'
-```
-
-A completed 12-episode-per-policy collection should contain **96 episode records and 1,152 HTTP observations**.
-
-If the runner has completed and the old capture processes are stopped, execute:
+If collection stops before completion, repeat it with the same run ID and original settings:
 
 ```
-./setup/university_finish_existing.sh pilot_20261113T102813Z_79699
+./setup/staged_collect_v2.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
 ```
 
-Do not start another capture while the previous one is active.
+Completed rounds are preserved. An interrupted round is regenerated with a new identifier; its incomplete observations are excluded from the published dataset.
 
-### **4. Start a fresh network experiment**
+The GRU retains epoch checkpoints and the HPO uses persistent SQLite studies. Active processes still cannot survive a powered-off computer.
 
-After the CPU-intensive model jobs finish and the previous capture is safely closed, use the revised launcher in a dedicated interactive terminal:
+## 6. What remains scientifically unfinished
 
-```
-sudo -v
-./setup/university_pilot_v3.sh --episodes 12 --seed 20261114 --capture
-```
+The new experiment introduces meaningful temporal stages and a withheld behaviour profile, but it is still **controlled, non-malicious network traffic**. It does not yet demonstrate zero-day exploit detection, authentic malicious propagation, or generalisation to an entirely unseen physical topology.
 
-This launcher records the random seed, protects against overlapping v3 captures, and avoids the previous unbounded capture-process wait.
+The temporal GRU is also not a GNN. Our next substantial model development must construct communication graphs from the captured network flows and test a graph-based detector against the established tabular and temporal baselines.
 
-I recommend keeping CPU-heavy training separate from new traffic collection on this shared machine. Otherwise, training load could change network timing measurements and confound our research comparison.
+**The immediate next milestone is a successful staged V2 Docker capture followed by the four parallel evaluation jobs.** The local code and recovery tests have passed; the live university deployment remains to be verified.
 
-## **Validation status**
-
-**15 automated tests passed locally.**
-
-**Optuna persistence and temporal-model epoch recovery tested locally.**
-
-**University deployment and the revised capture launcher still require live verification.**
-
-I cannot execute commands on your university machine directly. The package is ready for you to start there using the commands above.
-
-The GPU GRU is a **temporal baseline, not yet a GNN**. The next substantive research upgrade must introduce independently timed multi-stage incidents, meaningful unseen network behaviours, and topology variation. The existing EXP3 generator also remains episode-restartable rather than checkpoint-resumable.
-
-**Start with the command in Section 1.** It launches the three independent workers together without disturbing your existing completed pilot.
+The package preserves your existing research artifacts and provides the commands needed to begin that milestone.
