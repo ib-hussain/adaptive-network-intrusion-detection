@@ -1,0 +1,184 @@
+{
+  "checksum_validation_disabled": false,
+  "connections": 2704,
+  "episode_coverage": 0.0,
+  "episodes": 28,
+  "episodes_with_bidirectional_connections": 0,
+  "gateway_sha256": "681ba7f6d368c368e41e6cba71f0edb14121797d9ad59ff87b08eaa862e902ba",
+  "manifest_sha256": "2ea3ee87135156e1e685d97dba54b31092f52fa6ca5fc777b2b3b9ea23177810",
+  "packet_count": 18946,
+  "pcap_sha256": "420fe8ced98107c33d53d0d8649bf3a2220e1a181c4420a6d5c0e647c8c43880",
+  "per_episode": {
+    "org20_smoke_1114122633-fixed-0000-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-fixed-0000-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-fixed-0001-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-fixed-0001-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-fixed-0002-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-fixed-0002-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-fixed-0003-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-fixed-0003-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-random-0000-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-random-0000-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-random-0001-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-random-0001-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-random-0002-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-random-0002-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-random-0003-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-random-0003-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-strategic-0000-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-strategic-0000-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-strategic-0001-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-strategic-0001-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-strategic-0002-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-strategic-0002-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-strategic-0003-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-strategic-0003-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-test-0000-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-test-0000-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-test-0001-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_smoke_1114122633-test-0001-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    }
+  },
+  "status": "FAILED_COVERAGE",
+  "unassigned_connections": 16,
+  "zeek_returncode": 0
+}

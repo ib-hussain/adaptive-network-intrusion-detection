@@ -1,0 +1,14 @@
+[2026-11-14T12:30:47Z] [ORGLAB/org20_main_1114123047] START nodes=20 topology=departmental rounds=12 test_rounds=12 seed=20261119 train=1
+[2026-11-14T12:30:47Z] [ORGLAB/org20_main_1114123047] Docker root space:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6   82G   63G   15G  82% /
+[2026-11-14T12:30:47Z] [ORGLAB/org20_main_1114123047] Starting limited private services, then employee containers in batches of 10
+ Network nidsorgorg20main1114123047_services_internal Creating 
+ Network nidsorgorg20main1114123047_dept_engineering_internal Creating 
+ Network nidsorgorg20main1114123047_dept_sales_internal Creating 
+ Network nidsorgorg20main1114123047_dept_finance_internal Creating 
+ Network nidsorgorg20main1114123047_dept_hr_internal Creating 
+ Network nidsorgorg20main1114123047_dept_engineering_internal failed to create network nidsorgorg20main1114123047_dept_engineering_internal: Error response from daemon: all predefined address pools have been fully subnetted 
+failed to create network nidsorgorg20main1114123047_dept_engineering_internal: Error response from daemon: all predefined address pools have been fully subnetted
+[2026-11-14T12:30:47Z] [ORGLAB/org20_main_1114123047] EXIT=1 Stopping only ORGLAB project containers; preserving datasets, PCAP and logs
+[2026-11-14T12:30:47Z] [ORGLAB/org20_main_1114123047] FAILED; inspect outputs/orglab/org20_main_1114123047/launcher.log and run files; do not reuse this run ID

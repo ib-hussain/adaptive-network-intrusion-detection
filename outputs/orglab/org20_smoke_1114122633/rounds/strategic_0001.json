@@ -1,0 +1,42 @@
+{
+  "episodes": [
+    {
+      "condition": "benign",
+      "end_ts": 1794659315.0536642,
+      "episode_id": "org20_smoke_1114122633-strategic-0001-benign",
+      "escalation_ts": null,
+      "game_mode": "heuristic_EXP3_not_detector_feedback",
+      "milestone_ts": null,
+      "nodes": 20,
+      "notes": "Harmless anomalous communication; no real attack or exfiltration",
+      "onset_ts": null,
+      "policy": "strategic",
+      "profile": "maintenance_burst",
+      "requests": 24,
+      "round": 1,
+      "run_id": "org20_smoke_1114122633",
+      "selection_probability": 0.32430143818377855,
+      "start_ts": 1794659309.3556561,
+      "topology": "departmental"
+    },
+    {
+      "condition": "incident",
+      "end_ts": 1794659320.7612207,
+      "episode_id": "org20_smoke_1114122633-strategic-0001-incident",
+      "escalation_ts": 1794659318.544032,
+      "game_mode": "heuristic_EXP3_not_detector_feedback",
+      "milestone_ts": 1794659320.567833,
+      "nodes": 20,
+      "notes": "Harmless anomalous communication; no real attack or exfiltration",
+      "onset_ts": 1794659316.619914,
+      "policy": "strategic",
+      "profile": "rapid_repeat",
+      "requests": 24,
+      "round": 1,
+      "run_id": "org20_smoke_1114122633",
+      "selection_probability": 0.32430143818377855,
+      "start_ts": 1794659315.0538101,
+      "topology": "departmental"
+    }
+  ]
+}

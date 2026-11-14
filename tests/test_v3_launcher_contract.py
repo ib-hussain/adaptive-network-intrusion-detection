@@ -12,7 +12,7 @@ class TestV3Contract(unittest.TestCase):
     def test_no_legacy_compose_capture_overlay(self):
         self.assertNotIn('compose.staged.capture.yaml', SRC)
         self.assertIn('container:$GATEWAY_CID', SRC)
-        self.assertIn('docker stop --signal SIGINT --time 8', SRC)
+        self.assertIn('docker stop --signal SIGINT --timeout 8', SRC)
         self.assertIn('--cap-add NET_RAW', SRC)
         self.assertIn('staged_capture_audit', SRC)
 
