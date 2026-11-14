@@ -463,4 +463,32 @@ error while interpolating services.capture.command.[]: required variable STAGED_
 {"episode_budget": 96, "initialised": true, "run_dir": "src/data/raw/runs/staged_v2_main_01"}
 error while interpolating services.capture.command.[]: required variable STAGED_CAPTURE_NAME is missing a value: STAGED_CAPTURE_NAME required
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker compose ps -a
+NAME                              IMAGE              COMMAND                  SERVICE    CREATED        STATUS        PORTS
+phase3-adaptive-nids-gateway-1    python:3.12-slim   "python -m lab.http_…"   gateway    19 hours ago   Up 19 hours   
+phase3-adaptive-nids-server_a-1   python:3.12-slim   "python -m lab.http_…"   server_a   19 hours ago   Up 19 hours   
+phase3-adaptive-nids-server_b-1   python:3.12-slim   "python -m lab.http_…"   server_b   19 hours ago   Up 19 hours   
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ tmux ls || true
+no server running on /tmp/tmux-1001/default
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ tmux ls 
+no server running on /tmp/tmux-1001/default
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo pgrep -a -x tcpdump
+74855 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102313Z_74502/traffic.pcap tcp port 8080
+80058 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102813Z_79699/traffic.pcap tcp port 8080
+94532 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T110555Z_94176/traffic.pcap tcp port 8080
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$
 
+fastlab@gup-admin-Precision-3680:~$ sudo kill -INT 74855
+fastlab@gup-admin-Precision-3680:~$ sudo kill -INT 80058
+fastlab@gup-admin-Precision-3680:~$ sudo kill -INT 94532
+fastlab@gup-admin-Precision-3680:~$ 
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED        STATUS        PORTS     NAMES
+631e6c1d5b89   python:3.12-slim   "python -m lab.http_…"   19 hours ago   Up 19 hours             phase3-adaptive-nids-gateway-1
+d522a2c2f430   python:3.12-slim   "python -m lab.http_…"   19 hours ago   Up 19 hours             phase3-adaptive-nids-server_b-1
+7fecfbe9c87d   python:3.12-slim   "python -m lab.http_…"   19 hours ago   Up 19 hours             phase3-adaptive-nids-server_a-1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture
+Existing run directory src/data/raw/runs/staged_v2_check_01; use --resume or different ID
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
+error while interpolating services.capture.command.[]: required variable STAGED_CAPTURE_NAME is missing a value: STAGED_CAPTURE_NAME required
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
