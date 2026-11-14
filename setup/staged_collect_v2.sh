@@ -34,6 +34,9 @@ exec 9>outputs/locks/staged_capture.lock
 flock -n 9 || { echo 'Another staged collection is active; refusing concurrent capture' >&2;exit 1; }
 docker info >/dev/null || { echo 'Docker daemon unavailable in this shell. Verify docker ps and user group membership.' >&2;exit 1; }
 export STAGED_RUN_ID="$RUN_ID"
+# Stage V2 hotfix: define all Compose interpolation vars before ANY Compose call.
+STAGED_CAPTURE_NAME="traffic_$(date -u +%Y%m%dT%H%M%SZ)_$$"
+export STAGED_CAPTURE_NAME
 COMPOSE=(docker compose -f compose.yaml -f compose.staged.capture.yaml --profile capture)
 RAW="src/data/raw/runs/$RUN_ID"
 PY=python3
@@ -89,8 +92,6 @@ for _ in $(seq 1 30);do
   sleep 1
 done
 ((READY)) || { echo 'Gateway/backend connection check failed' >&2;exit 1; }
-STAGED_CAPTURE_NAME="traffic_$(date -u +%Y%m%dT%H%M%SZ)_$$"
-export STAGED_CAPTURE_NAME
 CAP_STARTED=0
 stop_capture() {
  if (( CAP_STARTED ));then
