@@ -78,7 +78,7 @@ def build_compose(nodes: int = 20, topology: str = "flat") -> dict:
         "volumes": ["./outputs/orglab/${ORG_RUN_ID:?set_ORG_RUN_ID}/captures:/captures"],
         "read_only": True,
         "cap_drop": ["ALL"],
-        "cap_add": ["NET_RAW"],
+        "cap_add": ["NET_RAW", "SETUID", "SETGID"],
         "security_opt": ["no-new-privileges:true"],
         "pids_limit": 32,
         "mem_limit": "96m",

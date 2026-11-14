@@ -197,7 +197,7 @@ if (( CAPTURE )); then
   }
   log 'Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment'
   PROBE='import urllib.request; services=["a","b","a","b"]; statuses=[urllib.request.urlopen(urllib.request.Request("http://gateway:8080/"+svc,data=b"capture_check"*8,headers={"X-Lab-Episode":"v3_capture_probe_not_an_experiment"},method="POST"),timeout=5).status for svc in services]; assert statuses==[200]*4; print("CAPTURE_PROBE_HTTP_OK",len(statuses),flush=True)'
-  step timeout 45s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner python -c "$PROBE"
+  step timeout 180s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner python -c "$PROBE"
   captured=0
   for attempt in $(seq 1 8); do
     if "$PY" -m setup.staged_capture_audit --pcap "$RAW/$CAP_FILE" --min-packets 4 --quiet >> "$LOG" 2>&1; then

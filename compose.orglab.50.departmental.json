@@ -1958,7 +1958,9 @@
         "ALL"
       ],
       "cap_add": [
-        "NET_RAW"
+        "NET_RAW",
+        "SETUID",
+        "SETGID"
       ],
       "security_opt": [
         "no-new-privileges:true"

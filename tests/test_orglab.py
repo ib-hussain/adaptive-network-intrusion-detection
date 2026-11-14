@@ -61,7 +61,7 @@ def test_generated_compose_security_and_fifty_node_scaling():
         assert all(v["internal"] for v in c["networks"].values())
         assert all(not x.get("ports") for x in c["services"].values())
         assert all(not x.get("privileged") for x in c["services"].values())
-        assert c["services"]["capture"]["cap_add"] == ["NET_RAW"]
+        assert c["services"]["capture"]["cap_add"] == ["NET_RAW", "SETUID", "SETGID"]
         assert c["services"]["capture"]["network_mode"] == "service:gateway"
         assert c["services"]["gateway"]["networks"] == ["employees_internal", "services_internal"]
         segmented = build_compose(n, "departmental")
