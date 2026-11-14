@@ -183,3 +183,86 @@ p3cap_staged_v2_main_01_20261114T071852Z_150864
 [2026-11-14T07:18:55Z] [STAGE-V3] Capture process confirmed stopped
 [2026-11-14T07:18:55Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ mkdir -p /tmp/phase3-tcpdump-fix
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ unzip -q -o  Phase3_TCPDump_Privilege_Hotfix.zip -d /tmp/phase3-tcpdump-fix 
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash /tmp/phase3-tcpdump-fix/fix_tcpdump_privileges.sh "$PWD"
+VERIFIED: expected original Stage V3 tcpdump invocation and restricted capabilities
+PATCH APPLIED: tcpdump now starts with -Z root; restricted Docker capabilities unchanged.
+VERIFIED: patched invocation, isolated capture, preflight gate, timestamped heartbeat.
+BACKUP: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/backups/stage_v3_tcpdump_privileges_20261114T081743Z_153317/staged_collect_v3.sh
+DATA: old run journals, PCAPs, trained models and logs were not touched.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
+[2026-11-14T08:17:53Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1
+[2026-11-14T08:17:53Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T08:17:53Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T08:17:53Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+[2026-11-14T08:17:53Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T08:17:53Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T08:17:53Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T081753Z_153376.pcap
+5aefe82cfb29ce855b7794a3bcffaf0817a4d6a4e7dca380ccbed43e8fb32466
+[2026-11-14T08:17:55Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T08:17:56Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-9149ff039318 Creating 
+ Container phase3-adaptive-nids-runner-run-9149ff039318 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T08:18:40Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T081753Z_153376 (bounded Docker timeout)
+Flag --time has been deprecated, use --timeout instead
+p3cap_staged_v3_check_02_20261114T081753Z_153376
+[2026-11-14T08:18:41Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T081753Z_153376.log
+p3cap_staged_v3_check_02_20261114T081753Z_153376
+[2026-11-14T08:18:41Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T08:18:41Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ nano setup/staged_collect_v3.sh 
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
+[2026-11-14T08:21:44Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1
+[2026-11-14T08:21:44Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T08:21:44Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T08:21:44Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+[2026-11-14T08:21:44Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T08:21:44Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T08:21:44Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T082144Z_154831.pcap
+33fb246997a33a7b0c8526ebb909e55de1041ca2fa1ac24c9ffd69c79cce60c2
+[2026-11-14T08:21:46Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T08:21:46Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-e204421f6643 Creating 
+ Container phase3-adaptive-nids-runner-run-e204421f6643 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T08:22:31Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T082144Z_154831 (bounded Docker timeout)
+p3cap_staged_v3_check_02_20261114T082144Z_154831
+[2026-11-14T08:22:32Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T082144Z_154831.log
+p3cap_staged_v3_check_02_20261114T082144Z_154831
+[2026-11-14T08:22:32Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T08:22:32Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
+[2026-11-14T08:35:52Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T08:35:52Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T08:35:52Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T08:35:52Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T08:35:52Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T08:35:52Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T08:35:52Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T083552Z_156199.pcap
+b61a4d65f9dbdab634f326bad49d94b6a31be48af79f71034aeba8ad384820cc
+[2026-11-14T08:35:55Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T08:35:55Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-2e469de93177 Creating 
+ Container phase3-adaptive-nids-runner-run-2e469de93177 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T08:36:40Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T083552Z_156199 (bounded Docker timeout)
+p3cap_staged_v2_main_01_20261114T083552Z_156199
+[2026-11-14T08:36:40Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T083552Z_156199.log
+p3cap_staged_v2_main_01_20261114T083552Z_156199
+[2026-11-14T08:36:40Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T08:36:40Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_train_guard_v3.sh staged_v2_main_01 --hpo-trials 30 --gru-epochs 80
+STOP: complete.json / episodes.jsonl / gateway_subset.jsonl required. No training started.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 

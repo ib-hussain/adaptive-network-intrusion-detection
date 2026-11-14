@@ -73,7 +73,7 @@ capture_stop() {
   (( CAP_STARTED )) || return 0
   log "Stopping only our capture container: $CAP_NAME (bounded Docker timeout)"
   if [[ "$(timeout 5s docker inspect -f '{{.State.Running}}' "$CAP_NAME" 2>/dev/null || true)" == true ]]; then
-    if ! step timeout 16s docker stop --signal SIGINT --time 8 "$CAP_NAME"; then
+    if ! step timeout 16s docker stop --signal SIGINT --timeout 8 "$CAP_NAME"; then
       log "WARNING: graceful Docker stop failed; attempting short bounded stop"
       step timeout 8s docker stop -t 3 "$CAP_NAME" || true
     fi
@@ -187,7 +187,7 @@ if (( CAPTURE )); then
      --read-only --stop-signal SIGINT --stop-timeout 8 --pids-limit 32 \
      --label phase3.staged.capture=1 --label "phase3.staged.run=$RUN_ID" \
      --mount "type=bind,src=$ROOT_RAW,dst=/captures" \
-     "$IMAGE" -i any -p -nn -s 0 -U -w "/captures/$CAP_FILE" 'tcp port 8080'
+     "$IMAGE" -Z root -i any -p -nn -s 0 -U -w "/captures/$CAP_FILE" 'tcp port 8080'
   CAP_STARTED=1
   sleep 2
   [[ "$(docker inspect -f '{{.State.Running}}' "$CAP_NAME" 2>/dev/null)" == true ]] || {
