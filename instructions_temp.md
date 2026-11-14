@@ -1,93 +1,105 @@
-## **Phase 3 — Progress and verified status**
+Understood. **From now on, whenever you send logs, I will respond with the exact Bash commands to execute, in order, directly in chat. No Markdown files, no separate runbooks, and no unnecessary explanations.**
 
-I have read the four new project documents and the newer university execution log.
+Your logs confirm that the 24-episode V3 pilot and its training completed. The main 96-episode run still exits with code `124` after the HTTP probes. We should diagnose that timeout without repeating the failing command, while starting the new 20-container experiment independently.
 
-The project has progressed beyond the earlier `tcpdump` failure.
-
-| Component                  | Latest supplied evidence                       |
-| -------------------------- | ---------------------------------------------- |
-| V3 pilot                   | 24 episodes, 480 HTTP requests                 |
-| Packet capture             | 13,550 packets reported                        |
-| Zeek                       | 960 assigned connections                       |
-| CPU baselines              | Completed                                      |
-| Optuna                     | 90 trials completed                            |
-| CUDA GRU                   | Three models trained for 80 epochs             |
-| Main 96-episode experiment | Still blocked by a later exit-code-124 timeout |
-| Genuine GNN                | Not present in the earlier repository version  |
-
-**I have also implemented and locally tested a new 20–50-employee Docker lab add-on**, including two topology configurations, causal feature extraction, parallel CPU training, and a GraphSAGE–GRU model with checkpoint recovery.
-
-The six local regression tests pass. These are software tests, not evidence that the new Docker experiment has successfully run on the university workstation.
-
-## **Download the implementation**
-
-**Adaptive NIDS — 20–50 Node Lab & Training Add-on**
-
-ZIP · 19 files · 42 KB · Integrity checked
-
-Supporting documentation
-
-Complete execution runbook
-
-Local verification report
-
-### **What the implementation includes**
-
-- **20–50 employee containers**, with Sales, Engineering, HR and Finance workloads.
-- **Five private network segments** in the departmental configuration, plus a flat-network alternative.
-- Controlled traffic generation, independent ground-truth timestamps and packet-capture validation.
-- Six parallel CPU model jobs: Random Forest and Isolation Forest for each scenario policy.
-- Three GPU GraphSAGE–GRU training runs, executed sequentially to avoid competing GPU workloads.
-- Persistent model checkpoints, recovery, logs and early-warning evaluation.
-
-### **Run it on the university machine**
-
-After verifying that no existing capture job is running, transfer the ZIP to `~/Downloads` and execute:
+### **Step 1 — Check the university machine and existing jobs**
 
 ```
 cd /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
 
 source .venv-cuda/bin/activate
+
 export PATH="/opt/zeek/bin:$PATH"
 export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+export PYTHONUNBUFFERED=1
+
+date -u
+git status --short --branch
+nvidia-smi
+docker ps
+docker system df
+df -h . /var/lib/docker
+
+ps -eo pid,ppid,stat,etime,args | grep -E '[s]taged_collect|[o]rglab_run|[t]cpdump' || true
+
+./setup/staged_v3_status.sh staged_v2_main_01
+
+grep -n -C 8 -E 'timeout|CAPTURE_PROBE|CAPTURE_PREFLIGHT|probe' setup/staged_collect_v3.sh
+```
+
+### **Step 2 — Install and test the 20–50-container add-on**
+
+Use the ZIP supplied in my previous response. Place it in `~/Downloads` on the university machine.
+
+```
+cd /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
+
+unzip -t ~/Downloads/Adaptive_NIDS_OrgLab_Addon.zip
 
 unzip -n ~/Downloads/Adaptive_NIDS_OrgLab_Addon.zip -d .
 
+sha256sum -c MANIFEST.sha256
+
 chmod +x setup/orglab_*.sh
 
+python -m compileall -q orglab
+
+for f in setup/orglab_*.sh; do bash -n "$f" || break; done
+
 python -m pytest -q tests/test_orglab.py
+
+python -m orglab.composegen --nodes 20 --topology departmental --output compose.orglab.20.departmental.json
 ```
 
-Then launch the 20-employee pilot, its capture and validation, and the guarded training workflow:
+Proceed only if integrity, syntax and tests pass.
 
-```
-./setup/orglab_run.sh \
-  --run-id org20_pilot_01 \
-  --nodes 20 \
-  --topology departmental \
-  --rounds 6 \
-  --test-rounds 6 \
-  --seed 20261114 \
-  --step-seconds 0.6 \
-  --train
-```
-
-This configures **48 episodes and 1,152 experimental HTTP requests**. Training is blocked automatically if capture or Zeek validation fails.
-
-For the existing 96-episode experiment, I also added:
+### **Step 3 — Diagnose the main-run timeout**
 
 ```
 ./setup/orglab_v3_diagnose.sh staged_v2_main_01
+
+./setup/staged_v3_status.sh staged_v2_main_01
+
+find outputs/logs/setup -maxdepth 2 -type f -name 'audit.log' | sort | tail -5
 ```
 
-This inspects the unresolved timeout without modifying its existing datasets, captures or checkpoints.
+Do not restart `staged_v2_main_01` yet. The repeated exit `124` needs to be traced to its exact timeout command.
 
-### **Important limitations**
+### **Step 4 — Start the isolated 20-employee network and training**
 
-The older repository ZIP could not be opened in the execution environment despite attempts to materialise it. Consequently, this deliverable is an **additive implementation**, not a verified replacement for your entire repository.
+Only execute this after Step 2 passes and Step 1 confirms no existing capture is running.
 
-Docker, Zeek and CUDA execution on your university workstation remain unverified for this new code. The new GraphSAGE–GRU has passed local CPU training and checkpoint-resumption tests, but its university GPU performance and scientific validity remain to be established.
+```
+./setup/orglab_run.sh --run-id org20_pilot_01 --nodes 20 --topology departmental --rounds 6 --test-rounds 6 --seed 20261114 --step-seconds 0.6 --train
+```
 
-The existing V3 pilot results are preserved. No fake intrusion measurements or GPU training results have been reported.
+This command is intended to collect 48 episodes, validate the packet capture and Zeek observations, then launch six CPU training jobs and three sequential GPU model runs. Training will not start if capture validation fails.
 
-**Next execution priority:** diagnose and complete `staged_v2_main_01`, then run the 20-node departmental experiment and compare its results against the existing smaller-network baselines.
+### **Step 5 — Check the results**
+
+After the command finishes:
+
+```
+cat outputs/orglab/org20_pilot_01/status.json
+
+cat outputs/orglab/org20_pilot_01/zeek_audit.json
+
+cat outputs/orglab/org20_pilot_01/training/training_summary.json
+
+find outputs/orglab/org20_pilot_01/training/logs -name '*.exitcode' -print -exec cat {} \;
+
+nvidia-smi
+```
+
+### **Step 6 — Scale up only after the pilot passes**
+
+If Step 5 confirms valid capture, full episode coverage and successful training, run:
+
+```
+./setup/orglab_run.sh --run-id org20_main_01 --nodes 20 --topology departmental --rounds 12 --test-rounds 12 --seed 20261115 --step-seconds 0.8 --train
+```
+
+This targets 96 episodes and 2,304 HTTP requests across the 20-employee topology.
+
+**Send me the terminal logs from these steps, particularly the first failure if one occurs.** I will use them to give you the next exact commands, including any necessary fix, without creating additional documentation files.
+    
