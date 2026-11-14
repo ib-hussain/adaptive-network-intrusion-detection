@@ -266,3 +266,83 @@ p3cap_staged_v2_main_01_20261114T083552Z_156199
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_train_guard_v3.sh staged_v2_main_01 --hpo-trials 30 --gru-epochs 80
 STOP: complete.json / episodes.jsonl / gateway_subset.jsonl required. No training started.
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+
+
+
+
+STATUS SUMMARY — 2026-11-14T09:48:00Z
+✅ Phase A–B: V3 Capture Blocker RESOLVED
+- -Z root hotfix: Already applied in live setup/staged_collect_v3.sh (line 190)
+- tcpdump now works: 13,550 real packets captured (1.69 MB PCAP), 104 packets in preflight probes
+- staged_v3_check_02: 24 episodes / 480 gateway requests — COLLECTION_COMPLETE
+- Zeek alignment: 1.0 window coverage (24/24 episodes with 3+ connections), 960 assigned connections
+✅ Phase D: Parallel Training COMPLETED (all exit code 0)
+Job	Status	Key Results
+Baseline (RF + Isolation Forest)	✅ Done	RF: fixed F1=0.80, random F1=0.86, strategic F1=0.0 (gateway data)
+HPO (Optuna TPE, 30 trials × 3 policies)	✅ Done	90 trials total; all policies hit 1.0 validation PR-AUC (tiny lab data)
+GRU (80 epochs, CUDA)	✅ Done	All 3 policies trained on RTX 4000 Ada; fixed policy: 1 early warning, 3 false alarms
+Zeek Pipeline	✅ Done	Evaluated on Zeek conn.log (960 connections)
+📁 Key Output Artefacts
+outputs/results/staged_staged_v3_check_02_20261114T094626Z_170429/   # Gateway baseline
+  ├── results.json, splits.json, test_predictions.jsonl
+  └── model/
+
+outputs/results/staged_zeek_staged_v3_check_02_20261114T094626Z_170429/  # Zeek baseline
+  ├── results.json, splits.json, test_predictions.jsonl
+  └── model/
+
+outputs/model/staged/staged_v3_check_02/{fixed,random,strategic}/complete.json  # GRU checkpoints
+
+outputs/hpo/staged/staged_v3_check_02/{fixed,random,strategic}.sqlite3  # Optuna studies
+⚠️ Scientific Caveats (per AGENTS.md §1, §11)
+- These are controlled harmless HTTP profiles, NOT real intrusions
+- PR-AUC = 1.0 on tiny lab data indicates trivial separability, not production NIDS performance
+- Strategic policy GRU: no validation threshold met FP constraint → no test metrics
+- Single topology (Docker two-segment), 24 episodes — no cross-topology generalisation claim
+NEXT ACTIONS (per INSTRUCTIONS.md Priority Table)
+Priority	Action	Command
+P1b	Resume main 96-episode experiment (staged_v2_main_01)	./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
+P3	Upgrade scientific validity: add GNN (Phase E3), detector-based game reward (E2), multi-topology (E1)	Implement in src/code/ and lab/
+P4	Final Phase 3 report & evidence package	Assemble from outputs/results/, outputs/figs/, docs/
+GRU Deployment Command (Already Executed)
+The GRU was deployed via the parallel launcher. To re-run manually:
+cd /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
+.venv-cuda/bin/python -m src.code.temporal_gru_sprint \
+  --run staged_v3_check_02 --epochs 80 --device auto \
+  --output outputs/model/staged/staged_v3_check_02 --causal-labels
+There is no GNN implementation yet — that's Phase E3 (Priority P3). The current unique_links feature is not a GNN (per AGENTS.md §6.5).
+Recovery: All checkpoints preserved. HPO SQLite DBs, GRU epoch checkpoints, and PCAPs are intact. Re-run any job via its task.sh in outputs/sprints/staged/staged_v3_check_02/20261114T094626Z_170429/.
+
+
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T09:51:51Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T09:51:51Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+[2026-11-14T09:51:51Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T09:51:51Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T095151Z_180077.pcap
+12764ae1612ebb8581a15b93ae7f97292baf67facef64a0de7932d2730fe88eb
+[2026-11-14T09:51:53Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T09:51:54Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-8fc71c6ea302 Creating 
+ Container phase3-adaptive-nids-runner-run-8fc71c6ea302 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T09:52:38Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T095151Z_180077 (bounded Docker timeout)
+p3cap_staged_v2_main_01_20261114T095151Z_180077
+[2026-11-14T09:52:39Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+p3cap_staged_v2_main_01_20261114T095151Z_180077
+[2026-11-14T09:52:39Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T09:52:39Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python -m src.code.temporal_gru_sprint \
+  --run staged_v3_check_02 --epochs 80 --device auto \
+  --output outputs/model/staged/staged_v3_check_02 --causal-labels
+GPU temporal baseline: cuda episodes 24 training windows 420
+fixed : already complete; not overwriting
+random : already complete; not overwriting
+strategic : already complete; not overwriting
+GRU_FINISHED
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
