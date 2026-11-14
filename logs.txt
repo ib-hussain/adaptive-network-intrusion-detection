@@ -1,100 +1,214 @@
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ export PYTHONUNBUFFERED=1
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ jobs -l
-[1]+ 251982 Stopped                 ./setup/university_pilot_v2.sh --episodes 4 --capture
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[u]niversity_pilot_v2|[s]taged_collect|[o]rglab_run|[t]cpdump' || true
- 251982  108382 T          33:57 bash ./setup/university_pilot_v2.sh --episodes 4 --capture
- 252351  251982 S          33:56 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261114T112937Z_251982/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261114T112937Z_251982/traffic.pcap
- 252353  252351 Ss+        33:56 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261114T112937Z_251982/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261114T112937Z_251982/traffic.pcap
- 252354  252353 S          33:56 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261114T112937Z_251982/traffic.pcap tcp port 8080
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps --filter label=phase3.staged.capture=1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/orglab_run.sh \
+  --run-id org20_pilot_02 \
+  --nodes 20 \
+  --topology departmental \
+  --rounds 6 \
+  --test-rounds 6 \
+  --seed 20261117 \
+  --step-seconds 0.6 \
+  --train
+CREATED compose.orglab.20.departmental.json employees=20 topology=departmental internal_networks=5 published_ports=0
+[2026-11-14T12:09:49Z] [ORGLAB/org20_pilot_02] START nodes=20 topology=departmental rounds=6 test_rounds=6 seed=20261117 train=1
+[2026-11-14T12:09:49Z] [ORGLAB/org20_pilot_02] Docker root space:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6   82G   63G   15G  82% /
+[2026-11-14T12:09:49Z] [ORGLAB/org20_pilot_02] Starting limited private services, then employee containers in batches of 10
+ Network nidsorgorg20pilot02_services_internal Creating 
+ Network nidsorgorg20pilot02_dept_finance_internal Creating 
+ Network nidsorgorg20pilot02_dept_engineering_internal Creating 
+ Network nidsorgorg20pilot02_dept_hr_internal Creating 
+ Network nidsorgorg20pilot02_dept_sales_internal Creating 
+ Network nidsorgorg20pilot02_dept_sales_internal Created 
+ Network nidsorgorg20pilot02_dept_engineering_internal Created 
+ Network nidsorgorg20pilot02_services_internal Created 
+ Container nidsorgorg20pilot02-mail-1 Creating 
+ Container nidsorgorg20pilot02-crm-1 Creating 
+ Container nidsorgorg20pilot02-docs-1 Creating 
+ Network nidsorgorg20pilot02_dept_hr_internal Created 
+ Network nidsorgorg20pilot02_dept_finance_internal Created 
+ Container nidsorgorg20pilot02-gateway-1 Creating 
+ Container nidsorgorg20pilot02-docs-1 Created 
+ Container nidsorgorg20pilot02-mail-1 Created 
+ Container nidsorgorg20pilot02-crm-1 Created 
+ Container nidsorgorg20pilot02-gateway-1 Created 
+ Container nidsorgorg20pilot02-mail-1 Starting 
+ Container nidsorgorg20pilot02-crm-1 Starting 
+ Container nidsorgorg20pilot02-docs-1 Starting 
+ Container nidsorgorg20pilot02-gateway-1 Starting 
+ Container nidsorgorg20pilot02-mail-1 Started 
+ Container nidsorgorg20pilot02-crm-1 Started 
+ Container nidsorgorg20pilot02-docs-1 Started 
+ Container nidsorgorg20pilot02-gateway-1 Started 
+ Container nidsorgorg20pilot02-employee_010-1 Creating 
+ Container nidsorgorg20pilot02-employee_006-1 Creating 
+ Container nidsorgorg20pilot02-employee_002-1 Creating 
+ Container nidsorgorg20pilot02-employee_008-1 Creating 
+ Container nidsorgorg20pilot02-employee_004-1 Creating 
+ Container nidsorgorg20pilot02-employee_005-1 Creating 
+ Container nidsorgorg20pilot02-employee_009-1 Creating 
+ Container nidsorgorg20pilot02-employee_003-1 Creating 
+ Container nidsorgorg20pilot02-employee_007-1 Creating 
+ Container nidsorgorg20pilot02-employee_001-1 Creating 
+ Container nidsorgorg20pilot02-employee_005-1 Created 
+ Container nidsorgorg20pilot02-employee_008-1 Created 
+ Container nidsorgorg20pilot02-employee_009-1 Created 
+ Container nidsorgorg20pilot02-employee_004-1 Created 
+ Container nidsorgorg20pilot02-employee_007-1 Created 
+ Container nidsorgorg20pilot02-employee_001-1 Created 
+ Container nidsorgorg20pilot02-employee_010-1 Created 
+ Container nidsorgorg20pilot02-employee_002-1 Created 
+ Container nidsorgorg20pilot02-employee_006-1 Created 
+ Container nidsorgorg20pilot02-employee_003-1 Created 
+ Container nidsorgorg20pilot02-employee_005-1 Starting 
+ Container nidsorgorg20pilot02-employee_008-1 Starting 
+ Container nidsorgorg20pilot02-employee_006-1 Starting 
+ Container nidsorgorg20pilot02-employee_009-1 Starting 
+ Container nidsorgorg20pilot02-employee_004-1 Starting 
+ Container nidsorgorg20pilot02-employee_003-1 Starting 
+ Container nidsorgorg20pilot02-employee_001-1 Starting 
+ Container nidsorgorg20pilot02-employee_010-1 Starting 
+ Container nidsorgorg20pilot02-employee_002-1 Starting 
+ Container nidsorgorg20pilot02-employee_007-1 Starting 
+ Container nidsorgorg20pilot02-employee_006-1 Started 
+ Container nidsorgorg20pilot02-employee_008-1 Started 
+ Container nidsorgorg20pilot02-employee_005-1 Started 
+ Container nidsorgorg20pilot02-employee_009-1 Started 
+ Container nidsorgorg20pilot02-employee_004-1 Started 
+ Container nidsorgorg20pilot02-employee_003-1 Started 
+ Container nidsorgorg20pilot02-employee_010-1 Started 
+ Container nidsorgorg20pilot02-employee_001-1 Started 
+ Container nidsorgorg20pilot02-employee_002-1 Started 
+ Container nidsorgorg20pilot02-employee_007-1 Started 
+[2026-11-14T12:09:52Z] [ORGLAB/org20_pilot_02] STARTED employees 1..10/20
+ Container nidsorgorg20pilot02-employee_020-1 Creating 
+ Container nidsorgorg20pilot02-employee_015-1 Creating 
+ Container nidsorgorg20pilot02-employee_018-1 Creating 
+ Container nidsorgorg20pilot02-employee_012-1 Creating 
+ Container nidsorgorg20pilot02-employee_011-1 Creating 
+ Container nidsorgorg20pilot02-employee_017-1 Creating 
+ Container nidsorgorg20pilot02-employee_019-1 Creating 
+ Container nidsorgorg20pilot02-employee_013-1 Creating 
+ Container nidsorgorg20pilot02-employee_014-1 Creating 
+ Container nidsorgorg20pilot02-employee_016-1 Creating 
+ Container nidsorgorg20pilot02-employee_016-1 Created 
+ Container nidsorgorg20pilot02-employee_018-1 Created 
+ Container nidsorgorg20pilot02-employee_020-1 Created 
+ Container nidsorgorg20pilot02-employee_013-1 Created 
+ Container nidsorgorg20pilot02-employee_015-1 Created 
+ Container nidsorgorg20pilot02-employee_019-1 Created 
+ Container nidsorgorg20pilot02-employee_014-1 Created 
+ Container nidsorgorg20pilot02-employee_017-1 Created 
+ Container nidsorgorg20pilot02-employee_011-1 Created 
+ Container nidsorgorg20pilot02-employee_012-1 Created 
+ Container nidsorgorg20pilot02-employee_020-1 Starting 
+ Container nidsorgorg20pilot02-employee_015-1 Starting 
+ Container nidsorgorg20pilot02-employee_012-1 Starting 
+ Container nidsorgorg20pilot02-employee_013-1 Starting 
+ Container nidsorgorg20pilot02-employee_018-1 Starting 
+ Container nidsorgorg20pilot02-employee_017-1 Starting 
+ Container nidsorgorg20pilot02-employee_014-1 Starting 
+ Container nidsorgorg20pilot02-employee_011-1 Starting 
+ Container nidsorgorg20pilot02-employee_016-1 Starting 
+ Container nidsorgorg20pilot02-employee_019-1 Starting 
+ Container nidsorgorg20pilot02-employee_020-1 Started 
+ Container nidsorgorg20pilot02-employee_015-1 Started 
+ Container nidsorgorg20pilot02-employee_012-1 Started 
+ Container nidsorgorg20pilot02-employee_018-1 Started 
+ Container nidsorgorg20pilot02-employee_017-1 Started 
+ Container nidsorgorg20pilot02-employee_014-1 Started 
+ Container nidsorgorg20pilot02-employee_013-1 Started 
+ Container nidsorgorg20pilot02-employee_011-1 Started 
+ Container nidsorgorg20pilot02-employee_016-1 Started 
+ Container nidsorgorg20pilot02-employee_019-1 Started 
+[2026-11-14T12:09:53Z] [ORGLAB/org20_pilot_02] STARTED employees 11..20/20
+[2026-11-14T12:09:53Z] [ORGLAB/org20_pilot_02] Starting restricted sensor in gateway namespace; no additional host network privileges
+ Image nidsorgorg20pilot02-capture Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 631B done
+#1 DONE 0.0s
 
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+#2 [internal] load build definition from Dockerfile.capture
+#2 transferring dockerfile: 213B done
+#2 DONE 0.0s
 
-fastlab@gup-admin-Precision-3680:~$ sudo kill -TERM %1
-kill: failed to parse argument: '%1'
-fastlab@gup-admin-Precision-3680:~$ kill -CONT %1 2>/dev/null || true
-fastlab@gup-admin-Precision-3680:~$  kill -TERM %1
-bash: kill: %1: no such job
-fastlab@gup-admin-Precision-3680:~$ jobs -l
-fastlab@gup-admin-Precision-3680:~$ 
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 1.9s
 
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[u]niversity_pilot_v2|[s]taged_collect|[o]rglab_run|[t]cpdump' || true
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
 
- 251982  108382 T          35:17 bash ./setup/university_pilot_v2.sh --episodes 4 --capture
- 252351  251982 S          35:16 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261114T112937Z_251982/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261114T112937Z_251982/traffic.pcap
- 252353  252351 Ss+        35:16 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261114T112937Z_251982/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261114T112937Z_251982/traffic.pcap
- 252354  252353 S          35:16 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261114T112937Z_251982/traffic.pcap tcp port 8080
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ export FIX_BACKUP="outputs/backups/capture_runtime_fix_$(date -u +%Y%m%dT%H%M%SZ)"
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python - <<'PY'
-import os
-import json
-import shutil
-from pathlib import Path
+#5 [1/2] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#5 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#5 DONE 0.0s
 
-backup = Path(os.environ["FIX_BACKUP"])
-changes = {}
+#6 [2/2] RUN apt-get update && apt-get install -y --no-install-recommends tcpdump ca-certificates     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
 
-def replace_exact(filename, old, new):
-    p = Path(filename)
-    s = p.read_text()
-    if new in s and old not in s:
-PYint("PATCH COMPLETE:", len(changes), "files changed")e)in {p}. No modifications applied.")-c "$PROBE"'
-PATCHED: orglab/composegen.py | BACKUP: outputs/backups/capture_runtime_fix_20261114T120500Z/orglab/composegen.py
-PATCHED: tests/test_orglab.py | BACKUP: outputs/backups/capture_runtime_fix_20261114T120500Z/tests/test_orglab.py
-PATCHED: setup/staged_collect_v3.sh | BACKUP: outputs/backups/capture_runtime_fix_20261114T120500Z/setup/staged_collect_v3.sh
-PATCHED: compose.orglab.20.departmental.json | BACKUP: outputs/backups/capture_runtime_fix_20261114T120500Z/compose.orglab.20.departmental.json
-PATCHED: compose.orglab.20.flat.json | BACKUP: outputs/backups/capture_runtime_fix_20261114T120500Z/compose.orglab.20.flat.json
-PATCHED: compose.orglab.50.departmental.json | BACKUP: outputs/backups/capture_runtime_fix_20261114T120500Z/compose.orglab.50.departmental.json
-PATCH COMPLETE: 6 files changed
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python -m compileall -q orglab
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash -n setup/staged_collect_v3.sh
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash -n setup/orglab_run.sh
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash -n setup/orglab_train_parallel.sh
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_orglab.py tests/test_v3_launcher_contract.py tests/test_staged_capture_audit.py
-.......F.....                                                                                                                    [100%]
-=============================================================== FAILURES ===============================================================
-________________________________________ TestV3Contract.test_no_legacy_compose_capture_overlay _________________________________________
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:75aa1b6b8942896d0324e45a907b83593e6f727a8dcf8bce85c7662e241f2e95 0.0s done
+#7 exporting config sha256:b31d522a4871b475463baa769881efc76621aad89c467eee044ea94b055ec3d6 0.0s done
+#7 exporting attestation manifest sha256:9f6ae667d840fb590d532dfbc748566c7a5699e9c8edc8c7c0080230902212dd 0.0s done
+#7 exporting manifest list sha256:3e69a87fd2fee83c4f038bde79986ad565ff25950efeccced28be8bd24765b1d
+#7 exporting manifest list sha256:3e69a87fd2fee83c4f038bde79986ad565ff25950efeccced28be8bd24765b1d 0.0s done
+#7 naming to docker.io/library/nidsorgorg20pilot02-capture:latest done
+#7 unpacking to docker.io/library/nidsorgorg20pilot02-capture:latest done
+#7 DONE 0.1s
 
-self = <test_v3_launcher_contract.TestV3Contract testMethod=test_no_legacy_compose_capture_overlay>
-
-    def test_no_legacy_compose_capture_overlay(self):
-        self.assertNotIn('compose.staged.capture.yaml', SRC)
-        self.assertIn('container:$GATEWAY_CID', SRC)
->       self.assertIn('docker stop --signal SIGINT --time 8', SRC)
-E       AssertionError: 'docker stop --signal SIGINT --time 8' not found in '#!/usr/bin/env bash\n# Stage V3: explicit Docker-owned capture lifecycle, packet preflight and live progress.\n# Never modifies old captures or round bundles. Unlike V2, no Compose capture overlay.\nset -Eeuo pipefail\ncd "$(dirname "$0")/.."\n\nusage() { cat <<\'HELP\'\nUsage: ./setup/staged_collect_v3.sh --run-id ID --rounds N --test-rounds N --seed N [--capture|--no-capture] [--resume]\nCollects only harmless staged HTTP workloads in the isolated Docker lab.\nProgress is printed AND written to collector_v3_*.log; no silent long waits.\nA completed application-only run with a header-only PCAP cannot be promoted into a packet-captured run.\nHELP\n}\nRUN_ID="staged_v3_$(date -u +%Y%m%dT%H%M%SZ)_$$"\nROUNDS=12; TEST_ROUNDS=12; SEED=20261114; CAPTURE=1; RESUME=0\nwhile (( $# )); do\n  case "$1" in\n    --run-id) (( $# >= 2 )) || { usage >&2; exit 2; }; RUN_ID="$2"; shift 2;;\n    --rounds) (( $# >= 2 )) || { usage >&2; exit 2; }; ROUNDS="$2"; shift 2;;\n    --test-rounds) (( $# >= 2 )) || { usage >&2; exit 2; }; TEST_ROUNDS="$2"; shift 2;;\n    --seed) (( $# >= 2 )) || { usage >&2; exit 2; }; SEED="$2"; shift 2;;\n    --capture) CAPTURE=1; shift;;\n    --no-capture) CAPTURE=0; shift;;\n    --resume) RESUME=1; shift;;\n    --help|-h) usage; exit 0;;\n    *) printf \'Unknown argument: %s\\n\' "$1" >&2; usage >&2; exit 2;;\n  esac\ndone\n[[ "$RUN_ID" =~ ^[A-Za-z0-9_-]{1,80}$ && "$ROUNDS" =~ ^[0-9]+$ && "$TEST_ROUNDS" =~ ^[0-9]+$ && "$SEED" =~ ^[0-9]+$ ]] || { echo \'Invalid run ID/arguments\' >&2; exit 2; }\n(( ROUNDS>=3 && ROUNDS<=150 && TEST_ROUNDS>=3 && TEST_ROUNDS<=150 )) || { echo \'Rounds must be 3..150\' >&2; exit 2; }\nfor cmd in flock timeout docker python3; do command -v "$cmd" >/dev/null || { echo "Missing command: $cmd" >&2; exit 1; }; done\nmkdir -p outputs/locks\nexec 9>outputs/locks/staged_capture.lock\nif ! flock -n 9; then\n  echo \'Another staged collector holds outputs/locks/staged_capture.lock.\' >&2\n  echo \'Check jobs -l; ps -eo pid,ppid,stat,args | grep -E "[s]taged_collect|[d]ocker compose|[t]cpdump"\' >&2\n  echo \'Do not delete the lock file while a suspended process holds its descriptor.\' >&2\n  exit 1\nfi\ndocker info >/dev/null || { echo \'Docker unavailable to this shell. Re-login to activate group membership.\' >&2; exit 1; }\nCOMPOSE=(docker compose -f compose.yaml)\nRAW="src/data/raw/runs/$RUN_ID"\nPY=python3\nif [[ -x .venv-cuda/bin/python ]]; then PY="$PWD/.venv-cuda/bin/python"; elif [[ -x .venv/bin/python ]]; then PY="$PWD/.venv/bin/python"; fi\n\nif (( RESUME )); then\n  [[ -s "$RAW/scenario_config.json" ]] || { echo "Cannot resume: $RAW/scenario_config.json not found" >&2; exit 1; }\nelse\n  [[ ! -e "$RAW" ]] || { echo "Existing run directory: $RAW; use --resume or another ID" >&2; exit 1; }\n  "$PY" -m lab.staged_generate --output "$RAW" --rounds "$ROUNDS" --test-rounds "$TEST_ROUNDS" --seed "$SEED" --init-only\nfi\n"$PY" - "$RAW/scenario_config.json" "$ROUNDS" "$TEST_ROUNDS" "$SEED" <<\'PY_CONFIG\'\nimport json,sys\nc=json.load(open(sys.argv[1],encoding=\'utf-8\'))\nwant=(\'staged_v2_1\', *(int(x) for x in sys.argv[2:]))\nactual=(c[\'schema\'],c[\'rounds\'],c[\'test_rounds\'],c[\'seed\'])\nif actual != want:\n    raise SystemExit(f\'STOP: run settings differ: saved {actual}, requested {want}\')\nPY_CONFIG\nSTAMP="$(date -u +%Y%m%dT%H%M%SZ)_$$"\nLOG="$RAW/collector_v3_${STAMP}.log"\n: > "$LOG"\nlog() { printf \'[%s] [STAGE-V3] %s\\n\' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" | tee -a "$LOG"; }\nstep() { "$@" 2>&1 | tee -a "$LOG"; return "${PIPESTATUS[0]}"; }\nstatus() {\n  local state="$1"; STATUS_STATE="$state"; local tmp="$RAW/.collector_status_v3.json.pending.$$"\n  printf \'{"schema":"stage_v3_collector","run_id":"%s","status":"%s","updated_utc":"%s","log":"%s"}\\n\' \\\n      "$RUN_ID" "$state" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$LOG" > "$tmp"\n  mv -f "$tmp" "$RAW/collector_status_v3.json"\n}\nCAP_NAME=""; CAP_STARTED=0; CAP_FILE=""; STOP_OK=1\ncapture_stop() {\n  (( CAP_STARTED )) || return 0\n  log "Stopping only our capture container: $CAP_NAME (bounded Docker timeout)"\n  if [[ "$(timeout 5s docker inspect -f \'{{.State.Running}}\' "$CAP_NAME" 2>/dev/null || true)" == true ]]; then\n    if ! step timeout 16s docker stop --signal SIGINT --timeout 8 "$CAP_NAME"; then\n      log "WARNING: graceful Docker stop failed; attempting short bounded stop"\n      step timeout 8s docker stop -t 3 "$CAP_NAME" || true\n    fi\n  fi\n  local running\n  running="$(timeout 5s docker inspect -f \'{{.State.Running}}\' "$CAP_NAME" 2>/dev/null || true)"\n  if [[ "$running" == true ]]; then\n    STOP_OK=0\n    log "ERROR: capture is still running: $CAP_NAME. DO NOT analyse active PCAP."\n    return 1\n  fi\n  timeout 8s docker logs "$CAP_NAME" > "$RAW/capture_container_${STAMP}.log" 2>&1 || true\n  log "Capture log saved to $RAW/capture_container_${STAMP}.log"\n  CAP_STARTED=0\n  # Container is removed only after its log is saved; data files remain intact.\n  step timeout 8s docker rm "$CAP_NAME" || log \'WARNING: stopped capture container remains; manually inspect it later\'\n  log \'Capture process confirmed stopped\'\n}\non_exit() {\n  local rc="$1"\n  trap - EXIT\n  if (( CAP_STARTED )); then capture_stop || rc=1; fi\n  if (( rc != 0 )); then\n    case "${STATUS_STATE:-}" in\n      CAPTURE_PREFLIGHT_FAILED|CAPTURE_TOO_SPARSE|APPLICATION_ONLY_INVALID_CAPTURE|COLLECTOR_INTERRUPTED) ;;\n      *) status \'FAILED_OR_INTERRUPTED\';;\n    esac\n    log "EXIT $rc: run journal and captures preserved; rerun with --resume if incomplete"\n  fi\n  exit "$rc"\n}\ntrap \'on_exit $?\' EXIT\ntrap \'exit 130\' INT\ntrap \'exit 143\' TERM\ntrap \'log "SIGTSTP received: use Ctrl+C, not Ctrl+Z, to interrupt collectors safely"\' TSTP\n\nlog "Starting run=$RUN_ID rounds=$ROUNDS test_rounds=$TEST_ROUNDS seed=$SEED capture=$CAPTURE resume=$RESUME"\nstatus \'STARTING\'\n\n# A committed run cannot be packet-replayed from the same events. Preserve it, recover\n# gateway events if possible, and explicitly reject header-only PCAPs.\nif [[ -s "$RAW/complete.json" ]]; then\n  log \'All episodes already committed; do not regenerate them.\'\n  if [[ ! -s "$RAW/gateway_subset.jsonl" ]]; then\n    log \'Extracting existing gateway events without modifying raw log\'\n    step "$PY" -m setup.university_extract_events --manifest "$RAW/episodes.jsonl" --gateway src/data/raw/gateway_requests.jsonl --out "$RAW/gateway_subset.jsonl"\n  fi\n  if (( CAPTURE )); then\n    found_valid=0\n    while IFS= read -r p; do\n      if "$PY" -m setup.staged_capture_audit --pcap "$p" --min-packets 4 --quiet >> "$LOG" 2>&1; then\n        log "Existing captured packets found: $p"; found_valid=1\n      else\n        log "Invalid or empty existing capture: $p"\n      fi\n    done < <(find "$RAW" -maxdepth 1 -type f -name \'traffic_*.pcap\' -print)\n    if (( !found_valid )); then\n      status \'APPLICATION_ONLY_INVALID_CAPTURE\'\n      log \'STOP: cannot recreate missing PCAP from committed traffic. Use a NEW run ID for network capture.\'\n      exit 4\n    fi\n  fi\n  status \'EXISTING_COMPLETE\'\n  log "Existing dataset preserved: $RAW/gateway_subset.jsonl"\n  exit 0\nfi\n\nlog \'Checking Compose service configuration without the broken V2 capture overlay\'\nstep "${COMPOSE[@]}" config --quiet\nlog \'Starting authorised isolated lab services\'\nstep "${COMPOSE[@]}" up -d server_a server_b gateway\nfor network in phase3-adaptive-nids_clients phase3-adaptive-nids_services; do\n  [[ "$(docker network inspect -f \'{{.Internal}}\' "$network")" == true ]] || { log "ERROR: $network is not internal"; exit 1; }\ndone\nlog \'Both Compose network segments confirmed internal\'\n\nSVC_NETWORK_ID="$(docker network inspect -f \'{{.Id}}\' phase3-adaptive-nids_services)"\nSVC_BRIDGE="br-${SVC_NETWORK_ID:0:12}"\nOLD_HOST_CAPTURE="$(pgrep -a -x tcpdump 2>/dev/null | grep -F -- "-i $SVC_BRIDGE" || true)"\n[[ -z "$OLD_HOST_CAPTURE" ]] || { log "STOP: orphan host tcpdump still active: $OLD_HOST_CAPTURE"; exit 1; }\nif [[ -n "$(docker ps -q --filter \'name=phase3-adaptive-nids-capture\' --filter \'status=running\')" ]]; then\n  log \'STOP: old Compose capture service still running; inspect and stop it by exact name first.\'; exit 1\nfi\nif [[ -n "$(docker ps -q --filter \'label=phase3.staged.capture=1\' --filter \'status=running\')" ]]; then\n  log \'STOP: another V3 capture already running; inspect before retrying.\'; exit 1\nfi\nREADY=0\nfor attempt in $(seq 1 30); do\n  if "${COMPOSE[@]}" exec -T gateway python -c \'import socket; [socket.create_connection((h,8080),timeout=2).close() for h in ("127.0.0.1","server_a","server_b")]\' >/dev/null 2>&1; then READY=1; break; fi\n  if (( attempt % 5 == 0 )); then log "Readiness check $attempt/30: waiting for gateway and both backends"; fi\n  sleep 1\ndone\n(( READY )) || { log \'Gateway and backend readiness failed\'; exit 1; }\nlog \'Gateway and backends ready\'\n\nif (( CAPTURE )); then\n  IMAGE=\'phase3-adaptive-nids-capture:latest\'\n  if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then\n    log \'Building restricted tcpdump image from existing local Dockerfile\'\n    step docker build -f lab/Dockerfile.capture -t "$IMAGE" .\n  fi\n  CAP_NAME="p3cap_${RUN_ID}_${STAMP}"\n  CAP_FILE="traffic_${STAMP}.pcap"\n  GATEWAY_CID="$("${COMPOSE[@]}" ps -q gateway)"\n  [[ -n "$GATEWAY_CID" ]] || { log \'Gateway container ID missing\'; exit 1; }\n  ROOT_RAW="$(realpath "$RAW")"\n  log "Starting capture in gateway network namespace; file: $ROOT_RAW/$CAP_FILE"\n  # Direct docker run avoids Compose overlay interpolation and stuck Compose stop wrapper.\n  step docker run -d --name "$CAP_NAME" --network "container:$GATEWAY_CID" \\\n     --cap-drop ALL --cap-add NET_RAW --security-opt no-new-privileges:true \\\n     --read-only --stop-signal SIGINT --stop-timeout 8 --pids-limit 32 \\\n     --label phase3.staged.capture=1 --label "phase3.staged.run=$RUN_ID" \\\n     --mount "type=bind,src=$ROOT_RAW,dst=/captures" \\\n     "$IMAGE" -Z root -i any -p -nn -s 0 -U -w "/captures/$CAP_FILE" \'tcp port 8080\'\n  CAP_STARTED=1\n  sleep 2\n  [[ "$(docker inspect -f \'{{.State.Running}}\' "$CAP_NAME" 2>/dev/null)" == true ]] || {\n     log \'ERROR: capture process exited immediately; showing its Docker log\'\n     step docker logs "$CAP_NAME" || true\n     exit 1\n  }\n  log \'Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment\'\n  PROBE=\'import urllib.request; services=["a","b","a","b"]; statuses=[urllib.request.urlopen(urllib.request.Request("http://gateway:8080/"+svc,data=b"capture_check"*8,headers={"X-Lab-Episode":"v3_capture_probe_not_an_experiment"},method="POST"),timeout=5).status for svc in services]; assert statuses==[200]*4; print("CAPTURE_PROBE_HTTP_OK",len(statuses),flush=True)\'\n  step timeout 180s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner python -c "$PROBE"\n  captured=0\n  for attempt in $(seq 1 8); do\n    if "$PY" -m setup.staged_capture_audit --pcap "$RAW/$CAP_FILE" --min-packets 4 --quiet >> "$LOG" 2>&1; then\n      captured=1; break\n    fi\n    log "Capture probe verification $attempt/8: packets not yet flushed; waiting"\n    sleep 1\n  done\n  if (( !captured )); then\n    log \'ERROR: capture recorded no usable packets; refusing collection. Docker logs:\'\n    step docker logs "$CAP_NAME" || true\n    status \'CAPTURE_PREFLIGHT_FAILED\'\n    exit 5\n  fi\n  log \'Capture preflight passed: actual packet records observed\'\nelse\n  log \'WARNING: --no-capture mode requested; this run is application-only and cannot support Zeek network conclusions\'\nfi\n\nstatus \'COLLECTING\'\nRUNLOG="$RAW/generator_${STAMP}.log"\nlog "Launching runner; full per-round output: $RUNLOG"\nCMD=(python -m lab.staged_generate --output "/out/runs/$RUN_ID" --gateway http://gateway:8080 --rounds "$ROUNDS" --test-rounds "$TEST_ROUNDS" --seed "$SEED" --resume)\ntimeout -s INT -k 10s 1800s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner "${CMD[@]}" > "$RUNLOG" 2>&1 &\nRUNNER_PID=$!\nwhile kill -0 "$RUNNER_PID" 2>/dev/null; do\n  sleep 5\n  completed="$(find "$RAW/rounds" -maxdepth 1 -type f -name \'*.json\' 2>/dev/null | wc -l || true)"\n  last="$(tail -n 1 "$RUNLOG" 2>/dev/null || true)"\n  log "HEARTBEAT runner PID=$RUNNER_PID completed_rounds=$completed/$((3*ROUNDS+TEST_ROUNDS)); last_output=${last:-waiting for first result}"\ndone\nset +e\nwait "$RUNNER_PID"\nRUNNER_RC=$?\nset -e\nlog "Runner exit code: $RUNNER_RC; last 15 lines of generator log:"\ntail -n 15 "$RUNLOG" | tee -a "$LOG"\nif (( RUNNER_RC != 0 )); then\n  status \'COLLECTOR_INTERRUPTED\'\n  log "Runner failed; preserving completed round journals. Same config with --resume restarts safely."\n  exit "$RUNNER_RC"\nfi\n[[ -s "$RAW/complete.json" ]] || { log \'Runner exited but complete.json missing\'; exit 1; }\nlog \'All round records committed. Closing packet capture before extraction.\'\nif (( CAPTURE )); then capture_stop; fi\n\nstatus \'POSTPROCESSING\'\nif [[ ! -s "$RAW/gateway_subset.jsonl" ]]; then\n  log \'Extracting ground-truth-aligned gateway observations\'\n  step "$PY" -m setup.university_extract_events --manifest "$RAW/episodes.jsonl" --gateway src/data/raw/gateway_requests.jsonl --out "$RAW/gateway_subset.jsonl"\nfi\nif (( CAPTURE )); then\n  log \'Validating closed PCAP structure and nonzero observed packet count\'\n  episode_count="$(wc -l < "$RAW/episodes.jsonl")"\n  MIN_PACKETS=$((episode_count * 4))\n  AUDIT="$RAW/capture_audit_${STAMP}.json"\n  if ! step "$PY" -m setup.staged_capture_audit --pcap "$RAW/$CAP_FILE" --min-packets "$MIN_PACKETS" --output "$AUDIT"; then\n    status \'CAPTURE_TOO_SPARSE\'\n    log "STOP: insufficient packet coverage (expected >=$MIN_PACKETS packet records). Preserve run but do not train on this capture."\n    exit 6\n  fi\n  log "Packet audit written: $AUDIT (independent Zeek alignment still required)"\nfi\nstatus \'COLLECTION_COMPLETE\'\nlog "SUCCESS: $RUN_ID; manifest=$RAW/episodes.jsonl, gateway=$RAW/gateway_subset.jsonl, packet=$RAW/$CAP_FILE"\nlog \'Reminder: benign laboratory behavioural profiles, NOT evidence of genuine network intrusion.\'\n'
-
-tests/test_v3_launcher_contract.py:15: AssertionError
-======================================================= short test summary info ========================================================
-FAILED tests/test_v3_launcher_contract.py::TestV3Contract::test_no_legacy_compose_capture_overlay - AssertionError: 'docker stop --signal SIGINT --time 8' not found in '#!/usr/bin/env bash\n# Stage V3: explicit Docker-owned capture...
-1 failed, 12 passed in 2.65s
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python - <<'PY'
-from orglab.composegen import build_compose
-
-for n in (20, 50):
-    for topology in ("flat", "departmental"):
-        c = build_compose(n, topology)
-        cap = c["services"]["capture"]
-        assert cap["cap_add"] == ["NET_RAW", "SETUID", "SETGID"]
-        assert cap["cap_drop"] == ["ALL"]
-        assert cap["security_opt"] == ["no-new-privileges:true"]
-        assert all(v["internal"] for v in c["networks"].values())
-        assert all(not s.get("ports") for s in c["services"].values())
-PYint("SECURITY AND TOPOLOGY CHECKS PASSED")
-VERIFIED 20 flat
-VERIFIED 20 departmental
-VERIFIED 50 flat
-VERIFIED 50 departmental
-SECURITY AND TOPOLOGY CHECKS PASSED
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ git status --short
-
- M compose.orglab.20.departmental.json
- M compose.orglab.20.flat.json
- M compose.orglab.50.departmental.json
- M logs.txt
- M orglab/composegen.py
- M setup/staged_collect_v3.sh
- M tests/test_orglab.py
-?? outputs/backups/capture_runtime_fix_20261114T120500Z/
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image nidsorgorg20pilot02-capture Built 
+ Container nidsorgorg20pilot02-gateway-1 Running 
+ Container nidsorgorg20pilot02-capture-1 Creating 
+ Container nidsorgorg20pilot02-capture-1 Created 
+ Container nidsorgorg20pilot02-capture-1 Starting 
+ Container nidsorgorg20pilot02-capture-1 Started 
+[2026-11-14T12:09:58Z] [ORGLAB/org20_pilot_02] Running 4 real HTTP probe requests before any labelled episode
+ Container nidsorgorg20pilot02-controller-run-1b81f92fcc7f Creating 
+ Container nidsorgorg20pilot02-controller-run-1b81f92fcc7f Created 
+[2026-11-14T12:09:59+00:00] [ORGLAB] CAPTURE_PROBE_HTTP_OK 4; probe messages are not research episodes
+{
+  "capture_structurally_valid": true,
+  "pcap": {
+    "linktype": 276,
+    "packets": 112,
+    "partial_tail_during_live_capture": false,
+    "payload_bytes": 12393,
+    "size_bytes": 14209
+  },
+  "status": "PASS"
+}
+[2026-11-14T12:10:00Z] [ORGLAB/org20_pilot_02] Capture probe passed with real packet records; beginning labelled collection
+ Container nidsorgorg20pilot02-controller-run-2966f1add261 Creating 
+ Container nidsorgorg20pilot02-controller-run-2966f1add261 Created 
+[2026-11-14T12:10:01+00:00] [ORGLAB] COLLECTION START run=org20_pilot_02 nodes=20 episodes=48 tasks=1152
+[2026-11-14T12:10:17+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=0/48 current=org20_pilot_02-fixed-0000-benign step=24/24
+[2026-11-14T12:10:17+00:00] [ORGLAB] EPISODE 1/48 org20_pilot_02-fixed-0000-benign duration=15.42s
+[2026-11-14T12:10:32+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=1/48 current=org20_pilot_02-fixed-0000-incident step=24/24
+[2026-11-14T12:10:32+00:00] [ORGLAB] EPISODE 2/48 org20_pilot_02-fixed-0000-incident duration=15.37s
+[2026-11-14T12:10:48+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=2/48 current=org20_pilot_02-fixed-0001-benign step=24/24
+[2026-11-14T12:10:48+00:00] [ORGLAB] EPISODE 3/48 org20_pilot_02-fixed-0001-benign duration=15.46s
+[2026-11-14T12:11:03+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=3/48 current=org20_pilot_02-fixed-0001-incident step=24/24
+[2026-11-14T12:11:03+00:00] [ORGLAB] EPISODE 4/48 org20_pilot_02-fixed-0001-incident duration=15.47s
+[2026-11-14T12:11:19+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=4/48 current=org20_pilot_02-fixed-0002-benign step=24/24
+[2026-11-14T12:11:19+00:00] [ORGLAB] EPISODE 5/48 org20_pilot_02-fixed-0002-benign duration=15.43s
+[2026-11-14T12:11:34+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=5/48 current=org20_pilot_02-fixed-0002-incident step=24/24
+[2026-11-14T12:11:34+00:00] [ORGLAB] EPISODE 6/48 org20_pilot_02-fixed-0002-incident duration=15.50s
+[2026-11-14T12:11:49+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=6/48 current=org20_pilot_02-fixed-0003-benign step=23/24
+[2026-11-14T12:11:50+00:00] [ORGLAB] EPISODE 7/48 org20_pilot_02-fixed-0003-benign duration=15.42s
+[2026-11-14T12:12:05+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=7/48 current=org20_pilot_02-fixed-0003-incident step=23/24
+[2026-11-14T12:12:05+00:00] [ORGLAB] EPISODE 8/48 org20_pilot_02-fixed-0003-incident duration=15.47s
+[2026-11-14T12:12:20+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=8/48 current=org20_pilot_02-fixed-0004-benign step=22/24
+[2026-11-14T12:12:21+00:00] [ORGLAB] EPISODE 9/48 org20_pilot_02-fixed-0004-benign duration=15.39s
+[2026-11-14T12:12:35+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=9/48 current=org20_pilot_02-fixed-0004-incident step=22/24
+[2026-11-14T12:12:36+00:00] [ORGLAB] EPISODE 10/48 org20_pilot_02-fixed-0004-incident duration=15.35s
+[2026-11-14T12:12:51+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=10/48 current=org20_pilot_02-fixed-0005-benign step=22/24
+[2026-11-14T12:12:52+00:00] [ORGLAB] EPISODE 11/48 org20_pilot_02-fixed-0005-benign duration=15.36s
+[2026-11-14T12:13:06+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=11/48 current=org20_pilot_02-fixed-0005-incident step=23/24
+[2026-11-14T12:13:07+00:00] [ORGLAB] EPISODE 12/48 org20_pilot_02-fixed-0005-incident duration=15.37s
+[2026-11-14T12:13:21+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=12/48 current=org20_pilot_02-random-0000-benign step=21/24
+[2026-11-14T12:13:23+00:00] [ORGLAB] EPISODE 13/48 org20_pilot_02-random-0000-benign duration=15.43s
+[2026-11-14T12:13:36+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=13/48 current=org20_pilot_02-random-0000-incident step=21/24
+[2026-11-14T12:13:38+00:00] [ORGLAB] EPISODE 14/48 org20_pilot_02-random-0000-incident duration=15.48s
+[2026-11-14T12:13:52+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=14/48 current=org20_pilot_02-random-0001-benign step=20/24
