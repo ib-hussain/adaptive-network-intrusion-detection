@@ -212,3 +212,100 @@ Filesystem      Size  Used Avail Use% Mounted on
 [2026-11-14T12:13:36+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=13/48 current=org20_pilot_02-random-0000-incident step=21/24
 [2026-11-14T12:13:38+00:00] [ORGLAB] EPISODE 14/48 org20_pilot_02-random-0000-incident duration=15.48s
 [2026-11-14T12:13:52+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=14/48 current=org20_pilot_02-random-0001-benign step=20/24
+[2026-11-14T12:13:54+00:00] [ORGLAB] EPISODE 15/48 org20_pilot_02-random-0001-benign duration=15.53s
+[2026-11-14T12:14:07+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=15/48 current=org20_pilot_02-random-0001-incident step=20/24
+[2026-11-14T12:14:09+00:00] [ORGLAB] EPISODE 16/48 org20_pilot_02-random-0001-incident duration=15.52s
+[2026-11-14T12:14:23+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=16/48 current=org20_pilot_02-random-0002-benign step=20/24
+[2026-11-14T12:14:25+00:00] [ORGLAB] EPISODE 17/48 org20_pilot_02-random-0002-benign duration=15.48s
+[2026-11-14T12:14:38+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=17/48 current=org20_pilot_02-random-0002-incident step=19/24
+[2026-11-14T12:14:41+00:00] [ORGLAB] EPISODE 18/48 org20_pilot_02-random-0002-incident duration=15.44s
+[2026-11-14T12:14:53+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=18/48 current=org20_pilot_02-random-0003-benign step=20/24
+[2026-11-14T12:14:56+00:00] [ORGLAB] EPISODE 19/48 org20_pilot_02-random-0003-benign duration=15.27s
+[2026-11-14T12:15:09+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=19/48 current=org20_pilot_02-random-0003-incident step=19/24
+[2026-11-14T12:15:11+00:00] [ORGLAB] EPISODE 20/48 org20_pilot_02-random-0003-incident duration=15.43s
+[2026-11-14T12:15:24+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=20/48 current=org20_pilot_02-random-0004-benign step=20/24
+[2026-11-14T12:15:27+00:00] [ORGLAB] EPISODE 21/48 org20_pilot_02-random-0004-benign duration=15.50s
+[2026-11-14T12:15:40+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=21/48 current=org20_pilot_02-random-0004-incident step=20/24
+[2026-11-14T12:15:43+00:00] [ORGLAB] EPISODE 22/48 org20_pilot_02-random-0004-incident duration=15.52s
+[2026-11-14T12:15:55+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=22/48 current=org20_pilot_02-random-0005-benign step=19/24
+[2026-11-14T12:15:58+00:00] [ORGLAB] EPISODE 23/48 org20_pilot_02-random-0005-benign duration=15.39s
+[2026-11-14T12:16:10+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=23/48 current=org20_pilot_02-random-0005-incident step=19/24
+[2026-11-14T12:16:13+00:00] [ORGLAB] EPISODE 24/48 org20_pilot_02-random-0005-incident duration=15.43s
+[2026-11-14T12:16:26+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=24/48 current=org20_pilot_02-strategic-0000-benign step=19/24
+[2026-11-14T12:16:29+00:00] [ORGLAB] EPISODE 25/48 org20_pilot_02-strategic-0000-benign duration=15.43s
+[2026-11-14T12:16:41+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=25/48 current=org20_pilot_02-strategic-0000-incident step=19/24
+[2026-11-14T12:16:45+00:00] [ORGLAB] EPISODE 26/48 org20_pilot_02-strategic-0000-incident duration=15.48s
+[2026-11-14T12:16:57+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=26/48 current=org20_pilot_02-strategic-0001-benign step=19/24
+[2026-11-14T12:17:00+00:00] [ORGLAB] EPISODE 27/48 org20_pilot_02-strategic-0001-benign duration=15.40s
+[2026-11-14T12:17:12+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=27/48 current=org20_pilot_02-strategic-0001-incident step=18/24
+[2026-11-14T12:17:16+00:00] [ORGLAB] EPISODE 28/48 org20_pilot_02-strategic-0001-incident duration=15.45s
+[2026-11-14T12:17:27+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=28/48 current=org20_pilot_02-strategic-0002-benign step=18/24
+[2026-11-14T12:17:31+00:00] [ORGLAB] EPISODE 29/48 org20_pilot_02-strategic-0002-benign duration=15.33s
+[2026-11-14T12:17:42+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=29/48 current=org20_pilot_02-strategic-0002-incident step=16/24
+[2026-11-14T12:17:46+00:00] [ORGLAB] EPISODE 30/48 org20_pilot_02-strategic-0002-incident duration=15.38s
+[2026-11-14T12:17:58+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=30/48 current=org20_pilot_02-strategic-0003-benign step=17/24
+[2026-11-14T12:18:02+00:00] [ORGLAB] EPISODE 31/48 org20_pilot_02-strategic-0003-benign duration=15.40s
+[2026-11-14T12:18:13+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=31/48 current=org20_pilot_02-strategic-0003-incident step=17/24
+[2026-11-14T12:18:17+00:00] [ORGLAB] EPISODE 32/48 org20_pilot_02-strategic-0003-incident duration=15.43s
+[2026-11-14T12:18:28+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=32/48 current=org20_pilot_02-strategic-0004-benign step=17/24
+[2026-11-14T12:18:33+00:00] [ORGLAB] EPISODE 33/48 org20_pilot_02-strategic-0004-benign duration=15.48s
+[2026-11-14T12:18:44+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=33/48 current=org20_pilot_02-strategic-0004-incident step=16/24
+[2026-11-14T12:18:48+00:00] [ORGLAB] EPISODE 34/48 org20_pilot_02-strategic-0004-incident duration=15.41s
+[2026-11-14T12:18:59+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=34/48 current=org20_pilot_02-strategic-0005-benign step=17/24
+[2026-11-14T12:19:04+00:00] [ORGLAB] EPISODE 35/48 org20_pilot_02-strategic-0005-benign duration=15.45s
+[2026-11-14T12:19:15+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=35/48 current=org20_pilot_02-strategic-0005-incident step=16/24
+[2026-11-14T12:19:19+00:00] [ORGLAB] EPISODE 36/48 org20_pilot_02-strategic-0005-incident duration=15.47s
+[2026-11-14T12:19:30+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=36/48 current=org20_pilot_02-test-0000-benign step=16/24
+[2026-11-14T12:19:35+00:00] [ORGLAB] EPISODE 37/48 org20_pilot_02-test-0000-benign duration=15.37s
+[2026-11-14T12:19:45+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=37/48 current=org20_pilot_02-test-0000-incident step=15/24
+[2026-11-14T12:19:50+00:00] [ORGLAB] EPISODE 38/48 org20_pilot_02-test-0000-incident duration=15.50s
+[2026-11-14T12:20:00+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=38/48 current=org20_pilot_02-test-0001-benign step=15/24
+[2026-11-14T12:20:06+00:00] [ORGLAB] EPISODE 39/48 org20_pilot_02-test-0001-benign duration=15.45s
+[2026-11-14T12:20:16+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=39/48 current=org20_pilot_02-test-0001-incident step=15/24
+[2026-11-14T12:20:21+00:00] [ORGLAB] EPISODE 40/48 org20_pilot_02-test-0001-incident duration=15.37s
+[2026-11-14T12:20:31+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=40/48 current=org20_pilot_02-test-0002-benign step=15/24
+[2026-11-14T12:20:37+00:00] [ORGLAB] EPISODE 41/48 org20_pilot_02-test-0002-benign duration=15.42s
+[2026-11-14T12:20:46+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=41/48 current=org20_pilot_02-test-0002-incident step=15/24
+[2026-11-14T12:20:53+00:00] [ORGLAB] EPISODE 42/48 org20_pilot_02-test-0002-incident duration=15.50s
+[2026-11-14T12:21:02+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=42/48 current=org20_pilot_02-test-0003-benign step=14/24
+[2026-11-14T12:21:08+00:00] [ORGLAB] EPISODE 43/48 org20_pilot_02-test-0003-benign duration=15.47s
+[2026-11-14T12:21:17+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=43/48 current=org20_pilot_02-test-0003-incident step=14/24
+[2026-11-14T12:21:24+00:00] [ORGLAB] EPISODE 44/48 org20_pilot_02-test-0003-incident duration=15.46s
+[2026-11-14T12:21:32+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=44/48 current=org20_pilot_02-test-0004-benign step=13/24
+[2026-11-14T12:21:39+00:00] [ORGLAB] EPISODE 45/48 org20_pilot_02-test-0004-benign duration=15.49s
+[2026-11-14T12:21:47+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=45/48 current=org20_pilot_02-test-0004-incident step=13/24
+[2026-11-14T12:21:55+00:00] [ORGLAB] EPISODE 46/48 org20_pilot_02-test-0004-incident duration=15.41s
+[2026-11-14T12:22:03+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=46/48 current=org20_pilot_02-test-0005-benign step=13/24
+[2026-11-14T12:22:10+00:00] [ORGLAB] EPISODE 47/48 org20_pilot_02-test-0005-benign duration=15.43s
+[2026-11-14T12:22:18+00:00] [ORGLAB] HEARTBEAT run=org20_pilot_02 completed_episodes=47/48 current=org20_pilot_02-test-0005-incident step=12/24
+[2026-11-14T12:22:26+00:00] [ORGLAB] EPISODE 48/48 org20_pilot_02-test-0005-incident duration=15.43s
+[2026-11-14T12:22:26+00:00] [ORGLAB] COLLECTION COMPLETE run=org20_pilot_02 episodes=48 expected_gateway_requests=1152
+[2026-11-14T12:22:26Z] [ORGLAB/org20_pilot_02] Collection ended; closing capture for rigorous structural audit
+ Container nidsorgorg20pilot02-capture-1 Stopping 
+ Container nidsorgorg20pilot02-capture-1 Stopped 
+{
+  "capture_structurally_valid": true,
+  "episodes": 48,
+  "gateway_and_manifest_counts_valid": true,
+  "gateway_requests": 1152,
+  "pcap": {
+    "linktype": 276,
+    "packets": 32383,
+    "partial_tail_during_live_capture": false,
+    "payload_bytes": 3976689,
+    "size_bytes": 4494841
+  },
+  "probe_requests": 4,
+  "science_status": "GATEWAY_AND_PCAP_STRUCTURE_ONLY; ZEEK_ALIGNMENT_REQUIRED",
+  "status": "PASS",
+  "unique_worker_ips": 20,
+  "zeek_per_episode_coverage_validated": false
+}
+[2026-11-14T12:22:26Z] [ORGLAB/org20_pilot_02] Processing closed PCAP with Zeek; checksum checking remains enabled
+ZEEK_START ["zeek", "-r", "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/orglab/org20_pilot_02/captures/orglab.pcap", "LogAscii::use_json=T"]
+ZEEK_AUDIT {"connections": 4624, "episodes": 48, "episode_coverage": 0.0, "status": "FAILED_COVERAGE"}
+Zeek per-episode coverage below required minimum
+[2026-11-14T12:22:27Z] [ORGLAB/org20_pilot_02] EXIT=1 Stopping only ORGLAB project containers; preserving datasets, PCAP and logs
+[2026-11-14T12:22:36Z] [ORGLAB/org20_pilot_02] FAILED; inspect outputs/orglab/org20_pilot_02/launcher.log and run files; do not reuse this run ID
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+

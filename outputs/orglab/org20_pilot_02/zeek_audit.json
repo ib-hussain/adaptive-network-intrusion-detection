@@ -1,0 +1,304 @@
+{
+  "checksum_validation_disabled": false,
+  "connections": 4624,
+  "episode_coverage": 0.0,
+  "episodes": 48,
+  "episodes_with_bidirectional_connections": 0,
+  "gateway_sha256": "ef95209fbf1de5903150a04bf2dce3e9d7c7a9de26b42c55b5aa508c6be19b6d",
+  "manifest_sha256": "7775eedec5dd603a5e861567a4df185a892bbe5b44e6c5da97db07e7212ac64a",
+  "packet_count": 32383,
+  "pcap_sha256": "bc8e44cb0f252f109bda19d47ff8cc7ec956445e37496c4380c379c9c7ac50d4",
+  "per_episode": {
+    "org20_pilot_02-fixed-0000-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0000-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0001-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0001-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0002-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0002-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0003-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0003-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0004-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0004-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0005-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-fixed-0005-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0000-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0000-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0001-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0001-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0002-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0002-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0003-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0003-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0004-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0004-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0005-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-random-0005-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0000-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0000-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0001-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0001-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0002-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0002-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0003-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0003-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0004-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0004-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0005-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-strategic-0005-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0000-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0000-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0001-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0001-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0002-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0002-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0003-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0003-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0004-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0004-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0005-benign": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    },
+    "org20_pilot_02-test-0005-incident": {
+      "bidirectional": 0,
+      "connections": 96,
+      "orig_bytes": 0,
+      "resp_bytes": 0
+    }
+  },
+  "status": "FAILED_COVERAGE",
+  "unassigned_connections": 16,
+  "zeek_returncode": 0
+}

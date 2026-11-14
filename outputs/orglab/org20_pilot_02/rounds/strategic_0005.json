@@ -1,0 +1,42 @@
+{
+  "episodes": [
+    {
+      "condition": "benign",
+      "end_ts": 1794658744.473967,
+      "episode_id": "org20_pilot_02-strategic-0005-benign",
+      "escalation_ts": null,
+      "game_mode": "heuristic_EXP3_not_detector_feedback",
+      "milestone_ts": null,
+      "nodes": 20,
+      "notes": "Harmless anomalous communication; no real attack or exfiltration",
+      "onset_ts": null,
+      "policy": "strategic",
+      "profile": "maintenance_burst",
+      "requests": 24,
+      "round": 5,
+      "run_id": "org20_pilot_02",
+      "selection_probability": 0.327867754616483,
+      "start_ts": 1794658729.0216472,
+      "topology": "departmental"
+    },
+    {
+      "condition": "incident",
+      "end_ts": 1794658759.9406781,
+      "episode_id": "org20_pilot_02-strategic-0005-incident",
+      "escalation_ts": 1794658753.7156484,
+      "game_mode": "heuristic_EXP3_not_detector_feedback",
+      "milestone_ts": 1794658759.4161484,
+      "nodes": 20,
+      "notes": "Harmless anomalous communication; no real attack or exfiltration",
+      "onset_ts": 1794658747.5657387,
+      "policy": "strategic",
+      "profile": "service_fanout",
+      "requests": 24,
+      "round": 5,
+      "run_id": "org20_pilot_02",
+      "selection_probability": 0.327867754616483,
+      "start_ts": 1794658744.474186,
+      "topology": "departmental"
+    }
+  ]
+}
