@@ -1,0 +1,932 @@
+{
+  "services": {
+    "docs": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "service",
+        "--name",
+        "docs"
+      ],
+      "networks": [
+        "services_internal"
+      ]
+    },
+    "crm": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "service",
+        "--name",
+        "crm"
+      ],
+      "networks": [
+        "services_internal"
+      ]
+    },
+    "mail": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "service",
+        "--name",
+        "mail"
+      ],
+      "networks": [
+        "services_internal"
+      ]
+    },
+    "gateway": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro",
+        "./outputs/orglab/${ORG_RUN_ID:?set_ORG_RUN_ID}:/results"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "gateway"
+      ],
+      "networks": [
+        "employees_internal",
+        "services_internal"
+      ],
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_001": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_001"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "sales"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_002": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_002"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "engineering"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_003": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_003"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "hr"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_004": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_004"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "finance"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_005": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_005"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "sales"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_006": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_006"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "engineering"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_007": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_007"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "hr"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_008": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_008"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "finance"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_009": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_009"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "sales"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_010": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_010"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "engineering"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_011": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_011"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "hr"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_012": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_012"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "finance"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_013": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_013"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "sales"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_014": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_014"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "engineering"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_015": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_015"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "hr"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_016": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_016"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "finance"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_017": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_017"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "sales"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_018": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_018"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "engineering"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_019": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_019"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "hr"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "employee_020": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "employee",
+        "--name",
+        "employee_020"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "environment": {
+        "ORG_DEPARTMENT": "finance"
+      },
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}"
+    },
+    "controller": {
+      "image": "python:3.12-slim",
+      "working_dir": "/app",
+      "volumes": [
+        "./orglab:/app:ro",
+        "./outputs/orglab/${ORG_RUN_ID:?set_ORG_RUN_ID}:/results"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 64,
+      "mem_limit": "128m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "command": [
+        "python",
+        "-u",
+        "runtime.py",
+        "controller"
+      ],
+      "networks": [
+        "employees_internal"
+      ],
+      "user": "${ORG_UID:?set_ORG_UID}:${ORG_GID:?set_ORG_GID}",
+      "profiles": [
+        "experiment"
+      ],
+      "environment": {
+        "ORG_RUN_ID": "${ORG_RUN_ID:?set_ORG_RUN_ID}",
+        "ORG_NODES": "20",
+        "ORG_ROUNDS": "${ORG_ROUNDS:-3}",
+        "ORG_TEST_ROUNDS": "${ORG_TEST_ROUNDS:-3}",
+        "ORG_SEED": "${ORG_SEED:-20261114}",
+        "ORG_STEP_SECONDS": "${ORG_STEP_SECONDS:-0.6}",
+        "ORG_TOPOLOGY": "flat"
+      }
+    },
+    "capture": {
+      "build": {
+        "context": ".",
+        "dockerfile": "orglab/Dockerfile.capture"
+      },
+      "command": [
+        "tcpdump",
+        "-Z",
+        "root",
+        "-i",
+        "any",
+        "-p",
+        "-nn",
+        "-s",
+        "0",
+        "-U",
+        "-w",
+        "/captures/orglab.pcap",
+        "tcp",
+        "port",
+        "8080"
+      ],
+      "network_mode": "service:gateway",
+      "depends_on": [
+        "gateway"
+      ],
+      "volumes": [
+        "./outputs/orglab/${ORG_RUN_ID:?set_ORG_RUN_ID}/captures:/captures"
+      ],
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "cap_add": [
+        "NET_RAW"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "pids_limit": 32,
+      "mem_limit": "96m",
+      "cpus": "0.20",
+      "tmpfs": [
+        "/tmp:size=16m"
+      ],
+      "user": "0:0",
+      "profiles": [
+        "capture"
+      ]
+    }
+  },
+  "networks": {
+    "employees_internal": {
+      "internal": true,
+      "driver": "bridge"
+    },
+    "services_internal": {
+      "internal": true,
+      "driver": "bridge"
+    }
+  }
+}

@@ -1,0 +1,161 @@
+[2026-11-14T11:25:58Z] [ORGLAB/org20_main_01] START nodes=20 topology=departmental rounds=12 test_rounds=12 seed=20261115 train=1
+[2026-11-14T11:25:58Z] [ORGLAB/org20_main_01] Docker root space:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6   82G   63G   15G  82% /
+[2026-11-14T11:25:58Z] [ORGLAB/org20_main_01] Starting limited private services, then employee containers in batches of 10
+ Network nidsorgorg20main01_dept_finance_internal Creating 
+ Network nidsorgorg20main01_dept_engineering_internal Creating 
+ Network nidsorgorg20main01_dept_hr_internal Creating 
+ Network nidsorgorg20main01_dept_sales_internal Creating 
+ Network nidsorgorg20main01_services_internal Creating 
+ Network nidsorgorg20main01_dept_finance_internal Created 
+ Network nidsorgorg20main01_dept_engineering_internal Created 
+ Network nidsorgorg20main01_dept_sales_internal Created 
+ Network nidsorgorg20main01_services_internal Created 
+ Container nidsorgorg20main01-mail-1 Creating 
+ Container nidsorgorg20main01-crm-1 Creating 
+ Container nidsorgorg20main01-docs-1 Creating 
+ Network nidsorgorg20main01_dept_hr_internal Created 
+ Container nidsorgorg20main01-gateway-1 Creating 
+ Container nidsorgorg20main01-mail-1 Created 
+ Container nidsorgorg20main01-gateway-1 Created 
+ Container nidsorgorg20main01-crm-1 Created 
+ Container nidsorgorg20main01-docs-1 Created 
+ Container nidsorgorg20main01-mail-1 Starting 
+ Container nidsorgorg20main01-crm-1 Starting 
+ Container nidsorgorg20main01-docs-1 Starting 
+ Container nidsorgorg20main01-gateway-1 Starting 
+ Container nidsorgorg20main01-mail-1 Started 
+ Container nidsorgorg20main01-crm-1 Started 
+ Container nidsorgorg20main01-docs-1 Started 
+ Container nidsorgorg20main01-gateway-1 Started 
+ Container nidsorgorg20main01-employee_004-1 Creating 
+ Container nidsorgorg20main01-employee_006-1 Creating 
+ Container nidsorgorg20main01-employee_001-1 Creating 
+ Container nidsorgorg20main01-employee_008-1 Creating 
+ Container nidsorgorg20main01-employee_002-1 Creating 
+ Container nidsorgorg20main01-employee_009-1 Creating 
+ Container nidsorgorg20main01-employee_007-1 Creating 
+ Container nidsorgorg20main01-employee_010-1 Creating 
+ Container nidsorgorg20main01-employee_005-1 Creating 
+ Container nidsorgorg20main01-employee_003-1 Creating 
+ Container nidsorgorg20main01-employee_006-1 Created 
+ Container nidsorgorg20main01-employee_003-1 Created 
+ Container nidsorgorg20main01-employee_010-1 Created 
+ Container nidsorgorg20main01-employee_005-1 Created 
+ Container nidsorgorg20main01-employee_007-1 Created 
+ Container nidsorgorg20main01-employee_001-1 Created 
+ Container nidsorgorg20main01-employee_002-1 Created 
+ Container nidsorgorg20main01-employee_004-1 Created 
+ Container nidsorgorg20main01-employee_008-1 Created 
+ Container nidsorgorg20main01-employee_009-1 Created 
+ Container nidsorgorg20main01-employee_010-1 Starting 
+ Container nidsorgorg20main01-employee_005-1 Starting 
+ Container nidsorgorg20main01-employee_002-1 Starting 
+ Container nidsorgorg20main01-employee_003-1 Starting 
+ Container nidsorgorg20main01-employee_004-1 Starting 
+ Container nidsorgorg20main01-employee_001-1 Starting 
+ Container nidsorgorg20main01-employee_008-1 Starting 
+ Container nidsorgorg20main01-employee_006-1 Starting 
+ Container nidsorgorg20main01-employee_007-1 Starting 
+ Container nidsorgorg20main01-employee_009-1 Starting 
+ Container nidsorgorg20main01-employee_010-1 Started 
+ Container nidsorgorg20main01-employee_005-1 Started 
+ Container nidsorgorg20main01-employee_003-1 Started 
+ Container nidsorgorg20main01-employee_002-1 Started 
+ Container nidsorgorg20main01-employee_004-1 Started 
+ Container nidsorgorg20main01-employee_001-1 Started 
+ Container nidsorgorg20main01-employee_008-1 Started 
+ Container nidsorgorg20main01-employee_006-1 Started 
+ Container nidsorgorg20main01-employee_007-1 Started 
+ Container nidsorgorg20main01-employee_009-1 Started 
+[2026-11-14T11:26:01Z] [ORGLAB/org20_main_01] STARTED employees 1..10/20
+ Container nidsorgorg20main01-employee_020-1 Creating 
+ Container nidsorgorg20main01-employee_019-1 Creating 
+ Container nidsorgorg20main01-employee_018-1 Creating 
+ Container nidsorgorg20main01-employee_014-1 Creating 
+ Container nidsorgorg20main01-employee_016-1 Creating 
+ Container nidsorgorg20main01-employee_011-1 Creating 
+ Container nidsorgorg20main01-employee_017-1 Creating 
+ Container nidsorgorg20main01-employee_013-1 Creating 
+ Container nidsorgorg20main01-employee_012-1 Creating 
+ Container nidsorgorg20main01-employee_015-1 Creating 
+ Container nidsorgorg20main01-employee_018-1 Created 
+ Container nidsorgorg20main01-employee_017-1 Created 
+ Container nidsorgorg20main01-employee_020-1 Created 
+ Container nidsorgorg20main01-employee_015-1 Created 
+ Container nidsorgorg20main01-employee_014-1 Created 
+ Container nidsorgorg20main01-employee_012-1 Created 
+ Container nidsorgorg20main01-employee_011-1 Created 
+ Container nidsorgorg20main01-employee_019-1 Created 
+ Container nidsorgorg20main01-employee_016-1 Created 
+ Container nidsorgorg20main01-employee_013-1 Created 
+ Container nidsorgorg20main01-employee_020-1 Starting 
+ Container nidsorgorg20main01-employee_011-1 Starting 
+ Container nidsorgorg20main01-employee_015-1 Starting 
+ Container nidsorgorg20main01-employee_017-1 Starting 
+ Container nidsorgorg20main01-employee_016-1 Starting 
+ Container nidsorgorg20main01-employee_014-1 Starting 
+ Container nidsorgorg20main01-employee_019-1 Starting 
+ Container nidsorgorg20main01-employee_018-1 Starting 
+ Container nidsorgorg20main01-employee_013-1 Starting 
+ Container nidsorgorg20main01-employee_012-1 Starting 
+ Container nidsorgorg20main01-employee_020-1 Started 
+ Container nidsorgorg20main01-employee_011-1 Started 
+ Container nidsorgorg20main01-employee_015-1 Started 
+ Container nidsorgorg20main01-employee_014-1 Started 
+ Container nidsorgorg20main01-employee_018-1 Started 
+ Container nidsorgorg20main01-employee_017-1 Started 
+ Container nidsorgorg20main01-employee_016-1 Started 
+ Container nidsorgorg20main01-employee_013-1 Started 
+ Container nidsorgorg20main01-employee_019-1 Started 
+ Container nidsorgorg20main01-employee_012-1 Started 
+[2026-11-14T11:26:02Z] [ORGLAB/org20_main_01] STARTED employees 11..20/20
+[2026-11-14T11:26:02Z] [ORGLAB/org20_main_01] Starting restricted sensor in gateway namespace; no additional host network privileges
+ Image nidsorgorg20main01-capture Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.capture
+#2 transferring dockerfile: 213B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 1.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#5 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update && apt-get install -y --no-install-recommends tcpdump ca-certificates     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:079b1b4ff3f899b39037cf1ee7f54105aa97de485ab90da4a387d7337e0de8ed 0.0s done
+#7 exporting config sha256:d3b485a6c4857b600c83e6323c83d983ccb7b62d72c67cea24486c462c400652 0.0s done
+#7 exporting attestation manifest sha256:dbabe9cc36a2068c18a68b08c874a53f7db8ddb87ca5344270c953c4c0937c38 0.0s done
+#7 exporting manifest list sha256:4a255eec7d9aaf69fc884d30f3d16e282ae2e4f235af330135739c37029db2c2
+#7 exporting manifest list sha256:4a255eec7d9aaf69fc884d30f3d16e282ae2e4f235af330135739c37029db2c2 0.0s done
+#7 naming to docker.io/library/nidsorgorg20main01-capture:latest done
+#7 unpacking to docker.io/library/nidsorgorg20main01-capture:latest done
+#7 DONE 0.1s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image nidsorgorg20main01-capture Built 
+ Container nidsorgorg20main01-gateway-1 Running 
+ Container nidsorgorg20main01-capture-1 Creating 
+ Container nidsorgorg20main01-capture-1 Created 
+ Container nidsorgorg20main01-capture-1 Starting 
+ Container nidsorgorg20main01-capture-1 Started 
+tcpdump: data link type LINUX_SLL2
+tcpdump: Couldn't change to 'root' uid=0 gid=0: Operation not permitted
+[2026-11-14T11:26:06Z] [ORGLAB/org20_main_01] ERROR capture exited
+[2026-11-14T11:26:06Z] [ORGLAB/org20_main_01] EXIT=1 Stopping only ORGLAB project containers; preserving datasets, PCAP and logs
+[2026-11-14T11:26:16Z] [ORGLAB/org20_main_01] FAILED; inspect outputs/orglab/org20_main_01/launcher.log and run files; do not reuse this run ID
