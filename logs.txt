@@ -402,3 +402,65 @@ GRU_FINISHED
 ACTIVE TMUX SESSIONS
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
 
+fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$  source /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/activate
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ mkdir -p /tmp/phase3-stage-v2
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ unzip -q  Phase3_Staged_Network_Research_V2.zip -d /tmp/phase3-stage-v2
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash /tmp/phase3-stage-v2/install.sh "$PWD"
+Safety preflight: 14 changes, 1 already up-to-date
+Installed safely. Original modified files backed up to: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/backups/staged_v2_20261114T033705Z
+..................                                                                                                                 [100%]
+18 passed in 19.22s
+
+Phase 3 Stage V2 installed and tested. No existing data/checkpoints deleted.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/preflight.sh
+
+== PHASE 3 PREFLIGHT ==
+Python 3.12.3
+numpy: installed
+pandas: installed
+sklearn: installed
+optuna: installed
+pytest: installed
+torch: installed
+CUDA available: True
+GPU: NVIDIA RTX 4000 Ada Generation
+CPUs: 28 Docker: True Zeek: True
+..................                                                                                                                 [100%]
+18 passed in 4.27s
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ pgrep -a -x tcpdump || true
+74855 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102313Z_74502/traffic.pcap tcp port 8080
+80058 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102813Z_79699/traffic.pcap tcp port 8080
+94532 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T110555Z_94176/traffic.pcap tcp port 8080
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot' || true
+  74852    2472 S       17:14:41 sudo -n tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102313Z_74502/traffic.pcap tcp port 8080
+  74854   74852 Ss+     17:14:41 sudo -n tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102313Z_74502/traffic.pcap tcp port 8080
+  74855   74854 S       17:14:41 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102313Z_74502/traffic.pcap tcp port 8080
+  80055    2472 S       17:09:41 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261113T102813Z_79699/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102813Z_79699/traffic.pcap
+  80057   80055 Ss+     17:09:41 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261113T102813Z_79699/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102813Z_79699/traffic.pcap
+  80058   80057 S       17:09:41 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T102813Z_79699/traffic.pcap tcp port 8080
+  94529    2472 S       16:32:00 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261113T110555Z_94176/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T110555Z_94176/traffic.pcap
+  94531   94529 Ss+     16:32:00 sudo -n bash -c echo "$$" > "$1"; exec tcpdump -i "$2" -s 0 -U -w "$3" "tcp port 8080" _ src/data/raw/runs/pilot_20261113T110555Z_94176/capture.pid br-9cd72e468a25 /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T110555Z_94176/traffic.pcap
+  94532   94531 S       16:32:00 tcpdump -i br-9cd72e468a25 -s 0 -U -w /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/pilot_20261113T110555Z_94176/traffic.pcap tcp port 8080
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo usermod -aG  docker fastlab
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ newgrp docker 
+fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ id -nG
+docker sudo users fastlab
+fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ source .venv-cuda/bin/activate
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED        STATUS        PORTS     NAMES
+631e6c1d5b89   python:3.12-slim   "python -m lab.http_…"   19 hours ago   Up 19 hours             phase3-adaptive-nids-gateway-1
+d522a2c2f430   python:3.12-slim   "python -m lab.http_…"   19 hours ago   Up 19 hours             phase3-adaptive-nids-server_b-1
+7fecfbe9c87d   python:3.12-slim   "python -m lab.http_…"   19 hours ago   Up 19 hours             phase3-adaptive-nids-server_a-1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture
+{"episode_budget": 24, "initialised": true, "run_dir": "src/data/raw/runs/staged_v2_check_01"}
+error while interpolating services.capture.command.[]: required variable STAGED_CAPTURE_NAME is missing a value: STAGED_CAPTURE_NAME required
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v2.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture
+{"episode_budget": 96, "initialised": true, "run_dir": "src/data/raw/runs/staged_v2_main_01"}
+error while interpolating services.capture.command.[]: required variable STAGED_CAPTURE_NAME is missing a value: STAGED_CAPTURE_NAME required
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+

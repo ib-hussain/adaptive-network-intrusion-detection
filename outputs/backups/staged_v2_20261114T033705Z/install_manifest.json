@@ -1,0 +1,35 @@
+{
+  "installed": [
+    "compose.staged.capture.yaml",
+    "docs/STAGE_V2_RUNBOOK.md",
+    "lab/Dockerfile.capture",
+    "lab/staged_generate.py",
+    "setup/sprint_hpo.py",
+    "setup/staged_collect_v2.sh",
+    "setup/staged_status.sh",
+    "setup/staged_train_start.sh",
+    "setup/staged_zeek.py",
+    "src/code/early_warning.py",
+    "src/code/features.py",
+    "src/code/pipeline.py",
+    "src/code/temporal_gru_sprint.py",
+    "tests/test_stage_v2.py"
+  ],
+  "original_hashes": {
+    "compose.staged.capture.yaml": null,
+    "docs/STAGE_V2_RUNBOOK.md": null,
+    "lab/Dockerfile.capture": null,
+    "lab/staged_generate.py": null,
+    "setup/sprint_hpo.py": "ac8734a584b62c39cd14bcb6dfa2f2b63b77b6a1fffc88068a91aa1ee77511ed",
+    "setup/staged_collect_v2.sh": null,
+    "setup/staged_status.sh": null,
+    "setup/staged_train_start.sh": null,
+    "setup/staged_zeek.py": null,
+    "src/code/early_warning.py": "d59936b0728fd0b95d4838cf186b897c61b757f0c0066f367ccdf08e34fd4fca",
+    "src/code/features.py": "83e16cd571edb119c1c5ef3a654cc7846709cdde633ffec0c13dda4b8cdb6937",
+    "src/code/pipeline.py": "d59e5a9c226ce75cdddb3d35c896f9606df11867cf9d5db2ade90e55b118fe28",
+    "src/code/temporal_gru_sprint.py": "3ed0e8d9981e9a2131222ebc126e09df4fa140b5c7cae4431fe1027fcc6e60d6",
+    "tests/test_stage_v2.py": null
+  },
+  "source": "/tmp/phase3-stage-v2"
+}

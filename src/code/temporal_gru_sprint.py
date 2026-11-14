@@ -73,7 +73,7 @@ def _atomic_torch_save(path,record):
     torch.save(record,temp);temp.replace(path)
 
 
-def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed):
+def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed,causal_labels=False):
     out_dir.mkdir(parents=True,exist_ok=True)
     final=out_dir/'complete.json'; ckpt=out_dir/'latest.pt'
     if final.exists():
@@ -97,7 +97,7 @@ def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed)
     first_epoch=1
     if ckpt.exists():
         saved=torch.load(ckpt,map_location='cpu',weights_only=True)
-        if saved['policy']!=policy or saved['seed']!=seed or saved['feature_columns']!=list(FEATURE_COLUMNS):
+        if saved['policy']!=policy or saved['seed']!=seed or saved['feature_columns']!=list(FEATURE_COLUMNS) or saved.get('causal_labels',False)!=causal_labels:
             raise ValueError('Checkpoint config does not match request; refusing unsafe resume')
         if saved['mean']!=mean.tolist() or saved['std']!=std.tolist():
             raise ValueError('Input distribution changed since checkpoint; refusing resume')
@@ -115,7 +115,7 @@ def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed)
             if not torch.isfinite(loss):raise ValueError('Nonfinite loss')
             loss.backward();nn.utils.clip_grad_norm_(model.parameters(),1.0);optimiser.step()
             losses.append(float(loss.item()))
-        checkpoint={'policy':policy,'seed':seed,'epoch':epoch,'model_state':model.state_dict(),
+        checkpoint={'policy':policy,'seed':seed,'causal_labels':causal_labels,'epoch':epoch,'model_state':model.state_dict(),
                     'optimizer_state':optimiser.state_dict(),'feature_columns':list(FEATURE_COLUMNS),
                     'mean':mean.tolist(),'std':std.tolist(),'torch_rng':torch.get_rng_state(),
                     'cuda_rng':torch.cuda.get_rng_state_all() if device.type=='cuda' else None}
@@ -130,7 +130,7 @@ def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed)
     threshold=choose_validation_threshold(val_pred,val_man)
     preds=inference(model,te,device)
     test_man={eid:manifest[eid] for eid in test_ids}
-    result={'policy':policy,'seed':seed,'epochs':epochs,'device':str(device),
+    result={'policy':policy,'seed':seed,'causal_labels':causal_labels,'epochs':epochs,'device':str(device),
             'samples':{'train':len(tr),'val':len(va),'held_out':len(te)},
             'threshold_validation_only':threshold,'status':'LAB_TRAFFIC_ENGINEERING_BASELINE_NOT_CYBERSECURITY_EVIDENCE'}
     if threshold is None:
@@ -149,7 +149,7 @@ def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed)
 def main():
     p=argparse.ArgumentParser();p.add_argument('--run',required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--epochs',type=int,default=60);p.add_argument('--device',choices=['auto','cuda','cpu'],default='auto')
-    p.add_argument('--seed',type=int,default=20261112);args=p.parse_args()
+    p.add_argument('--seed',type=int,default=20261112);p.add_argument('--causal-labels',action='store_true');args=p.parse_args()
     if args.epochs<1 or args.epochs>500:p.error('epochs 1..500')
     torch.set_num_threads(2)
     device=torch.device('cuda' if args.device=='auto' and torch.cuda.is_available() else ('cpu' if args.device=='auto' else args.device))
@@ -157,10 +157,10 @@ def main():
     raw=Path('src/data/raw/runs')/args.run
     manifest=load_manifest(raw/'episodes.jsonl')
     observations=load_events(raw/'gateway_subset.jsonl',manifest,source='gateway')
-    train_windows=make_windows(observations,manifest,n_events=4,min_events=3,before_milestone_only=True)
-    all_windows=make_windows(observations,manifest,n_events=4,min_events=3,before_milestone_only=False)
+    train_windows=make_windows(observations,manifest,n_events=4,min_events=3,before_milestone_only=True,causal_stage_labels=args.causal_labels)
+    all_windows=make_windows(observations,manifest,n_events=4,min_events=3,before_milestone_only=False,causal_stage_labels=args.causal_labels)
     print('GPU temporal baseline:',device, 'episodes',len(manifest),'training windows',len(train_windows),flush=True)
     for policy in ('fixed','random','strategic'):
-        train_policy(policy,manifest,train_windows,all_windows,args.output/policy,device,args.epochs,args.seed)
+        train_policy(policy,manifest,train_windows,all_windows,args.output/policy,device,args.epochs,args.seed,args.causal_labels)
     print('GRU_FINISHED')
 if __name__=='__main__':main()

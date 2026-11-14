@@ -1,0 +1,23 @@
+# Optional packet monitor. Use only in the isolated authorised course lab.
+# Docker network_mode:service:gateway captures network traffic at the gateway;
+# unlike host-bridge capture, it does not require host tcpdump or sudo.
+services:
+  capture:
+    build:
+      context: .
+      dockerfile: lab/Dockerfile.capture
+    profiles: [capture]
+    network_mode: "service:gateway"
+    depends_on: [gateway]
+    cap_add: [NET_RAW]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    read_only: true
+    user: root
+    restart: "no"
+    stop_signal: SIGINT
+    stop_grace_period: 10s
+    volumes:
+      - ./src/data/raw/runs:/captures
+    # The two variables below MUST be supplied by the deployment wrapper.
+    command: ["-i", "any", "-p", "-nn", "-s", "0", "-U", "-w", "/captures/${STAGED_RUN_ID:?STAGED_RUN_ID required}/${STAGED_CAPTURE_NAME:?STAGED_CAPTURE_NAME required}.pcap", "tcp port 8080"]

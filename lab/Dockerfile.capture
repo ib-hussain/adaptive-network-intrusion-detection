@@ -1,0 +1,5 @@
+# Restricted monitoring sidecar. No shell access or host namespaces needed.
+# Shares gateway network namespace; observes BOTH client and service interfaces.
+FROM python:3.12-slim
+RUN apt-get update && apt-get install -y --no-install-recommends tcpdump && rm -rf /var/lib/apt/lists/*
+ENTRYPOINT ["tcpdump"]

@@ -11,7 +11,7 @@ FEATURE_COLUMNS = (
 )
 
 
-def make_windows(events, manifest, n_events=4, stride=1, min_events=3, before_milestone_only=True):
+def make_windows(events, manifest, n_events=4, stride=1, min_events=3, before_milestone_only=True, causal_stage_labels=False):
     if n_events < 2 or min_events < 2 or stride < 1 or min_events > n_events:
         raise ValueError("Invalid window parameters")
     grouped = defaultdict(list)
@@ -51,7 +51,7 @@ def make_windows(events, manifest, n_events=4, stride=1, min_events=3, before_mi
             }
             if not all(math.isfinite(x) for x in features.values()):
                 raise ValueError("Non-finite features")
-            windows.append({"episode_id": eid, "policy": episode["policy"], "label": int(episode["condition"] == "incident"),
+            windows.append({"episode_id": eid, "policy": episode["policy"], "label": int(episode["condition"] == "incident" and (not causal_stage_labels or timestamps[-1] >= float(episode.get("onset_ts") or episode["start_ts"]))),
                             "window_start_ts": timestamps[0], "window_end_ts": timestamps[-1],
                             **features})
     return windows

@@ -60,7 +60,9 @@ def choose_validation_threshold(predictions, manifest, max_false_positive_episod
     for threshold in candidates:
         metrics = early_warning_metrics(predictions, manifest, threshold)
         fpr = metrics["false_positive_episode_rate"]
-        if fpr is not None and fpr <= max_false_positive_episodes:
+        # A pre-onset warning is also invalid, even in a labelled incident episode.
+        pre_onset_rate = metrics.get("pre_onset_warning_rate")
+        if fpr is not None and fpr <= max_false_positive_episodes and (pre_onset_rate is None or pre_onset_rate <= max_false_positive_episodes):
             eligible.append((metrics["coverage_adjusted_mean_lead_s"] or 0.0,
                              metrics["pre_milestone_coverage"] or 0.0, threshold))
     if not eligible:
@@ -85,24 +87,24 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def run_pipeline(manifest_path, events_path, out_dir, source="gateway", seed=20261112, trials=0, n_events=4):
+def run_pipeline(manifest_path, events_path, out_dir, source="gateway", seed=20261112, trials=0, n_events=4, causal_labels=False):
     output = Path(out_dir)
     if output.exists() and any(output.iterdir()):
         raise FileExistsError("Output directory is not empty; preserve earlier experimental results")
     manifest = load_manifest(manifest_path)
     observations = load_events(events_path, manifest, source)
-    windows = make_windows(observations, manifest, n_events=n_events, min_events=3, before_milestone_only=True)
+    windows = make_windows(observations, manifest, n_events=n_events, min_events=3, before_milestone_only=True, causal_stage_labels=causal_labels)
     test_ids = {eid for eid, e in manifest.items() if e["policy"] == "test"}
     if len({manifest[eid]["condition"] for eid in test_ids}) != 2:
         raise ValueError("Independent test set lacks benign or incident episodes")
     test_manifest = {eid: manifest[eid] for eid in test_ids}
-    test_windows_all = make_windows(observations, manifest, n_events=n_events, min_events=3, before_milestone_only=False)
+    test_windows_all = make_windows(observations, manifest, n_events=n_events, min_events=3, before_milestone_only=False, causal_stage_labels=causal_labels)
     test_windows = [r for r in test_windows_all if r["episode_id"] in test_ids]
     test_pre_windows = [r for r in windows if r["episode_id"] in test_ids]
     report = {"status": "completed_on_supplied_observed_events_not_independently_validated",
               "dataset_kind": source, "unseen_topology_tested": False,
               "caution": "Gateway data are actual controlled HTTP request observations, not Zeek PCAP captures or real malicious exploits",
-              "seed": seed, "n_events": len(observations), "n_windows": len(windows),
+              "seed": seed, "causal_labels": causal_labels, "n_events": len(observations), "n_windows": len(windows),
               "n_episodes": len(manifest), "feature_columns": list(FEATURE_COLUMNS),
               "sources": {"manifest": str(manifest_path), "manifest_sha256": sha256(manifest_path),
                           "events": str(events_path), "events_sha256": sha256(events_path)},
@@ -176,8 +178,9 @@ def main():
     p.add_argument("--seed", type=int, default=20261112)
     p.add_argument("--trials", type=int, default=0, help="0=fast smoke only; 10+ recommended for research runs")
     p.add_argument("--n-events", type=int, default=4)
+    p.add_argument("--causal-labels", action="store_true", help="Label incident windows positive only after controller onset")
     args = p.parse_args()
-    result = run_pipeline(args.manifest, args.events, args.output, args.source, args.seed, args.trials, args.n_events)
+    result = run_pipeline(args.manifest, args.events, args.output, args.source, args.seed, args.trials, args.n_events, causal_labels=args.causal_labels)
     for policy, r in result["methods"].items():
         for model, info in r["models"].items():
             print(f"{policy}/{model}: {info['status']}")
