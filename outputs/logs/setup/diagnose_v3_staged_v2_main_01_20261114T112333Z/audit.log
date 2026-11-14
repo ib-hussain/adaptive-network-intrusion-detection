@@ -1,0 +1,161 @@
+DATE=2026-11-14T11:23:33+00:00
+RUN=staged_v2_main_01
+PWD=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
+
+GIT
+## master...origin/master
+ M logs.txt
+?? outputs/logs/setup/diagnose_v3_staged_v2_main_01_20261114T112148Z/
+?? outputs/logs/setup/diagnose_v3_staged_v2_main_01_20261114T112333Z/
+?? outputs/orglab/
+
+CAPTURE INVOCATION / TIMEOUT / PROBE CODE
+31:for cmd in flock timeout docker python3; do command -v "$cmd" >/dev/null || { echo "Missing command: $cmd" >&2; exit 1; }; done
+74:  log "Stopping only our capture container: $CAP_NAME (bounded Docker timeout)"
+75:  if [[ "$(timeout 5s docker inspect -f '{{.State.Running}}' "$CAP_NAME" 2>/dev/null || true)" == true ]]; then
+76:    if ! step timeout 16s docker stop --signal SIGINT --timeout 8 "$CAP_NAME"; then
+78:      step timeout 8s docker stop -t 3 "$CAP_NAME" || true
+82:  running="$(timeout 5s docker inspect -f '{{.State.Running}}' "$CAP_NAME" 2>/dev/null || true)"
+88:  timeout 8s docker logs "$CAP_NAME" > "$RAW/capture_container_${STAMP}.log" 2>&1 || true
+92:  step timeout 8s docker rm "$CAP_NAME" || log 'WARNING: stopped capture container remains; manually inspect it later'
+101:      CAPTURE_PREFLIGHT_FAILED|CAPTURE_TOO_SPARSE|APPLICATION_ONLY_INVALID_CAPTURE|COLLECTOR_INTERRUPTED) ;;
+155:OLD_HOST_CAPTURE="$(pgrep -a -x tcpdump 2>/dev/null | grep -F -- "-i $SVC_BRIDGE" || true)"
+156:[[ -z "$OLD_HOST_CAPTURE" ]] || { log "STOP: orphan host tcpdump still active: $OLD_HOST_CAPTURE"; exit 1; }
+165:  if "${COMPOSE[@]}" exec -T gateway python -c 'import socket; [socket.create_connection((h,8080),timeout=2).close() for h in ("127.0.0.1","server_a","server_b")]' >/dev/null 2>&1; then READY=1; break; fi
+167:  sleep 1
+175:    log 'Building restricted tcpdump image from existing local Dockerfile'
+187:     --read-only --stop-signal SIGINT --stop-timeout 8 --pids-limit 32 \
+190:     "$IMAGE" -Z root -i any -p -nn -s 0 -U -w "/captures/$CAP_FILE" 'tcp port 8080'
+192:  sleep 2
+198:  log 'Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment'
+199:  PROBE='import urllib.request; services=["a","b","a","b"]; statuses=[urllib.request.urlopen(urllib.request.Request("http://gateway:8080/"+svc,data=b"capture_check"*8,headers={"X-Lab-Episode":"v3_capture_probe_not_an_experiment"},method="POST"),timeout=5).status for svc in services]; assert statuses==[200]*4; print("CAPTURE_PROBE_HTTP_OK",len(statuses),flush=True)'
+200:  step timeout 45s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner python -c "$PROBE"
+206:    log "Capture probe verification $attempt/8: packets not yet flushed; waiting"
+207:    sleep 1
+212:    status 'CAPTURE_PREFLIGHT_FAILED'
+224:timeout -s INT -k 10s 1800s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner "${CMD[@]}" > "$RUNLOG" 2>&1 &
+227:  sleep 5
+
+RAW STATUS
+2026-11-14 03:39:15.0077219000 314 src/data/raw/runs/staged_v2_main_01/scenario_config.json
+2026-11-14 07:18:53.3373542000 24 src/data/raw/runs/staged_v2_main_01/traffic_20261114T071852Z_150864.pcap
+2026-11-14 07:18:55.3963457000 79 src/data/raw/runs/staged_v2_main_01/capture_container_20261114T071852Z_150864.log
+2026-11-14 07:18:55.4391291000 1847 src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T071852Z_150864.log
+2026-11-14 08:35:56.0942266000 13108 src/data/raw/runs/staged_v2_main_01/traffic_20261114T083552Z_156199.pcap
+2026-11-14 08:36:40.2343053000 176 src/data/raw/runs/staged_v2_main_01/capture_container_20261114T083552Z_156199.log
+2026-11-14 08:36:40.2724292000 2246 src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T083552Z_156199.log
+2026-11-14 09:51:54.9778930000 13108 src/data/raw/runs/staged_v2_main_01/traffic_20261114T095151Z_180077.pcap
+2026-11-14 09:52:39.1191242000 176 src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+2026-11-14 09:52:39.1537101000 216 src/data/raw/runs/staged_v2_main_01/collector_status_v3.json
+2026-11-14 09:52:39.1560560000 2246 src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log
+
+COMPLETE/CONTROLLER STATUS
+src/data/raw/runs/staged_v2_main_01/scenario_config.json
+{
+  "delay_scale": 1.0,
+  "held_out_profile": "slow_ramp",
+  "requests": 20,
+  "rounds": 12,
+  "schema": "staged_v2_1",
+  "seed": 20261115,
+  "test_rounds": 12,
+  "topology": "docker_two_internal_segments_two_services",
+  "train_profiles": [
+    "rapid_repeat",
+    "destination_shift",
+    "jittered_burst"
+  ]
+}
+
+src/data/raw/runs/staged_v2_main_01/collector_status_v3.json
+{"schema":"stage_v3_collector","run_id":"staged_v2_main_01","status":"FAILED_OR_INTERRUPTED","updated_utc":"2026-11-14T09:52:39Z","log":"src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log"}
+
+
+LATEST CAPTURE CONTAINER LOG TAILS
+----- src/data/raw/runs/staged_v2_main_01/capture_container_20261114T071852Z_150864.log
+tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
+----- src/data/raw/runs/staged_v2_main_01/capture_container_20261114T083552Z_156199.log
+tcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+104 packets captured
+104 packets received by filter
+0 packets dropped by kernel
+----- src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+tcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+104 packets captured
+104 packets received by filter
+0 packets dropped by kernel
+
+LATEST COLLECTOR LOG TAILS
+----- src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T071852Z_150864.log
+[2026-11-14T07:18:52Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T07:18:52Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T07:18:52Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T07:18:52Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T07:18:52Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T07:18:53Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T07:18:53Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T071852Z_150864.pcap
+ac8c2e7ce25c6c8416f438526ab832ba0aefe5d5d9c75b07983427ca5f76fdd0
+[2026-11-14T07:18:55Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
+tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
+[2026-11-14T07:18:55Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T071852Z_150864 (bounded Docker timeout)
+[2026-11-14T07:18:55Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T071852Z_150864.log
+p3cap_staged_v2_main_01_20261114T071852Z_150864
+[2026-11-14T07:18:55Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T07:18:55Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
+----- src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T083552Z_156199.log
+[2026-11-14T08:35:52Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T08:35:52Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T08:35:52Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T08:35:52Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T08:35:52Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T08:35:52Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T08:35:52Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T083552Z_156199.pcap
+b61a4d65f9dbdab634f326bad49d94b6a31be48af79f71034aeba8ad384820cc
+[2026-11-14T08:35:55Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T08:35:55Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-2e469de93177 Creating 
+ Container phase3-adaptive-nids-runner-run-2e469de93177 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T08:36:40Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T083552Z_156199 (bounded Docker timeout)
+p3cap_staged_v2_main_01_20261114T083552Z_156199
+[2026-11-14T08:36:40Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T083552Z_156199.log
+p3cap_staged_v2_main_01_20261114T083552Z_156199
+[2026-11-14T08:36:40Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T08:36:40Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+----- src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T09:51:51Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T09:51:51Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+[2026-11-14T09:51:51Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T09:51:51Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T095151Z_180077.pcap
+12764ae1612ebb8581a15b93ae7f97292baf67facef64a0de7932d2730fe88eb
+[2026-11-14T09:51:53Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T09:51:54Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-8fc71c6ea302 Creating 
+ Container phase3-adaptive-nids-runner-run-8fc71c6ea302 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T09:52:38Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T095151Z_180077 (bounded Docker timeout)
+p3cap_staged_v2_main_01_20261114T095151Z_180077
+[2026-11-14T09:52:39Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+p3cap_staged_v2_main_01_20261114T095151Z_180077
+[2026-11-14T09:52:39Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T09:52:39Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+
+LIVE PROCESSES (READ ONLY)
+
+NAMED CAPTURE CONTAINERS (READ ONLY)
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+SNAPSHOT SAVED: outputs/logs/setup/diagnose_v3_staged_v2_main_01_20261114T112333Z/audit.log
+No processes stopped, no locks removed, no PCAP/model/data modified.

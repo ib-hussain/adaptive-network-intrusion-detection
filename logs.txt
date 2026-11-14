@@ -1,169 +1,345 @@
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ mkdir -p /tmp/p3-v3
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ unzip -q Phase3_Stage_V3_Capture_Recovery.zip -d /tmp/p3-v3
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash /tmp/p3-v3/install.sh "$PWD"
-INSTALLED setup/staged_collect_v3.sh
-INSTALLED setup/staged_capture_audit.py
-INSTALLED setup/staged_recover_v2.sh
-INSTALLED setup/staged_v3_status.sh
-INSTALLED setup/staged_train_guard_v3.sh
-INSTALLED tests/test_staged_capture_audit.py
-INSTALLED tests/test_v3_launcher_contract.py
-INSTALLED docs/STAGE_V3_RECOVERY_RUNBOOK.md
-test_invalid_header_rejected (test_staged_capture_audit.TestPcapAudit.test_invalid_header_rejected) ... ok
-test_records_counted (test_staged_capture_audit.TestPcapAudit.test_records_counted) ... ok
-test_truncated_record_rejected (test_staged_capture_audit.TestPcapAudit.test_truncated_record_rejected) ... ok
-test_zero_records_fails (test_staged_capture_audit.TestPcapAudit.test_zero_records_fails) ... ok
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ chmod +x setup/orglab_*.sh
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python -m pytest -q tests/test_orglab.py
+......                                                                                                                     [100%]
+6 passed in 2.73s
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/orglab_run.sh \
+  --run-id org20_pilot_01 \                                                                             ./setup/orglab_run.sh \
+  --run-id org20_pilot_01 \
+  --nodes 20 \epartmental \
+  --topology departmental \
+  --rounds 6 \s 6 \
+  --test-rounds 6 \
+  --seed 20261114 \6 \
+  --step-seconds 0.6 \
+  --train
+CREATED compose.orglab.20.departmental.json employees=20 topology=departmental internal_networks=5 published_ports=0
+[2026-11-14T11:21:06Z] [ORGLAB/org20_pilot_01] START nodes=20 topology=departmental rounds=6 test_rounds=6 seed=20261114 train=1
+[2026-11-14T11:21:06Z] [ORGLAB/org20_pilot_01] Docker root space:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6   82G   63G   15G  82% /
+[2026-11-14T11:21:06Z] [ORGLAB/org20_pilot_01] Starting limited private services, then employee containers in batches of 10
+ Network nidsorgorg20pilot01_services_internal Creating 
+ Network nidsorgorg20pilot01_dept_hr_internal Creating 
+ Network nidsorgorg20pilot01_dept_engineering_internal Creating 
+ Network nidsorgorg20pilot01_dept_finance_internal Creating 
+ Network nidsorgorg20pilot01_dept_sales_internal Creating 
+ Network nidsorgorg20pilot01_dept_finance_internal Created 
+ Network nidsorgorg20pilot01_dept_sales_internal Created 
+ Network nidsorgorg20pilot01_dept_engineering_internal Created 
+ Network nidsorgorg20pilot01_dept_hr_internal Created 
+ Network nidsorgorg20pilot01_services_internal Created 
+ Container nidsorgorg20pilot01-mail-1 Creating 
+ Container nidsorgorg20pilot01-gateway-1 Creating 
+ Container nidsorgorg20pilot01-crm-1 Creating 
+ Container nidsorgorg20pilot01-docs-1 Creating 
+ Container nidsorgorg20pilot01-mail-1 Created 
+ Container nidsorgorg20pilot01-docs-1 Created 
+ Container nidsorgorg20pilot01-crm-1 Created 
+ Container nidsorgorg20pilot01-gateway-1 Created 
+ Container nidsorgorg20pilot01-mail-1 Starting 
+ Container nidsorgorg20pilot01-crm-1 Starting 
+ Container nidsorgorg20pilot01-gateway-1 Starting 
+ Container nidsorgorg20pilot01-docs-1 Starting 
+ Container nidsorgorg20pilot01-mail-1 Started 
+ Container nidsorgorg20pilot01-crm-1 Started 
+ Container nidsorgorg20pilot01-gateway-1 Started 
+ Container nidsorgorg20pilot01-docs-1 Started 
+ Container nidsorgorg20pilot01-employee_010-1 Creating 
+ Container nidsorgorg20pilot01-employee_002-1 Creating 
+ Container nidsorgorg20pilot01-employee_003-1 Creating 
+ Container nidsorgorg20pilot01-employee_007-1 Creating 
+ Container nidsorgorg20pilot01-employee_001-1 Creating 
+ Container nidsorgorg20pilot01-employee_008-1 Creating 
+ Container nidsorgorg20pilot01-employee_009-1 Creating 
+ Container nidsorgorg20pilot01-employee_005-1 Creating 
+ Container nidsorgorg20pilot01-employee_006-1 Creating 
+ Container nidsorgorg20pilot01-employee_004-1 Creating 
+ Container nidsorgorg20pilot01-employee_004-1 Created 
+ Container nidsorgorg20pilot01-employee_006-1 Created 
+ Container nidsorgorg20pilot01-employee_007-1 Created 
+ Container nidsorgorg20pilot01-employee_001-1 Created 
+ Container nidsorgorg20pilot01-employee_009-1 Created 
+ Container nidsorgorg20pilot01-employee_010-1 Created 
+ Container nidsorgorg20pilot01-employee_005-1 Created 
+ Container nidsorgorg20pilot01-employee_003-1 Created 
+ Container nidsorgorg20pilot01-employee_008-1 Created 
+ Container nidsorgorg20pilot01-employee_002-1 Created 
+ Container nidsorgorg20pilot01-employee_010-1 Starting 
+ Container nidsorgorg20pilot01-employee_001-1 Starting 
+ Container nidsorgorg20pilot01-employee_006-1 Starting 
+ Container nidsorgorg20pilot01-employee_005-1 Starting 
+ Container nidsorgorg20pilot01-employee_009-1 Starting 
+ Container nidsorgorg20pilot01-employee_008-1 Starting 
+ Container nidsorgorg20pilot01-employee_002-1 Starting 
+ Container nidsorgorg20pilot01-employee_007-1 Starting 
+ Container nidsorgorg20pilot01-employee_004-1 Starting 
+ Container nidsorgorg20pilot01-employee_003-1 Starting 
+ Container nidsorgorg20pilot01-employee_010-1 Started 
+ Container nidsorgorg20pilot01-employee_001-1 Started 
+ Container nidsorgorg20pilot01-employee_006-1 Started 
+ Container nidsorgorg20pilot01-employee_005-1 Started 
+ Container nidsorgorg20pilot01-employee_009-1 Started 
+ Container nidsorgorg20pilot01-employee_008-1 Started 
+ Container nidsorgorg20pilot01-employee_004-1 Started 
+ Container nidsorgorg20pilot01-employee_002-1 Started 
+ Container nidsorgorg20pilot01-employee_007-1 Started 
+ Container nidsorgorg20pilot01-employee_003-1 Started 
+[2026-11-14T11:21:09Z] [ORGLAB/org20_pilot_01] STARTED employees 1..10/20
+ Container nidsorgorg20pilot01-employee_020-1 Creating 
+ Container nidsorgorg20pilot01-employee_016-1 Creating 
+ Container nidsorgorg20pilot01-employee_012-1 Creating 
+ Container nidsorgorg20pilot01-employee_015-1 Creating 
+ Container nidsorgorg20pilot01-employee_013-1 Creating 
+ Container nidsorgorg20pilot01-employee_018-1 Creating 
+ Container nidsorgorg20pilot01-employee_019-1 Creating 
+ Container nidsorgorg20pilot01-employee_017-1 Creating 
+ Container nidsorgorg20pilot01-employee_014-1 Creating 
+ Container nidsorgorg20pilot01-employee_011-1 Creating 
+ Container nidsorgorg20pilot01-employee_015-1 Created 
+ Container nidsorgorg20pilot01-employee_017-1 Created 
+ Container nidsorgorg20pilot01-employee_020-1 Created 
+ Container nidsorgorg20pilot01-employee_016-1 Created 
+ Container nidsorgorg20pilot01-employee_014-1 Created 
+ Container nidsorgorg20pilot01-employee_012-1 Created 
+ Container nidsorgorg20pilot01-employee_018-1 Created 
+ Container nidsorgorg20pilot01-employee_019-1 Created 
+ Container nidsorgorg20pilot01-employee_013-1 Created 
+ Container nidsorgorg20pilot01-employee_011-1 Created 
+ Container nidsorgorg20pilot01-employee_020-1 Starting 
+ Container nidsorgorg20pilot01-employee_014-1 Starting 
+ Container nidsorgorg20pilot01-employee_017-1 Starting 
+ Container nidsorgorg20pilot01-employee_011-1 Starting 
+ Container nidsorgorg20pilot01-employee_018-1 Starting 
+ Container nidsorgorg20pilot01-employee_012-1 Starting 
+ Container nidsorgorg20pilot01-employee_015-1 Starting 
+ Container nidsorgorg20pilot01-employee_013-1 Starting 
+ Container nidsorgorg20pilot01-employee_016-1 Starting 
+ Container nidsorgorg20pilot01-employee_019-1 Starting 
+ Container nidsorgorg20pilot01-employee_020-1 Started 
+ Container nidsorgorg20pilot01-employee_014-1 Started 
+ Container nidsorgorg20pilot01-employee_017-1 Started 
+ Container nidsorgorg20pilot01-employee_011-1 Started 
+ Container nidsorgorg20pilot01-employee_012-1 Started 
+ Container nidsorgorg20pilot01-employee_018-1 Started 
+ Container nidsorgorg20pilot01-employee_015-1 Started 
+ Container nidsorgorg20pilot01-employee_016-1 Started 
+ Container nidsorgorg20pilot01-employee_013-1 Started 
+ Container nidsorgorg20pilot01-employee_019-1 Started 
+[2026-11-14T11:21:10Z] [ORGLAB/org20_pilot_01] STARTED employees 11..20/20
+[2026-11-14T11:21:10Z] [ORGLAB/org20_pilot_01] Starting restricted sensor in gateway namespace; no additional host network privileges
+ Image nidsorgorg20pilot01-capture Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 631B done
+#1 DONE 0.0s
 
-----------------------------------------------------------------------
-Ran 4 tests in 0.001s
+#2 [internal] load build definition from Dockerfile.capture
+#2 transferring dockerfile: 213B done
+#2 DONE 0.0s
 
-OK
-test_live_progress_and_fail_closed (test_v3_launcher_contract.TestV3Contract.test_live_progress_and_fail_closed) ... ok
-test_no_legacy_compose_capture_overlay (test_v3_launcher_contract.TestV3Contract.test_no_legacy_compose_capture_overlay) ... ok
-test_probe_is_parseable_python (test_v3_launcher_contract.TestV3Contract.test_probe_is_parseable_python) ... ok
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 2.0s
 
-----------------------------------------------------------------------
-Ran 3 tests in 0.000s
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
 
-OK
+#5 [1/2] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#5 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#5 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 0B / 28.25MB 0.2s
+#5 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 3.15MB / 28.25MB 1.5s
+#5 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 8.39MB / 28.25MB 1.7s
+#5 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 20.97MB / 28.25MB 1.8s
+#5 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 25.17MB / 28.25MB 2.0s
+#5 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 28.25MB / 28.25MB 2.0s done
+#5 extracting sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3
+#5 extracting sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 0.3s done
+#5 DONE 2.4s
 
-V3 additive patch installed. No V2 scripts, run journals, PCAP, models, DBs or outputs overwritten.
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ zeek --version
-zeek version 9.0.1
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ jobs -l
-[1]+ 112948 Stopped                 ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill %1
-kill: failed to parse argument: '%1'
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill 112948
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[s]taged_collect|[t]cpdump'
- 112948  108382 T       02:03:51 bash ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps --filter name=phase3-adaptive-nids-capture
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_recover_v2.sh staged_v2_check_01
-[RECOVERY] Extracting observed requests from shared gateway log...
+#6 [2/2] RUN apt-get update && apt-get install -y --no-install-recommends tcpdump ca-certificates     && rm -rf /var/lib/apt/lists/*
+#6 0.588 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#6 1.110 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#6 1.302 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#6 1.486 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#6 2.395 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#6 2.564 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [370 kB]
+#6 2.878 Fetched 9409 kB in 3s (3415 kB/s)
+#6 2.878 Reading package lists...
+#6 3.111 Reading package lists...
+#6 3.354 Building dependency tree...
+#6 3.411 Reading state information...
+#6 3.471 The following additional packages will be installed:
+#6 3.471   libdbus-1-3 libpcap0.8 libssl3 openssl
+#6 3.471 Suggested packages:
+#6 3.471   apparmor
+#6 3.471 Recommended packages:
+#6 3.471   dbus
+#6 3.491 The following NEW packages will be installed:
+#6 3.491   ca-certificates libdbus-1-3 libpcap0.8 libssl3 openssl tcpdump
+#6 3.779 0 upgraded, 6 newly installed, 0 to remove and 0 not upgraded.
+#6 3.779 Need to get 4467 kB of archives.
+#6 3.779 After this operation, 11.2 MB of additional disk space will be used.
+#6 3.779 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libssl3 amd64 3.0.22-1~deb12u2 [2040 kB]
+#6 4.679 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 openssl amd64 3.0.22-1~deb12u2 [1442 kB]
+#6 4.865 Get:3 http://deb.debian.org/debian-security bookworm-security/main amd64 ca-certificates all 20250419~deb12u2 [161 kB]
+#6 5.007 Get:4 http://deb.debian.org/debian bookworm/main amd64 libdbus-1-3 amd64 1.14.10-1~deb12u1 [201 kB]
+#6 5.011 Get:5 http://deb.debian.org/debian bookworm/main amd64 libpcap0.8 amd64 1.10.3-1 [157 kB]
+#6 5.015 Get:6 http://deb.debian.org/debian bookworm/main amd64 tcpdump amd64 4.99.3-1 [467 kB]
+#6 5.086 debconf: delaying package configuration, since apt-utils is not installed
+#6 5.096 Fetched 4467 kB in 2s (2915 kB/s)
+#6 5.116 Selecting previously unselected package libssl3:amd64.
+(Reading database ... 6096 files and directories currently installed.)
+#6 5.118 Preparing to unpack .../0-libssl3_3.0.22-1~deb12u2_amd64.deb ...
+#6 5.127 Unpacking libssl3:amd64 (3.0.22-1~deb12u2) ...
+#6 5.230 Selecting previously unselected package openssl.
+#6 5.230 Preparing to unpack .../1-openssl_3.0.22-1~deb12u2_amd64.deb ...
+#6 5.235 Unpacking openssl (3.0.22-1~deb12u2) ...
+#6 5.323 Selecting previously unselected package ca-certificates.
+#6 5.324 Preparing to unpack .../2-ca-certificates_20250419~deb12u2_all.deb ...
+#6 5.328 Unpacking ca-certificates (20250419~deb12u2) ...
+#6 5.381 Selecting previously unselected package libdbus-1-3:amd64.
+#6 5.382 Preparing to unpack .../3-libdbus-1-3_1.14.10-1~deb12u1_amd64.deb ...
+#6 5.386 Unpacking libdbus-1-3:amd64 (1.14.10-1~deb12u1) ...
+#6 5.430 Selecting previously unselected package libpcap0.8:amd64.
+#6 5.431 Preparing to unpack .../4-libpcap0.8_1.10.3-1_amd64.deb ...
+#6 5.435 Unpacking libpcap0.8:amd64 (1.10.3-1) ...
+#6 5.476 Selecting previously unselected package tcpdump.
+#6 5.477 Preparing to unpack .../5-tcpdump_4.99.3-1_amd64.deb ...
+#6 5.484 Unpacking tcpdump (4.99.3-1) ...
+#6 5.536 Setting up libssl3:amd64 (3.0.22-1~deb12u2) ...
+#6 5.550 Setting up libdbus-1-3:amd64 (1.14.10-1~deb12u1) ...
+#6 5.563 Setting up openssl (3.0.22-1~deb12u2) ...
+#6 5.582 Setting up ca-certificates (20250419~deb12u2) ...
+#6 5.623 debconf: unable to initialize frontend: Dialog
+#6 5.623 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#6 5.623 debconf: falling back to frontend: Readline
+#6 5.623 debconf: unable to initialize frontend: Readline
+#6 5.623 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#6 5.623 debconf: falling back to frontend: Teletype
+#6 5.829 Updating certificates in /etc/ssl/certs...
+#6 6.132 148 added, 0 removed; done.
+#6 6.159 Setting up libpcap0.8:amd64 (1.10.3-1) ...
+#6 6.173 Setting up tcpdump (4.99.3-1) ...
+#6 6.275 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#6 6.291 Processing triggers for ca-certificates (20250419~deb12u2) ...
+#6 6.297 Updating certificates in /etc/ssl/certs...
+#6 6.545 0 added, 0 removed; done.
+#6 6.545 Running hooks in /etc/ca-certificates/update.d...
+#6 6.545 done.
+#6 DONE 6.6s
+
+#7 exporting to image
+#7 exporting layers
+#7 exporting layers 0.4s done
+#7 exporting manifest sha256:79855bd294c875f7d5e0b4e0d27e2010235c23c8080a83fc493ae7df9295b4ed 0.0s done
+#7 exporting config sha256:48883a4f2e29776f822695c4efce85c69871161108ff73909a310a1cab4eef0b 0.0s done
+#7 exporting attestation manifest sha256:503c600837bce0c750722e2e8e0defc7ab61db434332b33b938ca646c5eb315e 0.0s done
+#7 exporting manifest list sha256:89a2baca1a2f6d5cc2b2c74d2f8409b89eabec6f13f8fd83ae91abc6ecdd224e 0.0s done
+#7 naming to docker.io/library/nidsorgorg20pilot01-capture:latest done
+#7 unpacking to docker.io/library/nidsorgorg20pilot01-capture:latest
+#7 unpacking to docker.io/library/nidsorgorg20pilot01-capture:latest 0.4s done
+#7 DONE 0.9s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image nidsorgorg20pilot01-capture Built 
+ Container nidsorgorg20pilot01-gateway-1 Running 
+ Container nidsorgorg20pilot01-capture-1 Creating 
+ Container nidsorgorg20pilot01-capture-1 Created 
+ Container nidsorgorg20pilot01-capture-1 Starting 
+ Container nidsorgorg20pilot01-capture-1 Started 
+tcpdump: data link type LINUX_SLL2
+tcpdump: Couldn't change to 'root' uid=0 gid=0: Operation not permitted
+[2026-11-14T11:21:25Z] [ORGLAB/org20_pilot_01] ERROR capture exited
+[2026-11-14T11:21:25Z] [ORGLAB/org20_pilot_01] EXIT=1 Stopping only ORGLAB project containers; preserving datasets, PCAP and logs
+[2026-11-14T11:21:34Z] [ORGLAB/org20_pilot_01] FAILED; inspect outputs/orglab/org20_pilot_01/launcher.log and run files; do not reuse this run ID
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/orglab_v3_diagnose.sh staged_v2_main_01
+DATE=2026-11-14T11:21:48+00:00
+RUN=staged_v2_main_01
+PWD=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
+
+GIT
+## master...origin/master
+?? outputs/logs/setup/diagnose_v3_staged_v2_main_01_20261114T112148Z/
+?? outputs/orglab/
+
+CAPTURE INVOCATION / TIMEOUT / PROBE CODE
+31:for cmd in flock timeout docker python3; do command -v "$cmd" >/dev/null || { echo "Missing command: $cmd" >&2; exit 1; }; done
+74:  log "Stopping only our capture container: $CAP_NAME (bounded Docker timeout)"
+75:  if [[ "$(timeout 5s docker inspect -f '{{.State.Running}}' "$CAP_NAME" 2>/dev/null || true)" == true ]]; then
+76:    if ! step timeout 16s docker stop --signal SIGINT --timeout 8 "$CAP_NAME"; then
+78:      step timeout 8s docker stop -t 3 "$CAP_NAME" || true
+82:  running="$(timeout 5s docker inspect -f '{{.State.Running}}' "$CAP_NAME" 2>/dev/null || true)"
+88:  timeout 8s docker logs "$CAP_NAME" > "$RAW/capture_container_${STAMP}.log" 2>&1 || true
+92:  step timeout 8s docker rm "$CAP_NAME" || log 'WARNING: stopped capture container remains; manually inspect it later'
+101:      CAPTURE_PREFLIGHT_FAILED|CAPTURE_TOO_SPARSE|APPLICATION_ONLY_INVALID_CAPTURE|COLLECTOR_INTERRUPTED) ;;
+155:OLD_HOST_CAPTURE="$(pgrep -a -x tcpdump 2>/dev/null | grep -F -- "-i $SVC_BRIDGE" || true)"
+156:[[ -z "$OLD_HOST_CAPTURE" ]] || { log "STOP: orphan host tcpdump still active: $OLD_HOST_CAPTURE"; exit 1; }
+165:  if "${COMPOSE[@]}" exec -T gateway python -c 'import socket; [socket.create_connection((h,8080),timeout=2).close() for h in ("127.0.0.1","server_a","server_b")]' >/dev/null 2>&1; then READY=1; break; fi
+167:  sleep 1
+175:    log 'Building restricted tcpdump image from existing local Dockerfile'
+187:     --read-only --stop-signal SIGINT --stop-timeout 8 --pids-limit 32 \
+190:     "$IMAGE" -Z root -i any -p -nn -s 0 -U -w "/captures/$CAP_FILE" 'tcp port 8080'
+192:  sleep 2
+198:  log 'Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment'
+199:  PROBE='import urllib.request; services=["a","b","a","b"]; statuses=[urllib.request.urlopen(urllib.request.Request("http://gateway:8080/"+svc,data=b"capture_check"*8,headers={"X-Lab-Episode":"v3_capture_probe_not_an_experiment"},method="POST"),timeout=5).status for svc in services]; assert statuses==[200]*4; print("CAPTURE_PROBE_HTTP_OK",len(statuses),flush=True)'
+200:  step timeout 45s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner python -c "$PROBE"
+206:    log "Capture probe verification $attempt/8: packets not yet flushed; waiting"
+207:    sleep 1
+212:    status 'CAPTURE_PREFLIGHT_FAILED'
+224:timeout -s INT -k 10s 1800s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner "${CMD[@]}" > "$RUNLOG" 2>&1 &
+227:  sleep 5
+
+RAW STATUS
+2026-11-14 03:39:15.0077219000 314 src/data/raw/runs/staged_v2_main_01/scenario_config.json
+2026-11-14 07:18:53.3373542000 24 src/data/raw/runs/staged_v2_main_01/traffic_20261114T071852Z_150864.pcap
+2026-11-14 07:18:55.3963457000 79 src/data/raw/runs/staged_v2_main_01/capture_container_20261114T071852Z_150864.log
+2026-11-14 07:18:55.4391291000 1847 src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T071852Z_150864.log
+2026-11-14 08:35:56.0942266000 13108 src/data/raw/runs/staged_v2_main_01/traffic_20261114T083552Z_156199.pcap
+2026-11-14 08:36:40.2343053000 176 src/data/raw/runs/staged_v2_main_01/capture_container_20261114T083552Z_156199.log
+2026-11-14 08:36:40.2724292000 2246 src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T083552Z_156199.log
+2026-11-14 09:51:54.9778930000 13108 src/data/raw/runs/staged_v2_main_01/traffic_20261114T095151Z_180077.pcap
+2026-11-14 09:52:39.1191242000 176 src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+2026-11-14 09:52:39.1537101000 216 src/data/raw/runs/staged_v2_main_01/collector_status_v3.json
+2026-11-14 09:52:39.1560560000 2246 src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log
+
+COMPLETE/CONTROLLER STATUS
+src/data/raw/runs/staged_v2_main_01/scenario_config.json
 {
-  "status": "validated_observed_gateway_subset_not_real_attack_data",
-  "episodes": 24,
-  "events": 480,
-  "output": "src/data/raw/runs/staged_v2_check_01/gateway_subset.jsonl"
+  "delay_scale": 1.0,
+  "held_out_profile": "slow_ramp",
+  "requests": 20,
+  "rounds": 12,
+  "schema": "staged_v2_1",
+  "seed": 20261115,
+  "test_rounds": 12,
+  "topology": "docker_two_internal_segments_two_services",
+  "train_profiles": [
+    "rapid_repeat",
+    "destination_shift",
+    "jittered_burst"
+  ]
 }
-[RECOVERY] Auditing src/data/raw/runs/staged_v2_check_01/traffic_20261114T051137Z_112948.pcap
-{"complete": true, "issue": "Header-only PCAP: zero packet records; no network evidence", "linktype": 276, "min_packets": 4, "packets": 0, "path": "src/data/raw/runs/staged_v2_check_01/traffic_20261114T051137Z_112948.pcap", "payload_bytes": 0, "size_bytes": 24, "valid": false, "version": [2, 4]}
-[RECOVERY] APPLICATION-ONLY DATA: no valid packet-bearing PCAP. Preserve this run, use a NEW run ID for captured research.
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture
-Another staged collector holds outputs/locks/staged_capture.lock.
-Check jobs -l; ps -eo pid,ppid,stat,args | grep -E "[s]taged_collect|[d]ocker compose|[t]cpdump"
-Do not delete the lock file while a suspended process holds its descriptor.
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ jobs -l
-[1]+ 112948 Stopped                 ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill -9 $(jobs -ps)
-[1]+  Killed                  ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ jobs -l
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[s]taged_collect|[t]cpdump'
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps --filter name=phase3-adaptive-nids-capture
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture
-{"episode_budget": 24, "initialised": true, "run_dir": "src/data/raw/runs/staged_v3_check_02"}
-[2026-11-14T07:16:59Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=0
-[2026-11-14T07:16:59Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
-[2026-11-14T07:16:59Z] [STAGE-V3] Starting authorised isolated lab services
-time="2026-11-14T07:16:59Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container phase3-adaptive-nids-gateway-1 Running 
- Container phase3-adaptive-nids-server_a-1 Running 
- Container phase3-adaptive-nids-server_b-1 Running 
-[2026-11-14T07:16:59Z] [STAGE-V3] Both Compose network segments confirmed internal
-[2026-11-14T07:16:59Z] [STAGE-V3] Gateway and backends ready
-[2026-11-14T07:16:59Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T071659Z_149199.pcap
-08f6f066d0b9f5f31da44d0c4a700f1b95e036cf0d06baf9f2f6f32eda6abd05
-[2026-11-14T07:17:01Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
+
+src/data/raw/runs/staged_v2_main_01/collector_status_v3.json
+{"schema":"stage_v3_collector","run_id":"staged_v2_main_01","status":"FAILED_OR_INTERRUPTED","updated_utc":"2026-11-14T09:52:39Z","log":"src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log"}
+
+
+LATEST CAPTURE CONTAINER LOG TAILS
+----- src/data/raw/runs/staged_v2_main_01/capture_container_20261114T071852Z_150864.log
 tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
-[2026-11-14T07:17:01Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T071659Z_149199 (bounded Docker timeout)
-[2026-11-14T07:17:01Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T071659Z_149199.log
-p3cap_staged_v3_check_02_20261114T071659Z_149199
-[2026-11-14T07:17:01Z] [STAGE-V3] Capture process confirmed stopped
-[2026-11-14T07:17:01Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
-[2026-11-14T07:17:11Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1
-[2026-11-14T07:17:11Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
-[2026-11-14T07:17:11Z] [STAGE-V3] Starting authorised isolated lab services
-time="2026-11-14T07:17:11Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container phase3-adaptive-nids-gateway-1 Running 
- Container phase3-adaptive-nids-server_a-1 Running 
- Container phase3-adaptive-nids-server_b-1 Running 
-[2026-11-14T07:17:11Z] [STAGE-V3] Both Compose network segments confirmed internal
-[2026-11-14T07:17:11Z] [STAGE-V3] Gateway and backends ready
-[2026-11-14T07:17:11Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T071711Z_149860.pcap
-2f8b76ab0b4d9bcbc3b323baa67b86cc0d2131e86e51acee3861c18d2995c45d
-[2026-11-14T07:17:13Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
-tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
-[2026-11-14T07:17:13Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T071711Z_149860 (bounded Docker timeout)
-[2026-11-14T07:17:13Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T071711Z_149860.log
-p3cap_staged_v3_check_02_20261114T071711Z_149860
-[2026-11-14T07:17:13Z] [STAGE-V3] Capture process confirmed stopped
-[2026-11-14T07:17:13Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture
-Existing run directory: src/data/raw/runs/staged_v3_check_02; use --resume or another ID
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ jobs -l
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
-CONTAINER ID   IMAGE              COMMAND                  CREATED        STATUS        PORTS     NAMES
-631e6c1d5b89   python:3.12-slim   "python -m lab.http_…"   22 hours ago   Up 22 hours             phase3-adaptive-nids-gateway-1
-d522a2c2f430   python:3.12-slim   "python -m lab.http_…"   22 hours ago   Up 22 hours             phase3-adaptive-nids-server_b-1
-7fecfbe9c87d   python:3.12-slim   "python -m lab.http_…"   22 hours ago   Up 22 hours             phase3-adaptive-nids-server_a-1
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_v3_status.sh staged_v3_check_02 --follow
+----- src/data/raw/runs/staged_v2_main_01/capture_container_20261114T083552Z_156199.log
+tcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+104 packets captured
+104 packets received by filter
+0 packets dropped by kernel
+----- src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+tcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+104 packets captured
+104 packets received by filter
+0 packets dropped by kernel
 
-===== STAGE V3 STATUS: staged_v3_check_02 =====
-{"schema":"stage_v3_collector","run_id":"staged_v3_check_02","status":"FAILED_OR_INTERRUPTED","updated_utc":"2026-11-14T07:17:13Z","log":"src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T071711Z_149860.log"}
-
-Completed rounds: 0
-Committed episodes: 0
-Observed gateway events: 0
-Complete marker: no
-
-Captured files:
-traffic_20261114T071659Z_149199.pcap 24 bytes
-traffic_20261114T071711Z_149860.pcap 24 bytes
-
-Capture processes (this run only):
-NAMES     STATUS
-
-Latest collector log:
-src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T071711Z_149860.log
-[2026-11-14T07:17:11Z] [STAGE-V3] Starting authorised isolated lab services
-time="2026-11-14T07:17:11Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container phase3-adaptive-nids-gateway-1 Running 
- Container phase3-adaptive-nids-server_a-1 Running 
- Container phase3-adaptive-nids-server_b-1 Running 
-[2026-11-14T07:17:11Z] [STAGE-V3] Both Compose network segments confirmed internal
-[2026-11-14T07:17:11Z] [STAGE-V3] Gateway and backends ready
-[2026-11-14T07:17:11Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T071711Z_149860.pcap
-2f8b76ab0b4d9bcbc3b323baa67b86cc0d2131e86e51acee3861c18d2995c45d
-[2026-11-14T07:17:13Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
-tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
-[2026-11-14T07:17:13Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T071711Z_149860 (bounded Docker timeout)
-[2026-11-14T07:17:13Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T071711Z_149860.log
-p3cap_staged_v3_check_02_20261114T071711Z_149860
-[2026-11-14T07:17:13Z] [STAGE-V3] Capture process confirmed stopped
-[2026-11-14T07:17:13Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
-[2026-11-14T07:17:11Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1
-[2026-11-14T07:17:11Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
-[2026-11-14T07:17:11Z] [STAGE-V3] Starting authorised isolated lab services
-time="2026-11-14T07:17:11Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container phase3-adaptive-nids-gateway-1 Running 
- Container phase3-adaptive-nids-server_a-1 Running 
- Container phase3-adaptive-nids-server_b-1 Running 
-[2026-11-14T07:17:11Z] [STAGE-V3] Both Compose network segments confirmed internal
-[2026-11-14T07:17:11Z] [STAGE-V3] Gateway and backends ready
-[2026-11-14T07:17:11Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T071711Z_149860.pcap
-2f8b76ab0b4d9bcbc3b323baa67b86cc0d2131e86e51acee3861c18d2995c45d
-[2026-11-14T07:17:13Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
-tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
-[2026-11-14T07:17:13Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T071711Z_149860 (bounded Docker timeout)
-[2026-11-14T07:17:13Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T071711Z_149860.log
-p3cap_staged_v3_check_02_20261114T071711Z_149860
-[2026-11-14T07:17:13Z] [STAGE-V3] Capture process confirmed stopped
-[2026-11-14T07:17:13Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
-^C
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
+LATEST COLLECTOR LOG TAILS
+----- src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T071852Z_150864.log
 [2026-11-14T07:18:52Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
 [2026-11-14T07:18:52Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
 [2026-11-14T07:18:52Z] [STAGE-V3] Starting authorised isolated lab services
@@ -182,65 +358,7 @@ tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
 p3cap_staged_v2_main_01_20261114T071852Z_150864
 [2026-11-14T07:18:55Z] [STAGE-V3] Capture process confirmed stopped
 [2026-11-14T07:18:55Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
-
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ mkdir -p /tmp/phase3-tcpdump-fix
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ unzip -q -o  Phase3_TCPDump_Privilege_Hotfix.zip -d /tmp/phase3-tcpdump-fix 
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash /tmp/phase3-tcpdump-fix/fix_tcpdump_privileges.sh "$PWD"
-VERIFIED: expected original Stage V3 tcpdump invocation and restricted capabilities
-PATCH APPLIED: tcpdump now starts with -Z root; restricted Docker capabilities unchanged.
-VERIFIED: patched invocation, isolated capture, preflight gate, timestamped heartbeat.
-BACKUP: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/backups/stage_v3_tcpdump_privileges_20261114T081743Z_153317/staged_collect_v3.sh
-DATA: old run journals, PCAPs, trained models and logs were not touched.
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
-[2026-11-14T08:17:53Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1
-[2026-11-14T08:17:53Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
-[2026-11-14T08:17:53Z] [STAGE-V3] Starting authorised isolated lab services
-time="2026-11-14T08:17:53Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container phase3-adaptive-nids-server_b-1 Running 
- Container phase3-adaptive-nids-gateway-1 Running 
- Container phase3-adaptive-nids-server_a-1 Running 
-[2026-11-14T08:17:53Z] [STAGE-V3] Both Compose network segments confirmed internal
-[2026-11-14T08:17:53Z] [STAGE-V3] Gateway and backends ready
-[2026-11-14T08:17:53Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T081753Z_153376.pcap
-5aefe82cfb29ce855b7794a3bcffaf0817a4d6a4e7dca380ccbed43e8fb32466
-[2026-11-14T08:17:55Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
-time="2026-11-14T08:17:56Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container phase3-adaptive-nids-runner-run-9149ff039318 Creating 
- Container phase3-adaptive-nids-runner-run-9149ff039318 Created 
-CAPTURE_PROBE_HTTP_OK 4
-[2026-11-14T08:18:40Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T081753Z_153376 (bounded Docker timeout)
-Flag --time has been deprecated, use --timeout instead
-p3cap_staged_v3_check_02_20261114T081753Z_153376
-[2026-11-14T08:18:41Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T081753Z_153376.log
-p3cap_staged_v3_check_02_20261114T081753Z_153376
-[2026-11-14T08:18:41Z] [STAGE-V3] Capture process confirmed stopped
-[2026-11-14T08:18:41Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ nano setup/staged_collect_v3.sh 
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
-[2026-11-14T08:21:44Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1
-[2026-11-14T08:21:44Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
-[2026-11-14T08:21:44Z] [STAGE-V3] Starting authorised isolated lab services
-time="2026-11-14T08:21:44Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container phase3-adaptive-nids-server_a-1 Running 
- Container phase3-adaptive-nids-server_b-1 Running 
- Container phase3-adaptive-nids-gateway-1 Running 
-[2026-11-14T08:21:44Z] [STAGE-V3] Both Compose network segments confirmed internal
-[2026-11-14T08:21:44Z] [STAGE-V3] Gateway and backends ready
-[2026-11-14T08:21:44Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T082144Z_154831.pcap
-33fb246997a33a7b0c8526ebb909e55de1041ca2fa1ac24c9ffd69c79cce60c2
-[2026-11-14T08:21:46Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
-time="2026-11-14T08:21:46Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container phase3-adaptive-nids-runner-run-e204421f6643 Creating 
- Container phase3-adaptive-nids-runner-run-e204421f6643 Created 
-CAPTURE_PROBE_HTTP_OK 4
-[2026-11-14T08:22:31Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T082144Z_154831 (bounded Docker timeout)
-p3cap_staged_v3_check_02_20261114T082144Z_154831
-[2026-11-14T08:22:32Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T082144Z_154831.log
-p3cap_staged_v3_check_02_20261114T082144Z_154831
-[2026-11-14T08:22:32Z] [STAGE-V3] Capture process confirmed stopped
-[2026-11-14T08:22:32Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
+----- src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T083552Z_156199.log
 [2026-11-14T08:35:52Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
 [2026-11-14T08:35:52Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
 [2026-11-14T08:35:52Z] [STAGE-V3] Starting authorised isolated lab services
@@ -263,58 +381,7 @@ p3cap_staged_v2_main_01_20261114T083552Z_156199
 p3cap_staged_v2_main_01_20261114T083552Z_156199
 [2026-11-14T08:36:40Z] [STAGE-V3] Capture process confirmed stopped
 [2026-11-14T08:36:40Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_train_guard_v3.sh staged_v2_main_01 --hpo-trials 30 --gru-epochs 80
-STOP: complete.json / episodes.jsonl / gateway_subset.jsonl required. No training started.
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
-
-
-
-
-STATUS SUMMARY — 2026-11-14T09:48:00Z
-✅ Phase A–B: V3 Capture Blocker RESOLVED
-- -Z root hotfix: Already applied in live setup/staged_collect_v3.sh (line 190)
-- tcpdump now works: 13,550 real packets captured (1.69 MB PCAP), 104 packets in preflight probes
-- staged_v3_check_02: 24 episodes / 480 gateway requests — COLLECTION_COMPLETE
-- Zeek alignment: 1.0 window coverage (24/24 episodes with 3+ connections), 960 assigned connections
-✅ Phase D: Parallel Training COMPLETED (all exit code 0)
-Job	Status	Key Results
-Baseline (RF + Isolation Forest)	✅ Done	RF: fixed F1=0.80, random F1=0.86, strategic F1=0.0 (gateway data)
-HPO (Optuna TPE, 30 trials × 3 policies)	✅ Done	90 trials total; all policies hit 1.0 validation PR-AUC (tiny lab data)
-GRU (80 epochs, CUDA)	✅ Done	All 3 policies trained on RTX 4000 Ada; fixed policy: 1 early warning, 3 false alarms
-Zeek Pipeline	✅ Done	Evaluated on Zeek conn.log (960 connections)
-📁 Key Output Artefacts
-outputs/results/staged_staged_v3_check_02_20261114T094626Z_170429/   # Gateway baseline
-  ├── results.json, splits.json, test_predictions.jsonl
-  └── model/
-
-outputs/results/staged_zeek_staged_v3_check_02_20261114T094626Z_170429/  # Zeek baseline
-  ├── results.json, splits.json, test_predictions.jsonl
-  └── model/
-
-outputs/model/staged/staged_v3_check_02/{fixed,random,strategic}/complete.json  # GRU checkpoints
-
-outputs/hpo/staged/staged_v3_check_02/{fixed,random,strategic}.sqlite3  # Optuna studies
-⚠️ Scientific Caveats (per AGENTS.md §1, §11)
-- These are controlled harmless HTTP profiles, NOT real intrusions
-- PR-AUC = 1.0 on tiny lab data indicates trivial separability, not production NIDS performance
-- Strategic policy GRU: no validation threshold met FP constraint → no test metrics
-- Single topology (Docker two-segment), 24 episodes — no cross-topology generalisation claim
-NEXT ACTIONS (per INSTRUCTIONS.md Priority Table)
-Priority	Action	Command
-P1b	Resume main 96-episode experiment (staged_v2_main_01)	./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
-P3	Upgrade scientific validity: add GNN (Phase E3), detector-based game reward (E2), multi-topology (E1)	Implement in src/code/ and lab/
-P4	Final Phase 3 report & evidence package	Assemble from outputs/results/, outputs/figs/, docs/
-GRU Deployment Command (Already Executed)
-The GRU was deployed via the parallel launcher. To re-run manually:
-cd /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
-.venv-cuda/bin/python -m src.code.temporal_gru_sprint \
-  --run staged_v3_check_02 --epochs 80 --device auto \
-  --output outputs/model/staged/staged_v3_check_02 --causal-labels
-There is no GNN implementation yet — that's Phase E3 (Priority P3). The current unique_links feature is not a GNN (per AGENTS.md §6.5).
-Recovery: All checkpoints preserved. HPO SQLite DBs, GRU epoch checkpoints, and PCAPs are intact. Re-run any job via its task.sh in outputs/sprints/staged/staged_v3_check_02/20261114T094626Z_170429/.
-
-
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
+----- src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log
 [2026-11-14T09:51:51Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
 [2026-11-14T09:51:51Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
 [2026-11-14T09:51:51Z] [STAGE-V3] Starting authorised isolated lab services
@@ -337,12 +404,1023 @@ p3cap_staged_v2_main_01_20261114T095151Z_180077
 p3cap_staged_v2_main_01_20261114T095151Z_180077
 [2026-11-14T09:52:39Z] [STAGE-V3] Capture process confirmed stopped
 [2026-11-14T09:52:39Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python -m src.code.temporal_gru_sprint \
-  --run staged_v3_check_02 --epochs 80 --device auto \
-  --output outputs/model/staged/staged_v3_check_02 --causal-labels
-GPU temporal baseline: cuda episodes 24 training windows 420
-fixed : already complete; not overwriting
-random : already complete; not overwriting
-strategic : already complete; not overwriting
+
+LIVE PROCESSES (READ ONLY)
+
+NAMED CAPTURE CONTAINERS (READ ONLY)
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+SNAPSHOT SAVED: outputs/logs/setup/diagnose_v3_staged_v2_main_01_20261114T112148Z/audit.log
+No processes stopped, no locks removed, no PCAP/model/data modified.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_v3_status.sh staged_v3_check_02
+
+===== STAGE V3 STATUS: staged_v3_check_02 =====
+{"schema":"stage_v3_collector","run_id":"staged_v3_check_02","status":"COLLECTION_COMPLETE","updated_utc":"2026-11-14T09:07:35Z","log":"src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log"}
+
+Completed rounds: 12
+Committed episodes: 24
+Observed gateway events: 480
+Complete marker: yes
+
+Captured files:
+traffic_20261114T071659Z_149199.pcap 24 bytes
+traffic_20261114T071711Z_149860.pcap 24 bytes
+traffic_20261114T081753Z_153376.pcap 13108 bytes
+traffic_20261114T082144Z_154831.pcap 13108 bytes
+traffic_20261114T090656Z_165976.pcap 1696564 bytes
+
+Capture processes (this run only):
+NAMES     STATUS
+
+Latest collector log:
+src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+p3cap_staged_v3_check_02_20261114T090656Z_165976
+[2026-11-14T09:07:35Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T090656Z_165976.log
+p3cap_staged_v3_check_02_20261114T090656Z_165976
+[2026-11-14T09:07:35Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T09:07:35Z] [STAGE-V3] Extracting ground-truth-aligned gateway observations
+{
+  "status": "validated_observed_gateway_subset_not_real_attack_data",
+  "episodes": 24,
+  "events": 480,
+  "output": "src/data/raw/runs/staged_v3_check_02/gateway_subset.jsonl"
+}
+[2026-11-14T09:07:35Z] [STAGE-V3] Validating closed PCAP structure and nonzero observed packet count
+{"complete": true, "issue": null, "linktype": 276, "min_packets": 96, "packets": 13550, "path": "src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap", "payload_bytes": 1479740, "size_bytes": 1696564, "valid": true, "version": [2, 4]}
+[2026-11-14T09:07:35Z] [STAGE-V3] Packet audit written: src/data/raw/runs/staged_v3_check_02/capture_audit_20261114T090656Z_165976.json (independent Zeek alignment still required)
+[2026-11-14T09:07:35Z] [STAGE-V3] SUCCESS: staged_v3_check_02; manifest=src/data/raw/runs/staged_v3_check_02/episodes.jsonl, gateway=src/data/raw/runs/staged_v3_check_02/gateway_subset.jsonl, packet=src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap
+[2026-11-14T09:07:35Z] [STAGE-V3] Reminder: benign laboratory behavioural profiles, NOT evidence of genuine network intrusion.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_v3_status.sh staged_v2_main_01
+
+===== STAGE V3 STATUS: staged_v2_main_01 =====
+{"schema":"stage_v3_collector","run_id":"staged_v2_main_01","status":"FAILED_OR_INTERRUPTED","updated_utc":"2026-11-14T09:52:39Z","log":"src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log"}
+
+Completed rounds: 0
+Committed episodes: 0
+Observed gateway events: 0
+Complete marker: no
+
+Captured files:
+traffic_20261114T071852Z_150864.pcap 24 bytes
+traffic_20261114T083552Z_156199.pcap 13108 bytes
+traffic_20261114T095151Z_180077.pcap 13108 bytes
+
+Capture processes (this run only):
+NAMES     STATUS
+
+Latest collector log:
+src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log
+ Container phase3-adaptive-nids-server_a-1 Running 
+[2026-11-14T09:51:51Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T09:51:51Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T095151Z_180077.pcap
+12764ae1612ebb8581a15b93ae7f97292baf67facef64a0de7932d2730fe88eb
+[2026-11-14T09:51:53Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T09:51:54Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-8fc71c6ea302 Creating 
+ Container phase3-adaptive-nids-runner-run-8fc71c6ea302 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T09:52:38Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T095151Z_180077 (bounded Docker timeout)
+p3cap_staged_v2_main_01_20261114T095151Z_180077
+[2026-11-14T09:52:39Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+p3cap_staged_v2_main_01_20261114T095151Z_180077
+[2026-11-14T09:52:39Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T09:52:39Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/orglab_v3_diagnose.sh staged_v2_main_01
+DATE=2026-11-14T11:23:33+00:00
+RUN=staged_v2_main_01
+PWD=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
+
+GIT
+## master...origin/master
+ M logs.txt
+?? outputs/logs/setup/diagnose_v3_staged_v2_main_01_20261114T112148Z/
+?? outputs/logs/setup/diagnose_v3_staged_v2_main_01_20261114T112333Z/
+?? outputs/orglab/
+
+CAPTURE INVOCATION / TIMEOUT / PROBE CODE
+31:for cmd in flock timeout docker python3; do command -v "$cmd" >/dev/null || { echo "Missing command: $cmd" >&2; exit 1; }; done
+74:  log "Stopping only our capture container: $CAP_NAME (bounded Docker timeout)"
+75:  if [[ "$(timeout 5s docker inspect -f '{{.State.Running}}' "$CAP_NAME" 2>/dev/null || true)" == true ]]; then
+76:    if ! step timeout 16s docker stop --signal SIGINT --timeout 8 "$CAP_NAME"; then
+78:      step timeout 8s docker stop -t 3 "$CAP_NAME" || true
+82:  running="$(timeout 5s docker inspect -f '{{.State.Running}}' "$CAP_NAME" 2>/dev/null || true)"
+88:  timeout 8s docker logs "$CAP_NAME" > "$RAW/capture_container_${STAMP}.log" 2>&1 || true
+92:  step timeout 8s docker rm "$CAP_NAME" || log 'WARNING: stopped capture container remains; manually inspect it later'
+101:      CAPTURE_PREFLIGHT_FAILED|CAPTURE_TOO_SPARSE|APPLICATION_ONLY_INVALID_CAPTURE|COLLECTOR_INTERRUPTED) ;;
+155:OLD_HOST_CAPTURE="$(pgrep -a -x tcpdump 2>/dev/null | grep -F -- "-i $SVC_BRIDGE" || true)"
+156:[[ -z "$OLD_HOST_CAPTURE" ]] || { log "STOP: orphan host tcpdump still active: $OLD_HOST_CAPTURE"; exit 1; }
+165:  if "${COMPOSE[@]}" exec -T gateway python -c 'import socket; [socket.create_connection((h,8080),timeout=2).close() for h in ("127.0.0.1","server_a","server_b")]' >/dev/null 2>&1; then READY=1; break; fi
+167:  sleep 1
+175:    log 'Building restricted tcpdump image from existing local Dockerfile'
+187:     --read-only --stop-signal SIGINT --stop-timeout 8 --pids-limit 32 \
+190:     "$IMAGE" -Z root -i any -p -nn -s 0 -U -w "/captures/$CAP_FILE" 'tcp port 8080'
+192:  sleep 2
+198:  log 'Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment'
+199:  PROBE='import urllib.request; services=["a","b","a","b"]; statuses=[urllib.request.urlopen(urllib.request.Request("http://gateway:8080/"+svc,data=b"capture_check"*8,headers={"X-Lab-Episode":"v3_capture_probe_not_an_experiment"},method="POST"),timeout=5).status for svc in services]; assert statuses==[200]*4; print("CAPTURE_PROBE_HTTP_OK",len(statuses),flush=True)'
+200:  step timeout 45s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner python -c "$PROBE"
+206:    log "Capture probe verification $attempt/8: packets not yet flushed; waiting"
+207:    sleep 1
+212:    status 'CAPTURE_PREFLIGHT_FAILED'
+224:timeout -s INT -k 10s 1800s "${COMPOSE[@]}" --profile runner run --rm -T --no-deps runner "${CMD[@]}" > "$RUNLOG" 2>&1 &
+227:  sleep 5
+
+RAW STATUS
+2026-11-14 03:39:15.0077219000 314 src/data/raw/runs/staged_v2_main_01/scenario_config.json
+2026-11-14 07:18:53.3373542000 24 src/data/raw/runs/staged_v2_main_01/traffic_20261114T071852Z_150864.pcap
+2026-11-14 07:18:55.3963457000 79 src/data/raw/runs/staged_v2_main_01/capture_container_20261114T071852Z_150864.log
+2026-11-14 07:18:55.4391291000 1847 src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T071852Z_150864.log
+2026-11-14 08:35:56.0942266000 13108 src/data/raw/runs/staged_v2_main_01/traffic_20261114T083552Z_156199.pcap
+2026-11-14 08:36:40.2343053000 176 src/data/raw/runs/staged_v2_main_01/capture_container_20261114T083552Z_156199.log
+2026-11-14 08:36:40.2724292000 2246 src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T083552Z_156199.log
+2026-11-14 09:51:54.9778930000 13108 src/data/raw/runs/staged_v2_main_01/traffic_20261114T095151Z_180077.pcap
+2026-11-14 09:52:39.1191242000 176 src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+2026-11-14 09:52:39.1537101000 216 src/data/raw/runs/staged_v2_main_01/collector_status_v3.json
+2026-11-14 09:52:39.1560560000 2246 src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log
+
+COMPLETE/CONTROLLER STATUS
+src/data/raw/runs/staged_v2_main_01/scenario_config.json
+{
+  "delay_scale": 1.0,
+  "held_out_profile": "slow_ramp",
+  "requests": 20,
+  "rounds": 12,
+  "schema": "staged_v2_1",
+  "seed": 20261115,
+  "test_rounds": 12,
+  "topology": "docker_two_internal_segments_two_services",
+  "train_profiles": [
+    "rapid_repeat",
+    "destination_shift",
+    "jittered_burst"
+  ]
+}
+
+src/data/raw/runs/staged_v2_main_01/collector_status_v3.json
+{"schema":"stage_v3_collector","run_id":"staged_v2_main_01","status":"FAILED_OR_INTERRUPTED","updated_utc":"2026-11-14T09:52:39Z","log":"src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log"}
+
+
+LATEST CAPTURE CONTAINER LOG TAILS
+----- src/data/raw/runs/staged_v2_main_01/capture_container_20261114T071852Z_150864.log
+tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
+----- src/data/raw/runs/staged_v2_main_01/capture_container_20261114T083552Z_156199.log
+tcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+104 packets captured
+104 packets received by filter
+0 packets dropped by kernel
+----- src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+tcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+104 packets captured
+104 packets received by filter
+0 packets dropped by kernel
+
+LATEST COLLECTOR LOG TAILS
+----- src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T071852Z_150864.log
+[2026-11-14T07:18:52Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T07:18:52Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T07:18:52Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T07:18:52Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T07:18:52Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T07:18:53Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T07:18:53Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T071852Z_150864.pcap
+ac8c2e7ce25c6c8416f438526ab832ba0aefe5d5d9c75b07983427ca5f76fdd0
+[2026-11-14T07:18:55Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
+tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
+[2026-11-14T07:18:55Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T071852Z_150864 (bounded Docker timeout)
+[2026-11-14T07:18:55Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T071852Z_150864.log
+p3cap_staged_v2_main_01_20261114T071852Z_150864
+[2026-11-14T07:18:55Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T07:18:55Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
+----- src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T083552Z_156199.log
+[2026-11-14T08:35:52Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T08:35:52Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T08:35:52Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T08:35:52Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T08:35:52Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T08:35:52Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T08:35:52Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T083552Z_156199.pcap
+b61a4d65f9dbdab634f326bad49d94b6a31be48af79f71034aeba8ad384820cc
+[2026-11-14T08:35:55Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T08:35:55Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-2e469de93177 Creating 
+ Container phase3-adaptive-nids-runner-run-2e469de93177 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T08:36:40Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T083552Z_156199 (bounded Docker timeout)
+p3cap_staged_v2_main_01_20261114T083552Z_156199
+[2026-11-14T08:36:40Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T083552Z_156199.log
+p3cap_staged_v2_main_01_20261114T083552Z_156199
+[2026-11-14T08:36:40Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T08:36:40Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+----- src/data/raw/runs/staged_v2_main_01/collector_v3_20261114T095151Z_180077.log
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T09:51:51Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T09:51:51Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+[2026-11-14T09:51:51Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T09:51:51Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T09:51:51Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T095151Z_180077.pcap
+12764ae1612ebb8581a15b93ae7f97292baf67facef64a0de7932d2730fe88eb
+[2026-11-14T09:51:53Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T09:51:54Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-8fc71c6ea302 Creating 
+ Container phase3-adaptive-nids-runner-run-8fc71c6ea302 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T09:52:38Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T095151Z_180077 (bounded Docker timeout)
+p3cap_staged_v2_main_01_20261114T095151Z_180077
+[2026-11-14T09:52:39Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T095151Z_180077.log
+p3cap_staged_v2_main_01_20261114T095151Z_180077
+[2026-11-14T09:52:39Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T09:52:39Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+
+LIVE PROCESSES (READ ONLY)
+
+NAMED CAPTURE CONTAINERS (READ ONLY)
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+SNAPSHOT SAVED: outputs/logs/setup/diagnose_v3_staged_v2_main_01_20261114T112333Z/audit.log
+No processes stopped, no locks removed, no PCAP/model/data modified.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_train_guard_v3.sh staged_v2_main_01 --hpo-trials 30 --gru-epochs 80
+STOP: complete.json / episodes.jsonl / gateway_subset.jsonl required. No training started.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_status.sh
+SPRINT: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/sprints/staged/staged_v3_check_02/20261114T094626Z_170429
+===== baseline =====
+exitcode=0
+  "status": "validated_structure_and_finiteness",
+  "policies": 3,
+  "held_out_episodes": 6,
+  "experimental_validity": "not_established_by_this_checker"
+}
+===== hpo =====
+exitcode=0
+[I 2026-11-14 09:47:50,526] Trial 27 finished with value: 0.9952380952380951 and parameters: {'n_estimators': 60, 'max_depth': 6, 'min_samples_leaf': 5, 'max_features': 0.8994505908163903}. Best is trial 16 with value: 1.0.
+[I 2026-11-14 09:47:51,327] Trial 28 finished with value: 0.9910714285714286 and parameters: {'n_estimators': 100, 'max_depth': 10, 'min_samples_leaf': 7, 'max_features': 0.9496256743300222}. Best is trial 16 with value: 1.0.
+[I 2026-11-14 09:47:52,054] Trial 29 finished with value: 0.9790249433106575 and parameters: {'n_estimators': 60, 'max_depth': 4, 'min_samples_leaf': 6, 'max_features': 0.7010814752784367}. Best is trial 16 with value: 1.0.
+strategic complete: {'run_id': 'staged_v3_check_02', 'policy': 'strategic', 'causal_labels': True, 'best_params': {'n_estimators': 100, 'max_depth': 8, 'min_samples_leaf': 6, 'max_features': 0.8893352428168485}, 'best_validation_pr_auc': 1.0, 'finished_trials': 30, 'study_db': '/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/hpo/staged/staged_v3_check_02/strategic.sqlite3', 'note': 'Validation-only tuning on tiny controlled lab data, NOT a claimed real-intrusion result'}
+HPO_FINISHED
+===== gru =====
+exitcode=0
+strategic epoch 60 train BCE 0.0291
+strategic epoch 70 train BCE 0.0213
+strategic epoch 80 train BCE 0.0179
+strategic finished; output outputs/model/staged/staged_v3_check_02/strategic/complete.json
 GRU_FINISHED
+===== zeek =====
+exitcode=0
+  "status": "validated_structure_and_finiteness",
+  "policies": 3,
+  "held_out_episodes": 6,
+  "experimental_validity": "not_established_by_this_checker"
+}
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
+[2026-11-14T11:24:05Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T11:24:05Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T11:24:05Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T11:24:06Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+[2026-11-14T11:24:06Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T11:24:06Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T11:24:06Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T112405Z_233668.pcap
+e7a06317915f96091173100581ff69b023f13757f1cc90e7e6195eff85c5efc9
+[2026-11-14T11:24:08Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+time="2026-11-14T11:24:08Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-e24c70a3e10c Creating 
+ Container phase3-adaptive-nids-runner-run-e24c70a3e10c Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-14T11:24:53Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T112405Z_233668 (bounded Docker timeout)
+p3cap_staged_v2_main_01_20261114T112405Z_233668
+[2026-11-14T11:24:53Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T112405Z_233668.log
+p3cap_staged_v2_main_01_20261114T112405Z_233668
+[2026-11-14T11:24:53Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T11:24:53Z] [STAGE-V3] EXIT 124: run journal and captures preserved; rerun with --resume if incomplete
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python -m compileall -q orglab
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_orglab.py
+......                                                                                                                     [100%]
+6 passed in 2.58s
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash -n setup/orglab_run.sh setup/orglab_train_parallel.sh setup/orglab_v3_diagnose.sh
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python -m orglab.composegen --nodes 20 --topology departmental --output compose.orglab.20.departmental.json
+CREATED compose.orglab.20.departmental.json employees=20 topology=departmental internal_networks=5 published_ports=0
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/orglab_run.sh --run-id org20_pilot_01 --nodes 20 --topology departmental --rounds 6 --test-rounds 6 --seed 20261114 --step-seconds 0.6 --train
+Run directory already exists; preserve it: outputs/orglab/org20_pilot_01
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/orglab_run.sh --run-id org20_main_01 --nodes 20 --topology departmental --rounds 12 --test-rounds 12 --seed 20261115 --step-seconds 0.8 --train
+CREATED compose.orglab.20.departmental.json employees=20 topology=departmental internal_networks=5 published_ports=0
+[2026-11-14T11:25:58Z] [ORGLAB/org20_main_01] START nodes=20 topology=departmental rounds=12 test_rounds=12 seed=20261115 train=1
+[2026-11-14T11:25:58Z] [ORGLAB/org20_main_01] Docker root space:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6   82G   63G   15G  82% /
+[2026-11-14T11:25:58Z] [ORGLAB/org20_main_01] Starting limited private services, then employee containers in batches of 10
+ Network nidsorgorg20main01_dept_finance_internal Creating 
+ Network nidsorgorg20main01_dept_engineering_internal Creating 
+ Network nidsorgorg20main01_dept_hr_internal Creating 
+ Network nidsorgorg20main01_dept_sales_internal Creating 
+ Network nidsorgorg20main01_services_internal Creating 
+ Network nidsorgorg20main01_dept_finance_internal Created 
+ Network nidsorgorg20main01_dept_engineering_internal Created 
+ Network nidsorgorg20main01_dept_sales_internal Created 
+ Network nidsorgorg20main01_services_internal Created 
+ Container nidsorgorg20main01-mail-1 Creating 
+ Container nidsorgorg20main01-crm-1 Creating 
+ Container nidsorgorg20main01-docs-1 Creating 
+ Network nidsorgorg20main01_dept_hr_internal Created 
+ Container nidsorgorg20main01-gateway-1 Creating 
+ Container nidsorgorg20main01-mail-1 Created 
+ Container nidsorgorg20main01-gateway-1 Created 
+ Container nidsorgorg20main01-crm-1 Created 
+ Container nidsorgorg20main01-docs-1 Created 
+ Container nidsorgorg20main01-mail-1 Starting 
+ Container nidsorgorg20main01-crm-1 Starting 
+ Container nidsorgorg20main01-docs-1 Starting 
+ Container nidsorgorg20main01-gateway-1 Starting 
+ Container nidsorgorg20main01-mail-1 Started 
+ Container nidsorgorg20main01-crm-1 Started 
+ Container nidsorgorg20main01-docs-1 Started 
+ Container nidsorgorg20main01-gateway-1 Started 
+ Container nidsorgorg20main01-employee_004-1 Creating 
+ Container nidsorgorg20main01-employee_006-1 Creating 
+ Container nidsorgorg20main01-employee_001-1 Creating 
+ Container nidsorgorg20main01-employee_008-1 Creating 
+ Container nidsorgorg20main01-employee_002-1 Creating 
+ Container nidsorgorg20main01-employee_009-1 Creating 
+ Container nidsorgorg20main01-employee_007-1 Creating 
+ Container nidsorgorg20main01-employee_010-1 Creating 
+ Container nidsorgorg20main01-employee_005-1 Creating 
+ Container nidsorgorg20main01-employee_003-1 Creating 
+ Container nidsorgorg20main01-employee_006-1 Created 
+ Container nidsorgorg20main01-employee_003-1 Created 
+ Container nidsorgorg20main01-employee_010-1 Created 
+ Container nidsorgorg20main01-employee_005-1 Created 
+ Container nidsorgorg20main01-employee_007-1 Created 
+ Container nidsorgorg20main01-employee_001-1 Created 
+ Container nidsorgorg20main01-employee_002-1 Created 
+ Container nidsorgorg20main01-employee_004-1 Created 
+ Container nidsorgorg20main01-employee_008-1 Created 
+ Container nidsorgorg20main01-employee_009-1 Created 
+ Container nidsorgorg20main01-employee_010-1 Starting 
+ Container nidsorgorg20main01-employee_005-1 Starting 
+ Container nidsorgorg20main01-employee_002-1 Starting 
+ Container nidsorgorg20main01-employee_003-1 Starting 
+ Container nidsorgorg20main01-employee_004-1 Starting 
+ Container nidsorgorg20main01-employee_001-1 Starting 
+ Container nidsorgorg20main01-employee_008-1 Starting 
+ Container nidsorgorg20main01-employee_006-1 Starting 
+ Container nidsorgorg20main01-employee_007-1 Starting 
+ Container nidsorgorg20main01-employee_009-1 Starting 
+ Container nidsorgorg20main01-employee_010-1 Started 
+ Container nidsorgorg20main01-employee_005-1 Started 
+ Container nidsorgorg20main01-employee_003-1 Started 
+ Container nidsorgorg20main01-employee_002-1 Started 
+ Container nidsorgorg20main01-employee_004-1 Started 
+ Container nidsorgorg20main01-employee_001-1 Started 
+ Container nidsorgorg20main01-employee_008-1 Started 
+ Container nidsorgorg20main01-employee_006-1 Started 
+ Container nidsorgorg20main01-employee_007-1 Started 
+ Container nidsorgorg20main01-employee_009-1 Started 
+[2026-11-14T11:26:01Z] [ORGLAB/org20_main_01] STARTED employees 1..10/20
+ Container nidsorgorg20main01-employee_020-1 Creating 
+ Container nidsorgorg20main01-employee_019-1 Creating 
+ Container nidsorgorg20main01-employee_018-1 Creating 
+ Container nidsorgorg20main01-employee_014-1 Creating 
+ Container nidsorgorg20main01-employee_016-1 Creating 
+ Container nidsorgorg20main01-employee_011-1 Creating 
+ Container nidsorgorg20main01-employee_017-1 Creating 
+ Container nidsorgorg20main01-employee_013-1 Creating 
+ Container nidsorgorg20main01-employee_012-1 Creating 
+ Container nidsorgorg20main01-employee_015-1 Creating 
+ Container nidsorgorg20main01-employee_018-1 Created 
+ Container nidsorgorg20main01-employee_017-1 Created 
+ Container nidsorgorg20main01-employee_020-1 Created 
+ Container nidsorgorg20main01-employee_015-1 Created 
+ Container nidsorgorg20main01-employee_014-1 Created 
+ Container nidsorgorg20main01-employee_012-1 Created 
+ Container nidsorgorg20main01-employee_011-1 Created 
+ Container nidsorgorg20main01-employee_019-1 Created 
+ Container nidsorgorg20main01-employee_016-1 Created 
+ Container nidsorgorg20main01-employee_013-1 Created 
+ Container nidsorgorg20main01-employee_020-1 Starting 
+ Container nidsorgorg20main01-employee_011-1 Starting 
+ Container nidsorgorg20main01-employee_015-1 Starting 
+ Container nidsorgorg20main01-employee_017-1 Starting 
+ Container nidsorgorg20main01-employee_016-1 Starting 
+ Container nidsorgorg20main01-employee_014-1 Starting 
+ Container nidsorgorg20main01-employee_019-1 Starting 
+ Container nidsorgorg20main01-employee_018-1 Starting 
+ Container nidsorgorg20main01-employee_013-1 Starting 
+ Container nidsorgorg20main01-employee_012-1 Starting 
+ Container nidsorgorg20main01-employee_020-1 Started 
+ Container nidsorgorg20main01-employee_011-1 Started 
+ Container nidsorgorg20main01-employee_015-1 Started 
+ Container nidsorgorg20main01-employee_014-1 Started 
+ Container nidsorgorg20main01-employee_018-1 Started 
+ Container nidsorgorg20main01-employee_017-1 Started 
+ Container nidsorgorg20main01-employee_016-1 Started 
+ Container nidsorgorg20main01-employee_013-1 Started 
+ Container nidsorgorg20main01-employee_019-1 Started 
+ Container nidsorgorg20main01-employee_012-1 Started 
+[2026-11-14T11:26:02Z] [ORGLAB/org20_main_01] STARTED employees 11..20/20
+[2026-11-14T11:26:02Z] [ORGLAB/org20_main_01] Starting restricted sensor in gateway namespace; no additional host network privileges
+ Image nidsorgorg20main01-capture Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.capture
+#2 transferring dockerfile: 213B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 1.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#5 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update && apt-get install -y --no-install-recommends tcpdump ca-certificates     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:079b1b4ff3f899b39037cf1ee7f54105aa97de485ab90da4a387d7337e0de8ed 0.0s done
+#7 exporting config sha256:d3b485a6c4857b600c83e6323c83d983ccb7b62d72c67cea24486c462c400652 0.0s done
+#7 exporting attestation manifest sha256:dbabe9cc36a2068c18a68b08c874a53f7db8ddb87ca5344270c953c4c0937c38 0.0s done
+#7 exporting manifest list sha256:4a255eec7d9aaf69fc884d30f3d16e282ae2e4f235af330135739c37029db2c2
+#7 exporting manifest list sha256:4a255eec7d9aaf69fc884d30f3d16e282ae2e4f235af330135739c37029db2c2 0.0s done
+#7 naming to docker.io/library/nidsorgorg20main01-capture:latest done
+#7 unpacking to docker.io/library/nidsorgorg20main01-capture:latest done
+#7 DONE 0.1s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image nidsorgorg20main01-capture Built 
+ Container nidsorgorg20main01-gateway-1 Running 
+ Container nidsorgorg20main01-capture-1 Creating 
+ Container nidsorgorg20main01-capture-1 Created 
+ Container nidsorgorg20main01-capture-1 Starting 
+ Container nidsorgorg20main01-capture-1 Started 
+tcpdump: data link type LINUX_SLL2
+tcpdump: Couldn't change to 'root' uid=0 gid=0: Operation not permitted
+[2026-11-14T11:26:06Z] [ORGLAB/org20_main_01] ERROR capture exited
+[2026-11-14T11:26:06Z] [ORGLAB/org20_main_01] EXIT=1 Stopping only ORGLAB project containers; preserving datasets, PCAP and logs
+[2026-11-14T11:26:16Z] [ORGLAB/org20_main_01] FAILED; inspect outputs/orglab/org20_main_01/launcher.log and run files; do not reuse this run ID
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+
+
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/orglab_run.sh --run-id org20_flat_01 --nodes 20 --topology flat --rounds 12 --test-rounds 12 --seed 20261115 --step-seconds 0.8 --train
+CREATED compose.orglab.20.flat.json employees=20 topology=flat internal_networks=2 published_ports=0
+[2026-11-14T11:26:43Z] [ORGLAB/org20_flat_01] START nodes=20 topology=flat rounds=12 test_rounds=12 seed=20261115 train=1
+[2026-11-14T11:26:43Z] [ORGLAB/org20_flat_01] Docker root space:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6   82G   63G   15G  82% /
+[2026-11-14T11:26:43Z] [ORGLAB/org20_flat_01] Starting limited private services, then employee containers in batches of 10
+ Network nidsorgorg20flat01_employees_internal Creating 
+ Network nidsorgorg20flat01_services_internal Creating 
+ Network nidsorgorg20flat01_services_internal Created 
+ Container nidsorgorg20flat01-docs-1 Creating 
+ Container nidsorgorg20flat01-crm-1 Creating 
+ Container nidsorgorg20flat01-mail-1 Creating 
+ Network nidsorgorg20flat01_employees_internal Created 
+ Container nidsorgorg20flat01-gateway-1 Creating 
+ Container nidsorgorg20flat01-crm-1 Created 
+ Container nidsorgorg20flat01-gateway-1 Created 
+ Container nidsorgorg20flat01-docs-1 Created 
+ Container nidsorgorg20flat01-mail-1 Created 
+ Container nidsorgorg20flat01-crm-1 Starting 
+ Container nidsorgorg20flat01-docs-1 Starting 
+ Container nidsorgorg20flat01-mail-1 Starting 
+ Container nidsorgorg20flat01-gateway-1 Starting 
+ Container nidsorgorg20flat01-crm-1 Started 
+ Container nidsorgorg20flat01-mail-1 Started 
+ Container nidsorgorg20flat01-docs-1 Started 
+ Container nidsorgorg20flat01-gateway-1 Started 
+ Container nidsorgorg20flat01-employee_010-1 Creating 
+ Container nidsorgorg20flat01-employee_005-1 Creating 
+ Container nidsorgorg20flat01-employee_007-1 Creating 
+ Container nidsorgorg20flat01-employee_003-1 Creating 
+ Container nidsorgorg20flat01-employee_008-1 Creating 
+ Container nidsorgorg20flat01-employee_001-1 Creating 
+ Container nidsorgorg20flat01-employee_009-1 Creating 
+ Container nidsorgorg20flat01-employee_004-1 Creating 
+ Container nidsorgorg20flat01-employee_006-1 Creating 
+ Container nidsorgorg20flat01-employee_002-1 Creating 
+ Container nidsorgorg20flat01-employee_010-1 Created 
+ Container nidsorgorg20flat01-employee_003-1 Created 
+ Container nidsorgorg20flat01-employee_008-1 Created 
+ Container nidsorgorg20flat01-employee_005-1 Created 
+ Container nidsorgorg20flat01-employee_001-1 Created 
+ Container nidsorgorg20flat01-employee_002-1 Created 
+ Container nidsorgorg20flat01-employee_006-1 Created 
+ Container nidsorgorg20flat01-employee_009-1 Created 
+ Container nidsorgorg20flat01-employee_007-1 Created 
+ Container nidsorgorg20flat01-employee_004-1 Created 
+ Container nidsorgorg20flat01-employee_010-1 Starting 
+ Container nidsorgorg20flat01-employee_005-1 Starting 
+ Container nidsorgorg20flat01-employee_007-1 Starting 
+ Container nidsorgorg20flat01-employee_008-1 Starting 
+ Container nidsorgorg20flat01-employee_002-1 Starting 
+ Container nidsorgorg20flat01-employee_006-1 Starting 
+ Container nidsorgorg20flat01-employee_009-1 Starting 
+ Container nidsorgorg20flat01-employee_004-1 Starting 
+ Container nidsorgorg20flat01-employee_003-1 Starting 
+ Container nidsorgorg20flat01-employee_001-1 Starting 
+ Container nidsorgorg20flat01-employee_010-1 Started 
+ Container nidsorgorg20flat01-employee_005-1 Started 
+ Container nidsorgorg20flat01-employee_007-1 Started 
+ Container nidsorgorg20flat01-employee_008-1 Started 
+ Container nidsorgorg20flat01-employee_002-1 Started 
+ Container nidsorgorg20flat01-employee_009-1 Started 
+ Container nidsorgorg20flat01-employee_006-1 Started 
+ Container nidsorgorg20flat01-employee_004-1 Started 
+ Container nidsorgorg20flat01-employee_003-1 Started 
+ Container nidsorgorg20flat01-employee_001-1 Started 
+[2026-11-14T11:26:45Z] [ORGLAB/org20_flat_01] STARTED employees 1..10/20
+ Container nidsorgorg20flat01-employee_020-1 Creating 
+ Container nidsorgorg20flat01-employee_018-1 Creating 
+ Container nidsorgorg20flat01-employee_012-1 Creating 
+ Container nidsorgorg20flat01-employee_016-1 Creating 
+ Container nidsorgorg20flat01-employee_014-1 Creating 
+ Container nidsorgorg20flat01-employee_019-1 Creating 
+ Container nidsorgorg20flat01-employee_015-1 Creating 
+ Container nidsorgorg20flat01-employee_013-1 Creating 
+ Container nidsorgorg20flat01-employee_011-1 Creating 
+ Container nidsorgorg20flat01-employee_017-1 Creating 
+ Container nidsorgorg20flat01-employee_014-1 Created 
+ Container nidsorgorg20flat01-employee_020-1 Created 
+ Container nidsorgorg20flat01-employee_012-1 Created 
+ Container nidsorgorg20flat01-employee_015-1 Created 
+ Container nidsorgorg20flat01-employee_019-1 Created 
+ Container nidsorgorg20flat01-employee_017-1 Created 
+ Container nidsorgorg20flat01-employee_011-1 Created 
+ Container nidsorgorg20flat01-employee_018-1 Created 
+ Container nidsorgorg20flat01-employee_016-1 Created 
+ Container nidsorgorg20flat01-employee_013-1 Created 
+ Container nidsorgorg20flat01-employee_020-1 Starting 
+ Container nidsorgorg20flat01-employee_014-1 Starting 
+ Container nidsorgorg20flat01-employee_017-1 Starting 
+ Container nidsorgorg20flat01-employee_015-1 Starting 
+ Container nidsorgorg20flat01-employee_018-1 Starting 
+ Container nidsorgorg20flat01-employee_011-1 Starting 
+ Container nidsorgorg20flat01-employee_016-1 Starting 
+ Container nidsorgorg20flat01-employee_019-1 Starting 
+ Container nidsorgorg20flat01-employee_012-1 Starting 
+ Container nidsorgorg20flat01-employee_013-1 Starting 
+ Container nidsorgorg20flat01-employee_020-1 Started 
+ Container nidsorgorg20flat01-employee_014-1 Started 
+ Container nidsorgorg20flat01-employee_018-1 Started 
+ Container nidsorgorg20flat01-employee_017-1 Started 
+ Container nidsorgorg20flat01-employee_011-1 Started 
+ Container nidsorgorg20flat01-employee_016-1 Started 
+ Container nidsorgorg20flat01-employee_015-1 Started 
+ Container nidsorgorg20flat01-employee_019-1 Started 
+ Container nidsorgorg20flat01-employee_012-1 Started 
+ Container nidsorgorg20flat01-employee_013-1 Started 
+[2026-11-14T11:26:47Z] [ORGLAB/org20_flat_01] STARTED employees 11..20/20
+[2026-11-14T11:26:47Z] [ORGLAB/org20_flat_01] Starting restricted sensor in gateway namespace; no additional host network privileges
+ Image nidsorgorg20flat01-capture Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.capture
+#2 transferring dockerfile: 213B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 0.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#5 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update && apt-get install -y --no-install-recommends tcpdump ca-certificates     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:f7a66443bfce4664c203c9c25baed3d0564719b541019af96ab6460dfebcf476 0.0s done
+#7 exporting config sha256:e608bf0fbf207603117323ee63bd9f6aae1ccfc09cd39d9542e9db9d27a94ad6 0.0s done
+#7 exporting attestation manifest sha256:2e5d8f85fc7b8527d9aa365db992ea9293d1dc1294d19394c2fce2f6e27a6f08 0.0s done
+#7 exporting manifest list sha256:b847d34dfa067016ab1356dab87cae3565c60a7b9f867069f677a8c9af0ecd18
+#7 exporting manifest list sha256:b847d34dfa067016ab1356dab87cae3565c60a7b9f867069f677a8c9af0ecd18 0.0s done
+#7 naming to docker.io/library/nidsorgorg20flat01-capture:latest done
+#7 unpacking to docker.io/library/nidsorgorg20flat01-capture:latest done
+#7 DONE 0.1s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image nidsorgorg20flat01-capture Built 
+ Container nidsorgorg20flat01-gateway-1 Running 
+ Container nidsorgorg20flat01-capture-1 Creating 
+ Container nidsorgorg20flat01-capture-1 Created 
+ Container nidsorgorg20flat01-capture-1 Starting 
+ Container nidsorgorg20flat01-capture-1 Started 
+tcpdump: data link type LINUX_SLL2
+tcpdump: Couldn't change to 'root' uid=0 gid=0: Operation not permitted
+[2026-11-14T11:26:51Z] [ORGLAB/org20_flat_01] ERROR capture exited
+[2026-11-14T11:26:51Z] [ORGLAB/org20_flat_01] EXIT=1 Stopping only ORGLAB project containers; preserving datasets, PCAP and logs
+[2026-11-14T11:27:00Z] [ORGLAB/org20_flat_01] FAILED; inspect outputs/orglab/org20_flat_01/launcher.log and run files; do not reuse this run ID
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/orglab_run.sh --run-id org50_pilot_01 --nodes 50 --topology departmental --rounds 6 --test-rounds 6 --seed 20261116 --step-seconds 0.7 --train
+CREATED compose.orglab.50.departmental.json employees=50 topology=departmental internal_networks=5 published_ports=0
+[2026-11-14T11:27:06Z] [ORGLAB/org50_pilot_01] START nodes=50 topology=departmental rounds=6 test_rounds=6 seed=20261116 train=1
+[2026-11-14T11:27:06Z] [ORGLAB/org50_pilot_01] Docker root space:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6   82G   63G   15G  82% /
+[2026-11-14T11:27:06Z] [ORGLAB/org50_pilot_01] Starting limited private services, then employee containers in batches of 10
+ Network nidsorgorg50pilot01_services_internal Creating 
+ Network nidsorgorg50pilot01_dept_sales_internal Creating 
+ Network nidsorgorg50pilot01_dept_engineering_internal Creating 
+ Network nidsorgorg50pilot01_dept_finance_internal Creating 
+ Network nidsorgorg50pilot01_dept_hr_internal Creating 
+ Network nidsorgorg50pilot01_dept_engineering_internal Created 
+ Network nidsorgorg50pilot01_dept_hr_internal Created 
+ Network nidsorgorg50pilot01_services_internal Created 
+ Container nidsorgorg50pilot01-mail-1 Creating 
+ Container nidsorgorg50pilot01-crm-1 Creating 
+ Container nidsorgorg50pilot01-docs-1 Creating 
+ Network nidsorgorg50pilot01_dept_finance_internal Created 
+ Network nidsorgorg50pilot01_dept_sales_internal Created 
+ Container nidsorgorg50pilot01-gateway-1 Creating 
+ Container nidsorgorg50pilot01-gateway-1 Created 
+ Container nidsorgorg50pilot01-docs-1 Created 
+ Container nidsorgorg50pilot01-crm-1 Created 
+ Container nidsorgorg50pilot01-mail-1 Created 
+ Container nidsorgorg50pilot01-mail-1 Starting 
+ Container nidsorgorg50pilot01-gateway-1 Starting 
+ Container nidsorgorg50pilot01-docs-1 Starting 
+ Container nidsorgorg50pilot01-crm-1 Starting 
+ Container nidsorgorg50pilot01-mail-1 Started 
+ Container nidsorgorg50pilot01-gateway-1 Started 
+ Container nidsorgorg50pilot01-docs-1 Started 
+ Container nidsorgorg50pilot01-crm-1 Started 
+ Container nidsorgorg50pilot01-employee_004-1 Creating 
+ Container nidsorgorg50pilot01-employee_009-1 Creating 
+ Container nidsorgorg50pilot01-employee_001-1 Creating 
+ Container nidsorgorg50pilot01-employee_005-1 Creating 
+ Container nidsorgorg50pilot01-employee_008-1 Creating 
+ Container nidsorgorg50pilot01-employee_010-1 Creating 
+ Container nidsorgorg50pilot01-employee_003-1 Creating 
+ Container nidsorgorg50pilot01-employee_007-1 Creating 
+ Container nidsorgorg50pilot01-employee_006-1 Creating 
+ Container nidsorgorg50pilot01-employee_002-1 Creating 
+ Container nidsorgorg50pilot01-employee_009-1 Created 
+ Container nidsorgorg50pilot01-employee_004-1 Created 
+ Container nidsorgorg50pilot01-employee_001-1 Created 
+ Container nidsorgorg50pilot01-employee_006-1 Created 
+ Container nidsorgorg50pilot01-employee_002-1 Created 
+ Container nidsorgorg50pilot01-employee_007-1 Created 
+ Container nidsorgorg50pilot01-employee_005-1 Created 
+ Container nidsorgorg50pilot01-employee_010-1 Created 
+ Container nidsorgorg50pilot01-employee_008-1 Created 
+ Container nidsorgorg50pilot01-employee_003-1 Created 
+ Container nidsorgorg50pilot01-employee_010-1 Starting 
+ Container nidsorgorg50pilot01-employee_004-1 Starting 
+ Container nidsorgorg50pilot01-employee_001-1 Starting 
+ Container nidsorgorg50pilot01-employee_007-1 Starting 
+ Container nidsorgorg50pilot01-employee_002-1 Starting 
+ Container nidsorgorg50pilot01-employee_009-1 Starting 
+ Container nidsorgorg50pilot01-employee_003-1 Starting 
+ Container nidsorgorg50pilot01-employee_006-1 Starting 
+ Container nidsorgorg50pilot01-employee_005-1 Starting 
+ Container nidsorgorg50pilot01-employee_008-1 Starting 
+ Container nidsorgorg50pilot01-employee_010-1 Started 
+ Container nidsorgorg50pilot01-employee_004-1 Started 
+ Container nidsorgorg50pilot01-employee_001-1 Started 
+ Container nidsorgorg50pilot01-employee_007-1 Started 
+ Container nidsorgorg50pilot01-employee_002-1 Started 
+ Container nidsorgorg50pilot01-employee_009-1 Started 
+ Container nidsorgorg50pilot01-employee_006-1 Started 
+ Container nidsorgorg50pilot01-employee_003-1 Started 
+ Container nidsorgorg50pilot01-employee_005-1 Started 
+ Container nidsorgorg50pilot01-employee_008-1 Started 
+[2026-11-14T11:27:08Z] [ORGLAB/org50_pilot_01] STARTED employees 1..10/50
+ Container nidsorgorg50pilot01-employee_020-1 Creating 
+ Container nidsorgorg50pilot01-employee_012-1 Creating 
+ Container nidsorgorg50pilot01-employee_015-1 Creating 
+ Container nidsorgorg50pilot01-employee_018-1 Creating 
+ Container nidsorgorg50pilot01-employee_017-1 Creating 
+ Container nidsorgorg50pilot01-employee_016-1 Creating 
+ Container nidsorgorg50pilot01-employee_019-1 Creating 
+ Container nidsorgorg50pilot01-employee_013-1 Creating 
+ Container nidsorgorg50pilot01-employee_014-1 Creating 
+ Container nidsorgorg50pilot01-employee_011-1 Creating 
+ Container nidsorgorg50pilot01-employee_016-1 Created 
+ Container nidsorgorg50pilot01-employee_013-1 Created 
+ Container nidsorgorg50pilot01-employee_012-1 Created 
+ Container nidsorgorg50pilot01-employee_020-1 Created 
+ Container nidsorgorg50pilot01-employee_018-1 Created 
+ Container nidsorgorg50pilot01-employee_015-1 Created 
+ Container nidsorgorg50pilot01-employee_017-1 Created 
+ Container nidsorgorg50pilot01-employee_019-1 Created 
+ Container nidsorgorg50pilot01-employee_011-1 Created 
+ Container nidsorgorg50pilot01-employee_014-1 Created 
+ Container nidsorgorg50pilot01-employee_020-1 Starting 
+ Container nidsorgorg50pilot01-employee_014-1 Starting 
+ Container nidsorgorg50pilot01-employee_017-1 Starting 
+ Container nidsorgorg50pilot01-employee_018-1 Starting 
+ Container nidsorgorg50pilot01-employee_015-1 Starting 
+ Container nidsorgorg50pilot01-employee_011-1 Starting 
+ Container nidsorgorg50pilot01-employee_012-1 Starting 
+ Container nidsorgorg50pilot01-employee_013-1 Starting 
+ Container nidsorgorg50pilot01-employee_019-1 Starting 
+ Container nidsorgorg50pilot01-employee_016-1 Starting 
+ Container nidsorgorg50pilot01-employee_020-1 Started 
+ Container nidsorgorg50pilot01-employee_014-1 Started 
+ Container nidsorgorg50pilot01-employee_017-1 Started 
+ Container nidsorgorg50pilot01-employee_018-1 Started 
+ Container nidsorgorg50pilot01-employee_015-1 Started 
+ Container nidsorgorg50pilot01-employee_011-1 Started 
+ Container nidsorgorg50pilot01-employee_012-1 Started 
+ Container nidsorgorg50pilot01-employee_013-1 Started 
+ Container nidsorgorg50pilot01-employee_019-1 Started 
+ Container nidsorgorg50pilot01-employee_016-1 Started 
+[2026-11-14T11:27:10Z] [ORGLAB/org50_pilot_01] STARTED employees 11..20/50
+ Container nidsorgorg50pilot01-employee_025-1 Creating 
+ Container nidsorgorg50pilot01-employee_030-1 Creating 
+ Container nidsorgorg50pilot01-employee_023-1 Creating 
+ Container nidsorgorg50pilot01-employee_026-1 Creating 
+ Container nidsorgorg50pilot01-employee_027-1 Creating 
+ Container nidsorgorg50pilot01-employee_022-1 Creating 
+ Container nidsorgorg50pilot01-employee_029-1 Creating 
+ Container nidsorgorg50pilot01-employee_024-1 Creating 
+ Container nidsorgorg50pilot01-employee_028-1 Creating 
+ Container nidsorgorg50pilot01-employee_021-1 Creating 
+ Container nidsorgorg50pilot01-employee_026-1 Created 
+ Container nidsorgorg50pilot01-employee_022-1 Created 
+ Container nidsorgorg50pilot01-employee_021-1 Created 
+ Container nidsorgorg50pilot01-employee_027-1 Created 
+ Container nidsorgorg50pilot01-employee_024-1 Created 
+ Container nidsorgorg50pilot01-employee_029-1 Created 
+ Container nidsorgorg50pilot01-employee_028-1 Created 
+ Container nidsorgorg50pilot01-employee_025-1 Created 
+ Container nidsorgorg50pilot01-employee_023-1 Created 
+ Container nidsorgorg50pilot01-employee_030-1 Created 
+ Container nidsorgorg50pilot01-employee_024-1 Starting 
+ Container nidsorgorg50pilot01-employee_021-1 Starting 
+ Container nidsorgorg50pilot01-employee_027-1 Starting 
+ Container nidsorgorg50pilot01-employee_030-1 Starting 
+ Container nidsorgorg50pilot01-employee_025-1 Starting 
+ Container nidsorgorg50pilot01-employee_026-1 Starting 
+ Container nidsorgorg50pilot01-employee_022-1 Starting 
+ Container nidsorgorg50pilot01-employee_028-1 Starting 
+ Container nidsorgorg50pilot01-employee_023-1 Starting 
+ Container nidsorgorg50pilot01-employee_029-1 Starting 
+ Container nidsorgorg50pilot01-employee_021-1 Started 
+ Container nidsorgorg50pilot01-employee_027-1 Started 
+ Container nidsorgorg50pilot01-employee_024-1 Started 
+ Container nidsorgorg50pilot01-employee_030-1 Started 
+ Container nidsorgorg50pilot01-employee_026-1 Started 
+ Container nidsorgorg50pilot01-employee_022-1 Started 
+ Container nidsorgorg50pilot01-employee_025-1 Started 
+ Container nidsorgorg50pilot01-employee_028-1 Started 
+ Container nidsorgorg50pilot01-employee_023-1 Started 
+ Container nidsorgorg50pilot01-employee_029-1 Started 
+[2026-11-14T11:27:12Z] [ORGLAB/org50_pilot_01] STARTED employees 21..30/50
+ Container nidsorgorg50pilot01-employee_040-1 Creating 
+ Container nidsorgorg50pilot01-employee_036-1 Creating 
+ Container nidsorgorg50pilot01-employee_033-1 Creating 
+ Container nidsorgorg50pilot01-employee_031-1 Creating 
+ Container nidsorgorg50pilot01-employee_038-1 Creating 
+ Container nidsorgorg50pilot01-employee_032-1 Creating 
+ Container nidsorgorg50pilot01-employee_034-1 Creating 
+ Container nidsorgorg50pilot01-employee_037-1 Creating 
+ Container nidsorgorg50pilot01-employee_035-1 Creating 
+ Container nidsorgorg50pilot01-employee_039-1 Creating 
+ Container nidsorgorg50pilot01-employee_040-1 Created 
+ Container nidsorgorg50pilot01-employee_033-1 Created 
+ Container nidsorgorg50pilot01-employee_031-1 Created 
+ Container nidsorgorg50pilot01-employee_038-1 Created 
+ Container nidsorgorg50pilot01-employee_036-1 Created 
+ Container nidsorgorg50pilot01-employee_032-1 Created 
+ Container nidsorgorg50pilot01-employee_039-1 Created 
+ Container nidsorgorg50pilot01-employee_037-1 Created 
+ Container nidsorgorg50pilot01-employee_034-1 Created 
+ Container nidsorgorg50pilot01-employee_035-1 Created 
+ Container nidsorgorg50pilot01-employee_040-1 Starting 
+ Container nidsorgorg50pilot01-employee_034-1 Starting 
+ Container nidsorgorg50pilot01-employee_031-1 Starting 
+ Container nidsorgorg50pilot01-employee_033-1 Starting 
+ Container nidsorgorg50pilot01-employee_037-1 Starting 
+ Container nidsorgorg50pilot01-employee_035-1 Starting 
+ Container nidsorgorg50pilot01-employee_038-1 Starting 
+ Container nidsorgorg50pilot01-employee_036-1 Starting 
+ Container nidsorgorg50pilot01-employee_032-1 Starting 
+ Container nidsorgorg50pilot01-employee_039-1 Starting 
+ Container nidsorgorg50pilot01-employee_040-1 Started 
+ Container nidsorgorg50pilot01-employee_034-1 Started 
+ Container nidsorgorg50pilot01-employee_033-1 Started 
+ Container nidsorgorg50pilot01-employee_031-1 Started 
+ Container nidsorgorg50pilot01-employee_037-1 Started 
+ Container nidsorgorg50pilot01-employee_038-1 Started 
+ Container nidsorgorg50pilot01-employee_035-1 Started 
+ Container nidsorgorg50pilot01-employee_036-1 Started 
+ Container nidsorgorg50pilot01-employee_032-1 Started 
+ Container nidsorgorg50pilot01-employee_039-1 Started 
+[2026-11-14T11:27:13Z] [ORGLAB/org50_pilot_01] STARTED employees 31..40/50
+ Container nidsorgorg50pilot01-employee_050-1 Creating 
+ Container nidsorgorg50pilot01-employee_041-1 Creating 
+ Container nidsorgorg50pilot01-employee_045-1 Creating 
+ Container nidsorgorg50pilot01-employee_047-1 Creating 
+ Container nidsorgorg50pilot01-employee_043-1 Creating 
+ Container nidsorgorg50pilot01-employee_048-1 Creating 
+ Container nidsorgorg50pilot01-employee_044-1 Creating 
+ Container nidsorgorg50pilot01-employee_049-1 Creating 
+ Container nidsorgorg50pilot01-employee_042-1 Creating 
+ Container nidsorgorg50pilot01-employee_046-1 Creating 
+ Container nidsorgorg50pilot01-employee_049-1 Created 
+ Container nidsorgorg50pilot01-employee_046-1 Created 
+ Container nidsorgorg50pilot01-employee_050-1 Created 
+ Container nidsorgorg50pilot01-employee_043-1 Created 
+ Container nidsorgorg50pilot01-employee_042-1 Created 
+ Container nidsorgorg50pilot01-employee_047-1 Created 
+ Container nidsorgorg50pilot01-employee_048-1 Created 
+ Container nidsorgorg50pilot01-employee_041-1 Created 
+ Container nidsorgorg50pilot01-employee_044-1 Created 
+ Container nidsorgorg50pilot01-employee_045-1 Created 
+ Container nidsorgorg50pilot01-employee_050-1 Starting 
+ Container nidsorgorg50pilot01-employee_041-1 Starting 
+ Container nidsorgorg50pilot01-employee_045-1 Starting 
+ Container nidsorgorg50pilot01-employee_048-1 Starting 
+ Container nidsorgorg50pilot01-employee_047-1 Starting 
+ Container nidsorgorg50pilot01-employee_049-1 Starting 
+ Container nidsorgorg50pilot01-employee_042-1 Starting 
+ Container nidsorgorg50pilot01-employee_044-1 Starting 
+ Container nidsorgorg50pilot01-employee_046-1 Starting 
+ Container nidsorgorg50pilot01-employee_043-1 Starting 
+ Container nidsorgorg50pilot01-employee_050-1 Started 
+ Container nidsorgorg50pilot01-employee_041-1 Started 
+ Container nidsorgorg50pilot01-employee_048-1 Started 
+ Container nidsorgorg50pilot01-employee_045-1 Started 
+ Container nidsorgorg50pilot01-employee_047-1 Started 
+ Container nidsorgorg50pilot01-employee_049-1 Started 
+ Container nidsorgorg50pilot01-employee_044-1 Started 
+ Container nidsorgorg50pilot01-employee_042-1 Started 
+ Container nidsorgorg50pilot01-employee_046-1 Started 
+ Container nidsorgorg50pilot01-employee_043-1 Started 
+[2026-11-14T11:27:15Z] [ORGLAB/org50_pilot_01] STARTED employees 41..50/50
+[2026-11-14T11:27:15Z] [ORGLAB/org50_pilot_01] Starting restricted sensor in gateway namespace; no additional host network privileges
+ Image nidsorgorg50pilot01-capture Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 631B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.capture
+#2 transferring dockerfile: 213B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 0.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+#5 resolve docker.io/library/debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc 0.0s done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update && apt-get install -y --no-install-recommends tcpdump ca-certificates     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:745865669a6f2dd90b680d5139d824ce6e9ea0ff757534e3f4416442018a6962 0.0s done
+#7 exporting config sha256:4a6fb076465d1e93659841f468ba91935bffe4a508f6b64a41b2d322e95ae944 0.0s done
+#7 exporting attestation manifest sha256:38912124f39c5c64a2f96fdeb58a09d189f37893d0b020aeec879accf4662df1 0.0s done
+#7 exporting manifest list sha256:ad48e1ce848921b88ca19a66e17a07591b66e6f6b619469823b32702824432b9
+#7 exporting manifest list sha256:ad48e1ce848921b88ca19a66e17a07591b66e6f6b619469823b32702824432b9 0.1s done
+#7 naming to docker.io/library/nidsorgorg50pilot01-capture:latest done
+#7 unpacking to docker.io/library/nidsorgorg50pilot01-capture:latest done
+#7 DONE 0.1s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image nidsorgorg50pilot01-capture Built 
+ Container nidsorgorg50pilot01-gateway-1 Running 
+ Container nidsorgorg50pilot01-capture-1 Creating 
+ Container nidsorgorg50pilot01-capture-1 Created 
+ Container nidsorgorg50pilot01-capture-1 Starting 
+ Container nidsorgorg50pilot01-capture-1 Started 
+tcpdump: data link type LINUX_SLL2
+tcpdump: Couldn't change to 'root' uid=0 gid=0: Operation not permitted
+[2026-11-14T11:27:18Z] [ORGLAB/org50_pilot_01] ERROR capture exited
+[2026-11-14T11:27:18Z] [ORGLAB/org50_pilot_01] EXIT=1 Stopping only ORGLAB project containers; preserving datasets, PCAP and logs
+[2026-11-14T11:27:29Z] [ORGLAB/org50_pilot_01] FAILED; inspect outputs/orglab/org50_pilot_01/launcher.log and run files; do not reuse this run ID
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker stats --no-stream
+CONTAINER ID   NAME                              CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O         PIDS
+631e6c1d5b89   phase3-adaptive-nids-gateway-1    0.02%     19.89MiB / 31.03GiB   0.06%     7.28MB / 6.38MB   2.76MB / 2.23MB   1
+d522a2c2f430   phase3-adaptive-nids-server_b-1   0.02%     15.56MiB / 31.03GiB   0.05%     968kB / 691kB     0B / 0B           1
+7fecfbe9c87d   phase3-adaptive-nids-server_a-1   0.02%     15.6MiB / 31.03GiB    0.05%     2.78MB / 2.34MB   0B / 0B           1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ RUN=org20_main_01
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ cat "outputs/orglab/$RUN/status.json" 2>/dev/null || true
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ tail -f "outputs/orglab/$RUN/launcher.log"
+ Container nidsorgorg20main01-gateway-1 Running 
+ Container nidsorgorg20main01-capture-1 Creating 
+ Container nidsorgorg20main01-capture-1 Created 
+ Container nidsorgorg20main01-capture-1 Starting 
+ Container nidsorgorg20main01-capture-1 Started 
+tcpdump: data link type LINUX_SLL2
+tcpdump: Couldn't change to 'root' uid=0 gid=0: Operation not permitted
+[2026-11-14T11:26:06Z] [ORGLAB/org20_main_01] ERROR capture exited
+[2026-11-14T11:26:06Z] [ORGLAB/org20_main_01] EXIT=1 Stopping only ORGLAB project containers; preserving datasets, PCAP and logs
+[2026-11-14T11:26:16Z] [ORGLAB/org20_main_01] FAILED; inspect outputs/orglab/org20_main_01/launcher.log and run files; do not reuse this run ID
+^C
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ find "outputs/orglab/$RUN/training" -maxdepth 3 -type f 2>/dev/null | sort | tail -35
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
+
+
+
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ python -m orglab.graph_train --run-dir outputs/orglab/org20_main_01 --output outputs/orglab/org20_main_01/training/models/fixed_graphgru --policy fixed --epochs 60 --device auto --resume
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/orglab/graph_train.py", line 267, in <module>
+    main()
+  File "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/orglab/graph_train.py", line 262, in main
+    train_graph(a.run_dir, a.output, a.policy, a.epochs, a.resume, a.device,
+  File "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/orglab/graph_train.py", line 133, in train_graph
+    audit_run(run, live=False, min_packets=4)
+  File "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/orglab/audit.py", line 63, in audit_run
+    raise ValueError(f"packet count {pcap['packets']} < {min_packets}; header-only PCAP is invalid")
+ValueError: packet count 0 < 4; header-only PCAP is invalid
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ RUN=pilot_20261113T083155Z_61354
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ wc -l "src/data/raw/runs/$RUN/episodes.jsonl"
+32 src/data/raw/runs/pilot_20261113T083155Z_61354/episodes.jsonl
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ls -lh "src/data/raw/runs/$RUN/"
+total 733K
+-rwxrwxrwx 1 root root  15K Nov 13 08:56 episodes.jsonl
+-rwxrwxrwx 1 root root 2.5K Nov 13 08:55 game_rounds.jsonl
+-rwxrwxrwx 1 root root 112K Nov 13 10:23 gateway_subset.jsonl
+-rwxrwxrwx 1 root root  340 Nov 13 08:56 runner.log
+-rwxrwxrwx 1 root root   97 Nov 13 08:55 tcpdump.log
+-rwxrwxrwx 1 root root 600K Nov 13 08:56 traffic.pcap
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker compose ps -a
+NAME                              IMAGE                          COMMAND                  SERVICE    CREATED        STATUS                   PORTS
+phase3-adaptive-nids-capture-1    phase3-adaptive-nids-capture   "tcpdump -i any -p -…"   capture    6 hours ago    Exited (1) 6 hours ago   
+phase3-adaptive-nids-gateway-1    python:3.12-slim               "python -m lab.http_…"   gateway    27 hours ago   Up 27 hours              
+phase3-adaptive-nids-server_a-1   python:3.12-slim               "python -m lab.http_…"   server_a   27 hours ago   Up 27 hours              
+phase3-adaptive-nids-server_b-1   python:3.12-slim               "python -m lab.http_…"   server_b   27 hours ago   Up 27 hours              
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot|[d]ocker compose|[s]rc.code.pipeline'
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_finish_existing.sh pilot_20261113T083155Z_61354
+Complete experiment manifest: 32 episodes, 384 expected requests
+Existing gateway subset preserved; checking per-episode counts and HTTP status.
+Existing gateway subset validated.
+fixed/rf: evaluated
+fixed/isolation_forest: evaluated
+random/rf: evaluated
+random/isolation_forest: evaluated
+strategic/rf: evaluated
+strategic/isolation_forest: evaluated
+Wrote outputs/results/pilot_20261113T083155Z_61354_postprocess_20261114T112919Z_251214/results.json
+{
+  "status": "validated_structure_and_finiteness",
+  "policies": 3,
+  "held_out_episodes": 8,
+  "experimental_validity": "not_established_by_this_checker"
+}
+outputs/figs/pilot_20261113T083155Z_61354_postprocess_20261114T112919Z_251214/early_warning_coverage.png
+outputs/figs/pilot_20261113T083155Z_61354_postprocess_20261114T112919Z_251214/false_positive_episode_rate.png
+Existing Zeek conn.log preserved in outputs/logs/zeek/pilot_20261113T083155Z_61354
+
+POSTPROCESS COMPLETED: pilot_20261113T083155Z_61354
+Results: outputs/results/pilot_20261113T083155Z_61354_postprocess_20261114T112919Z_251214
+Gateway baseline and Zeek PCAP remain DISTINCT data sources. This is not verified real intrusion evidence.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ chmod +x setup/university_{finish_existing,pilot_v2}.sh
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/university_pilot_v2.sh --episodes 4 --capture
+Starting independent pilot: pilot_20261114T112937Z_251982
+WARN[0000] Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up. 
+[+] up 3/3
+ ✔ Container phase3-adaptive-nids-server_b-1 Running                                                                          0.0s
+ ✔ Container phase3-adaptive-nids-gateway-1  Running                                                                          0.0s
+ ✔ Container phase3-adaptive-nids-server_a-1 Running                                                                          0.0s
+Capturing ONLY lab bridge interface br-9cd72e468a25 (TCP 8080)
+time="2026-11-14T11:29:38Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-runner-run-4eb57d8b844a Creating 
+ Container phase3-adaptive-nids-runner-run-4eb57d8b844a Created 
+/out/runs/pilot_20261114T112937Z_251982/episodes.jsonl
+Stopping this run's tcpdump gracefully (PID 252354)
+Warning: graceful stop timed out; terminating this capture only
+Warning: stopping stuck capture wrapper after child termination
+^C^Z
+[1]+  Stopped                 ./setup/university_pilot_v2.sh --episodes 4 --capture
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
