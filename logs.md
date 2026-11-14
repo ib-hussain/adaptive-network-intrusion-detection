@@ -1,172 +1,123 @@
-## Repository audit: confirmed results
+Ibrahim, **the failure is diagnosed and a new recovery patch is ready.** I've also adopted your logging requirement: future development scripts for this project should provide timestamped progress, periodic heartbeats, and persistent logs instead of appearing to hang silently.
 
-I inspected the uploaded repository and its saved research outputs.
+## **1. What went wrong**
 
-| Component                         | Verified from files                                              | Assessment                 |
-| --------------------------------- | ---------------------------------------------------------------- | -------------------------- |
-| Initial network pilot             | 32 episodes, 384 HTTP observations                               | Completed                  |
-| Independent Zeek audit            | 384 connection records, all 32 episodes covered                  | Passed recorded checks     |
-| Random Forest HPO                 | 90 completed Optuna trials                                       | Completed                  |
-| GPU temporal GRU                  | 60 epochs per policy; completion records present                 | Completed                  |
-| Expanded pilot                    | 96 episodes, 1,152 gateway observations                          | Postprocessed successfully |
-| Additional captures               | Some stopped launchers and lingering `tcpdump` processes in logs | Requires cleanup           |
-| Unseen-attack generalisation      | Not established                                                  | Research gap               |
-| Genuine multi-stage early warning | Not established                                                  | Research gap               |
+Your latest logs show:
 
-The current Random Forest validation PR-AUC of 1.0 is **not proof of excellent intrusion detection**. The existing traffic profiles are small and deliberately distinguishable, and their incident milestone is artificially placed at the final request.
+| Component                | Result                                    |
+| ------------------------ | ----------------------------------------- |
+| Stage V2 installation    | 18/18 tests passed                        |
+| Experiment generation    | 24/24 episodes completed                  |
+| Ground-truth records     | Successfully committed                    |
+| Packet capture           | Failed — PCAP is only 24 bytes            |
+| Capture shutdown         | Hung                                      |
+| Gateway event extraction | Never reached                             |
+| Next experiment          | Blocked by the suspended collector's lock |
 
-More HPO on those same profiles would have limited scientific value.
+**The 24-byte PCAP contains only its file header, with no captured packets.** We must not use it as network evidence.
 
-**I'm moving development to the next experiment version:** separately identifiable precursor and milestone events, an unseen held-out behaviour, causal labels, recoverable collection rounds, and independent capture-process management.
+The new launcher avoids the problematic Docker Compose capture shutdown path. Instead, it manages one named capture container using bounded Docker commands and explicit signals, consistent with Docker's documented container-stop behaviour.&#x20;
 
-Ibrahim, I've completed the next substantial Phase 3 development patch using your actual repository and university logs. **We are moving beyond the original pilots to a new, staged network experiment.**
+[image](https://www.google.com/s2/favicons?domain=https://docs.docker.com\&sz=32)
 
-## 1. Download the new development package
+Docker Docs+1
 
-**Phase 3 — Staged Network Research V2**
 
-ZIP · 15 implementation and documentation files · Safe installer · Automated tests
 
-[Download Phase 3 Research V2]\(/mnt/data/Phase3_Staged_Network_Research_V2.zip)
+## **2. Download the fix**
 
----
+**Phase 3 — Stage V3 Capture Recovery & Logging**
 
-[Read the complete university execution runbook]\(/mnt/data/Phase3_Staged_Network_Research_V2/docs/STAGE_V2_RUNBOOK.md)
+Additive patch · Capture validation · Live heartbeat · Recovery scripts · Tests
 
-### What has been implemented
+Download Phase 3 V3 Recovery ZIP
 
-| Component                                                 | Development status                     |
-| --------------------------------------------------------- | -------------------------------------- |
-| Multi-stage network scenario generator                    | Implemented                            |
-| Independently timestamped onset, escalation and milestone | Implemented                            |
-| Previously unseen behavioural profile for testing         | Implemented                            |
-| Diverse benign traffic profiles                           | Implemented                            |
-| Restartable experiment rounds and EXP3 replay             | Implemented                            |
-| Causal feature labels and corrected early-warning metrics | Implemented                            |
-| Docker-based PCAP capture sidecar                         | Implemented; live verification pending |
-| Parallel CPU, GPU and Zeek evaluation                     | Implemented; live verification pending |
-| Safe patch installation and original-file backups         | Tested                                 |
+Read the complete execution runbook
 
-**18/18 tests passed**, including complete baseline evaluation and checkpoint recovery.
+### **3. Install on Ubuntu**
 
-## 2. Install it on the university machine
-
-Transfer the ZIP to the university machine's `~/Downloads` directory.
+Copy the ZIP into your university repository directory, then run:
 
 ```
 cd /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection
 
-mkdir -p /tmp/phase3-stage-v2
+mkdir -p /tmp/p3-v3
+unzip -q Phase3_Stage_V3_Capture_Recovery.zip -d /tmp/p3-v3
 
-unzip -q ~/Downloads/Phase3_Staged_Network_Research_V2.zip -d /tmp/phase3-stage-v2
-
-bash /tmp/phase3-stage-v2/install.sh "$PWD"
+bash /tmp/p3-v3/install.sh "$PWD"
 
 source .venv-cuda/bin/activate
-
 export PATH="/opt/zeek/bin:$PATH"
-export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
-
-./setup/preflight.sh
 ```
 
-The installer verifies file hashes before replacing the five modified source files. If university files differ from your uploaded laptop repository, it stops rather than overwriting unknown changes.
-
-### Important: clear old captures first
-
-Your latest logs still show lingering captures from older pilot launchers.
-
-Run:
+Before restarting collection, inspect the suspended V2 job:
 
 ```
-pgrep -a -x tcpdump || true
-ps -eo pid,ppid,stat,etime,args | grep -E '[t]cpdump|[u]niversity_pilot' || true
-docker ps
+jobs -l
+ps -eo pid,ppid,stat,etime,args | grep -E '[s]taged_collect|[t]cpdump'
+docker ps --filter name=phase3-adaptive-nids-capture
 ```
 
-If an old lab capture is still running, verify its PID and output path, then stop only that process from an authorised terminal. The new collector refuses to overlap an old host-bridge capture.
+In the terminal that owns the suspended job, terminate **only the verified stuck V2 job** (for example, `kill %1` if it is job 1). Do not delete its lock file or raw data.
 
-## 3. Start the new network experiment
-
-First execute a short integration pilot:
+## **4. Recover the completed experiment**
 
 ```
-./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture
+./setup/staged_recover_v2.sh staged_v2_check_01
 ```
 
-This should produce 24 completed episodes and 480 observed HTTP requests.
+This extracts the 480 observed gateway requests, if they are available, and reports the invalid PCAP. A nonzero exit for the missing packet evidence is intentional.
 
-After successful collection and capture validation, begin the larger experiment:
+Because those 24 episodes already occurred, their network packets cannot be reconstructed retrospectively.
 
-```
-./setup/staged_collect_v2.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture
-```
-
-MAIN EXPERIMENT TARGET
-
-# 96
-
-Experimental episodes
-
-# 1,920
-
-HTTP requests
-
----
-
-Four policies, including the independent test set. Three controlled incident profiles for training, plus one held-out behavioural profile.
-
-The new capture system runs `tcpdump` inside a Docker sidecar sharing the gateway's network namespace, rather than maintaining a privileged host-side `tcpdump` process. Docker supports this namespace-sharing arrangement.
-
-This should address the earlier process-management problem, but it still needs validation on your machine.
-
-## 4. Start the heavy jobs together
-
-Once `staged_v2_main_01` completes and its observed events are validated, execute:
+## **5. Run a fresh, corrected experiment**
 
 ```
-./setup/staged_train_start.sh staged_v2_main_01 --hpo-trials 30 --gru-epochs 80
+./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture
 ```
 
-This launches four workers in separate `tmux` sessions.
+The new launcher performs an HTTP capture probe **before** generating any experimental episodes. If no real packet records appear, it stops and reports the capture-container diagnostics.
 
-| Parallel job | Task                                                                            |
-| ------------ | ------------------------------------------------------------------------------- |
-| CPU baseline | Train and evaluate RF/Isolation Forest using causal labels                      |
-| CPU HPO      | Persistent Optuna studies                                                       |
-| GPU          | Train checkpointed temporal GRU models                                          |
-| Zeek         | Independently process PCAPs, audit coverage and evaluate eligible network flows |
+It also prints a heartbeat during collection, including the number of completed rounds and the latest generator output.
 
-Monitor them using:
+### **Monitor from another terminal**
 
 ```
-./setup/staged_status.sh
-tmux ls
-nvidia-smi
+./setup/staged_v3_status.sh staged_v3_check_02 --follow
 ```
 
-The Zeek analysis uses its documented `-C` mode for locally captured traffic with checksum-offloading artefacts. This does not replace checking packet completeness or network visibility.
+The monitoring system now includes:
 
-Run the parallel training workers **after collection**, rather than during capture, to avoid introducing uncontrolled CPU-load changes into the traffic timings.
+- `collector_v3_*.log` — timestamped stages and heartbeats.
+- `generator_*.log` — round-by-round progress.
+- `capture_container_*.log` — packet-capture diagnostics.
+- `collector_status_v3.json` — current state.
+- `capture_audit_*.json` — packet counts and integrity checks.
 
-## 5. Daily shutdown and recovery
+## **6. Continue with the main experiment**
 
-If collection stops before completion, repeat it with the same run ID and original settings:
+Only after the fresh pilot passes packet validation and Zeek alignment:
 
 ```
-./setup/staged_collect_v2.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
+./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
 ```
 
-Completed rounds are preserved. An interrupted round is regenerated with a new identifier; its incomplete observations are excluded from the published dataset.
+Then start the parallel research workers through the new capture-integrity gate:
 
-The GRU retains epoch checkpoints and the HPO uses persistent SQLite studies. Active processes still cannot survive a powered-off computer.
+```
+./setup/staged_train_guard_v3.sh staged_v2_main_01 --hpo-trials 30 --gru-epochs 80
+```
 
-## 6. What remains scientifically unfinished
+This will refuse to launch training if the run lacks sufficient independent packet records. Successful packet counts alone do not establish Zeek-to-episode alignment; that remains a required evaluation check.
 
-The new experiment introduces meaningful temporal stages and a withheld behaviour profile, but it is still **controlled, non-malicious network traffic**. It does not yet demonstrate zero-day exploit detection, authentic malicious propagation, or generalisation to an entirely unseen physical topology.
+## **Verification**
 
-The temporal GRU is also not a GNN. Our next substantial model development must construct communication graphs from the captured network flows and test a graph-based detector against the established tabular and temporal baselines.
+**18 original Stage V2 tests passed** in a fresh compatibility copy.
 
-**The immediate next milestone is a successful staged V2 Docker capture followed by the four parallel evaluation jobs.** The local code and recovery tests have passed; the live university deployment remains to be verified.
+**7 additional recovery and capture-validation tests passed.**
 
-The package preserves your existing research artifacts and provides the commands needed to begin that milestone.
+**Installer tested twice successfully**, without overwriting existing project files.
+
+**Live Docker capture remains unverified** until the university pilot runs.
+
+**Next action:** Install V3, clear the verified suspended launcher, recover the previous gateway data, and execute `staged_v3_check_02`. The first live capture-probe result will tell us whether packet collection is now functioning correctly.
