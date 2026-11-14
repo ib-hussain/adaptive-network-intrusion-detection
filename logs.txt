@@ -1,93 +1,185 @@
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash Phase3_Stage_V2_Capture_Hotfix/fix_stage_v2_capture.sh "$PWD"
-PATCH APPLIED; previous launcher backed up at: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/backups/stage_v2_capture_hotfix_20261114T050945Z/staged_collect_v2.sh
-Bash syntax valid. No run data, captures, checkpoints or other project files modified.
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash -n setup/staged_collect_v2.s
-bash: setup/staged_collect_v2.s: No such file or directory
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash -n setup/staged_collect_v2.sh
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/preflight.sh
-== PHASE 3 PREFLIGHT ==
-Python 3.12.3
-numpy: installed
-pandas: installed
-sklearn: installed
-optuna: installed
-pytest: installed
-torch: installed
-CUDA available: True
-GPU: NVIDIA RTX 4000 Ada Generation
-CPUs: 28 Docker: True Zeek: True
-..................                                                                                                                 [100%]
-18 passed in 4.16s
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo pgrep -a -x tcpdump || true
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ mkdir -p /tmp/p3-v3
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ unzip -q Phase3_Stage_V3_Capture_Recovery.zip -d /tmp/p3-v3
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ bash /tmp/p3-v3/install.sh "$PWD"
+INSTALLED setup/staged_collect_v3.sh
+INSTALLED setup/staged_capture_audit.py
+INSTALLED setup/staged_recover_v2.sh
+INSTALLED setup/staged_v3_status.sh
+INSTALLED setup/staged_train_guard_v3.sh
+INSTALLED tests/test_staged_capture_audit.py
+INSTALLED tests/test_v3_launcher_contract.py
+INSTALLED docs/STAGE_V3_RECOVERY_RUNBOOK.md
+test_invalid_header_rejected (test_staged_capture_audit.TestPcapAudit.test_invalid_header_rejected) ... ok
+test_records_counted (test_staged_capture_audit.TestPcapAudit.test_records_counted) ... ok
+test_truncated_record_rejected (test_staged_capture_audit.TestPcapAudit.test_truncated_record_rejected) ... ok
+test_zero_records_fails (test_staged_capture_audit.TestPcapAudit.test_zero_records_fails) ... ok
 
-CONTAINER ID   IMAGE              COMMAND                  CREATED        STATUS        PORTS     NAMES
-631e6c1d5b89   python:3.12-slim   "python -m lab.http_…"   20 hours ago   Up 20 hours             phase3-adaptive-nids-gateway-1
-d522a2c2f430   python:3.12-slim   "python -m lab.http_…"   20 hours ago   Up 20 hours             phase3-adaptive-nids-server_b-1
-7fecfbe9c87d   python:3.12-slim   "python -m lab.http_…"   20 hours ago   Up 20 hours             phase3-adaptive-nids-server_a-1
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
-[+] up 3/3
- ✔ Container phase3-adaptive-nids-gateway-1  Running                                                                                  0.0s
- ✔ Container phase3-adaptive-nids-server_a-1 Running                                                                                  0.0s
- ✔ Container phase3-adaptive-nids-server_b-1 Running                                                                                  0.0s
-[+] Building 11.7s (8/8) FINISHED                                                                                                         
- => [internal] load local bake definitions                                                                                           0.0s
- => => reading from stdin 630B                                                                                                       0.0s
- => [internal] load build definition from Dockerfile.capture                                                                         0.0s
- => => transferring dockerfile: 353B                                                                                                 0.0s
- => [internal] load metadata for docker.io/library/python:3.12-slim                                                                  0.0s
- => [internal] load .dockerignore                                                                                                    0.0s
- => => transferring context: 2B                                                                                                      0.0s
- => [1/2] FROM docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b            0.7s
- => => resolve docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b            0.0s
- => => extracting sha256:37fb86c2a767b88d500c6872195f88078f64765fe0d2f9cc375cc2efbd4c0a41                                            0.3s
- => => extracting sha256:68bced9e0afa4479df17c3646e27c7c7e9ce9ba70c0e6c73b6826487b89037d9                                            0.1s
- => => extracting sha256:2dc99d2d0a39fce31e37615eb4c932e16dcc4c2b0ce9993714280081b5dbe085                                            0.2s
- => => extracting sha256:05e0eee5572e9c9f50408a2132590133b830a668a1cf2ff2b150f19c57707e2b                                            0.0s
- => [2/2] RUN apt-get update && apt-get install -y --no-install-recommends tcpdump && rm -rf /var/lib/apt/lists/*                   10.4s
- => exporting to image                                                                                                               0.3s
- => => exporting layers                                                                                                              0.2s
- => => exporting manifest sha256:6223b6c85f491d0627a6fda62158ccdb02378a75bae883b5760da1b84bbc0374                                    0.0s
- => => exporting config sha256:0341bbbf9e25985a9bf03942b5bf4ae61e736c53d19cfe2e60197a67ba19da2e                                      0.0s
- => => exporting attestation manifest sha256:8c86540a8ede6b27194b332e9b940dcaff80fee1a07884c9be6173c7e131ed55                        0.0s
- => => exporting manifest list sha256:7fcd9435cbfd37f54da423f31b71fb205dd83e78f130e42c4c1a6345a4acdf1e                               0.0s
- => => naming to docker.io/library/phase3-adaptive-nids-capture:latest                                                               0.0s
- => => unpacking to docker.io/library/phase3-adaptive-nids-capture:latest                                                            0.0s
- => resolving provenance for metadata file                                                                                           0.0s
-[+] build 1/1
- ✔ Image phase3-adaptive-nids-capture Built                                                                                          11.8s
-[+] up 1/1
- ✔ Container phase3-adaptive-nids-capture-1 Started                                                                                   0.1s
-Capture: src/data/raw/runs/staged_v2_check_01/traffic_20261114T051137Z_112948.pcap
-time="2026-11-14T05:11:50Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container phase3-adaptive-nids-server_b-1 Running 
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+test_live_progress_and_fail_closed (test_v3_launcher_contract.TestV3Contract.test_live_progress_and_fail_closed) ... ok
+test_no_legacy_compose_capture_overlay (test_v3_launcher_contract.TestV3Contract.test_no_legacy_compose_capture_overlay) ... ok
+test_probe_is_parseable_python (test_v3_launcher_contract.TestV3Contract.test_probe_is_parseable_python) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+
+V3 additive patch installed. No V2 scripts, run journals, PCAP, models, DBs or outputs overwritten.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ zeek --version
+zeek version 9.0.1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ jobs -l
+[1]+ 112948 Stopped                 ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill %1
+kill: failed to parse argument: '%1'
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill 112948
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[s]taged_collect|[t]cpdump'
+ 112948  108382 T       02:03:51 bash ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps --filter name=phase3-adaptive-nids-capture
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_recover_v2.sh staged_v2_check_01
+[RECOVERY] Extracting observed requests from shared gateway log...
+{
+  "status": "validated_observed_gateway_subset_not_real_attack_data",
+  "episodes": 24,
+  "events": 480,
+  "output": "src/data/raw/runs/staged_v2_check_01/gateway_subset.jsonl"
+}
+[RECOVERY] Auditing src/data/raw/runs/staged_v2_check_01/traffic_20261114T051137Z_112948.pcap
+{"complete": true, "issue": "Header-only PCAP: zero packet records; no network evidence", "linktype": 276, "min_packets": 4, "packets": 0, "path": "src/data/raw/runs/staged_v2_check_01/traffic_20261114T051137Z_112948.pcap", "payload_bytes": 0, "size_bytes": 24, "valid": false, "version": [2, 4]}
+[RECOVERY] APPLICATION-ONLY DATA: no valid packet-bearing PCAP. Preserve this run, use a NEW run ID for captured research.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture
+Another staged collector holds outputs/locks/staged_capture.lock.
+Check jobs -l; ps -eo pid,ppid,stat,args | grep -E "[s]taged_collect|[d]ocker compose|[t]cpdump"
+Do not delete the lock file while a suspended process holds its descriptor.
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ jobs -l
+[1]+ 112948 Stopped                 ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ sudo kill -9 $(jobs -ps)
+[1]+  Killed                  ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ jobs -l
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ps -eo pid,ppid,stat,etime,args | grep -E '[s]taged_collect|[t]cpdump'
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps --filter name=phase3-adaptive-nids-capture
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture
+{"episode_budget": 24, "initialised": true, "run_dir": "src/data/raw/runs/staged_v3_check_02"}
+[2026-11-14T07:16:59Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=0
+[2026-11-14T07:16:59Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T07:16:59Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T07:16:59Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
  Container phase3-adaptive-nids-gateway-1 Running 
  Container phase3-adaptive-nids-server_a-1 Running 
- Container phase3-adaptive-nids-runner-run-a5b15f458b29 Creating 
- Container phase3-adaptive-nids-runner-run-a5b15f458b29 Created 
-fixed round 1/3 committed; 2 complete episodes
-fixed round 2/3 committed; 4 complete episodes
-fixed round 3/3 committed; 6 complete episodes
-random round 1/3 committed; 8 complete episodes
-random round 2/3 committed; 10 complete episodes
-random round 3/3 committed; 12 complete episodes
-strategic round 1/3 committed; 14 complete episodes
-strategic round 2/3 committed; 16 complete episodes
-strategic round 3/3 committed; 18 complete episodes
-test round 1/3 committed; 20 complete episodes
-test round 2/3 committed; 22 complete episodes
-test round 3/3 committed; 24 complete episodes
-{"complete": true, "episodes": 24, "run_dir": "/out/runs/staged_v2_check_01"}
-^C^Z
-[1]+  Stopped                 ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ls -lh src/data/raw/runs/staged_v2_check_01/{complete.json,gateway_subset.jsonl}
-ls: cannot access 'src/data/raw/runs/staged_v2_check_01/gateway_subset.jsonl': No such file or directory
--rwxrwxrwx 1 root root 151 Nov 14 05:12 src/data/raw/runs/staged_v2_check_01/complete.json
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ wc -l src/data/raw/runs/staged_v2_check_01/episodes.jsonl
-24 src/data/raw/runs/staged_v2_check_01/episodes.jsonl
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ find src/data/raw/runs/staged_v2_check_01 -maxdepth 1 -name 'traffic_*.pcap' -ls
-   882831      1 -rwxrwxrwx   1 root     root           24 Nov 14 05:11 src/data/raw/runs/staged_v2_check_01/traffic_20261114T051137Z_112948.pcap
-(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume && ./setup/staged_collect_v2.sh --run-id staged_v2_check_01 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume && ./setup/staged_train_start.sh staged_v2_main_01 --hpo-trials 30 --gru-epochs 80  && ./setup/staged_status.sh
-Another staged collection is active; refusing concurrent capture
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T07:16:59Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T07:16:59Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T07:16:59Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T071659Z_149199.pcap
+08f6f066d0b9f5f31da44d0c4a700f1b95e036cf0d06baf9f2f6f32eda6abd05
+[2026-11-14T07:17:01Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
+tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
+[2026-11-14T07:17:01Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T071659Z_149199 (bounded Docker timeout)
+[2026-11-14T07:17:01Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T071659Z_149199.log
+p3cap_staged_v3_check_02_20261114T071659Z_149199
+[2026-11-14T07:17:01Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T07:17:01Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture --resume
+[2026-11-14T07:17:11Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1
+[2026-11-14T07:17:11Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T07:17:11Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T07:17:11Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T07:17:11Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T07:17:11Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T07:17:11Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T071711Z_149860.pcap
+2f8b76ab0b4d9bcbc3b323baa67b86cc0d2131e86e51acee3861c18d2995c45d
+[2026-11-14T07:17:13Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
+tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
+[2026-11-14T07:17:13Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T071711Z_149860 (bounded Docker timeout)
+[2026-11-14T07:17:13Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T071711Z_149860.log
+p3cap_staged_v3_check_02_20261114T071711Z_149860
+[2026-11-14T07:17:13Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T07:17:13Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v3_check_02 --rounds 3 --test-rounds 3 --seed 20261114 --capture
+Existing run directory: src/data/raw/runs/staged_v3_check_02; use --resume or another ID
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ jobs -l
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED        STATUS        PORTS     NAMES
+631e6c1d5b89   python:3.12-slim   "python -m lab.http_…"   22 hours ago   Up 22 hours             phase3-adaptive-nids-gateway-1
+d522a2c2f430   python:3.12-slim   "python -m lab.http_…"   22 hours ago   Up 22 hours             phase3-adaptive-nids-server_b-1
+7fecfbe9c87d   python:3.12-slim   "python -m lab.http_…"   22 hours ago   Up 22 hours             phase3-adaptive-nids-server_a-1
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_v3_status.sh staged_v3_check_02 --follow
+
+===== STAGE V3 STATUS: staged_v3_check_02 =====
+{"schema":"stage_v3_collector","run_id":"staged_v3_check_02","status":"FAILED_OR_INTERRUPTED","updated_utc":"2026-11-14T07:17:13Z","log":"src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T071711Z_149860.log"}
+
+Completed rounds: 0
+Committed episodes: 0
+Observed gateway events: 0
+Complete marker: no
+
+Captured files:
+traffic_20261114T071659Z_149199.pcap 24 bytes
+traffic_20261114T071711Z_149860.pcap 24 bytes
+
+Capture processes (this run only):
+NAMES     STATUS
+
+Latest collector log:
+src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T071711Z_149860.log
+[2026-11-14T07:17:11Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T07:17:11Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T07:17:11Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T07:17:11Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T07:17:11Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T071711Z_149860.pcap
+2f8b76ab0b4d9bcbc3b323baa67b86cc0d2131e86e51acee3861c18d2995c45d
+[2026-11-14T07:17:13Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
+tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
+[2026-11-14T07:17:13Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T071711Z_149860 (bounded Docker timeout)
+[2026-11-14T07:17:13Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T071711Z_149860.log
+p3cap_staged_v3_check_02_20261114T071711Z_149860
+[2026-11-14T07:17:13Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T07:17:13Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
+[2026-11-14T07:17:11Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1
+[2026-11-14T07:17:11Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T07:17:11Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T07:17:11Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T07:17:11Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T07:17:11Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T07:17:11Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T071711Z_149860.pcap
+2f8b76ab0b4d9bcbc3b323baa67b86cc0d2131e86e51acee3861c18d2995c45d
+[2026-11-14T07:17:13Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
+tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
+[2026-11-14T07:17:13Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T071711Z_149860 (bounded Docker timeout)
+[2026-11-14T07:17:13Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T071711Z_149860.log
+p3cap_staged_v3_check_02_20261114T071711Z_149860
+[2026-11-14T07:17:13Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T07:17:13Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
+^C
+(.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ ./setup/staged_collect_v3.sh --run-id staged_v2_main_01 --rounds 12 --test-rounds 12 --seed 20261115 --capture --resume
+[2026-11-14T07:18:52Z] [STAGE-V3] Starting run=staged_v2_main_01 rounds=12 test_rounds=12 seed=20261115 capture=1 resume=1
+[2026-11-14T07:18:52Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-14T07:18:52Z] [STAGE-V3] Starting authorised isolated lab services
+time="2026-11-14T07:18:52Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-14T07:18:52Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-14T07:18:53Z] [STAGE-V3] Gateway and backends ready
+[2026-11-14T07:18:53Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v2_main_01/traffic_20261114T071852Z_150864.pcap
+ac8c2e7ce25c6c8416f438526ab832ba0aefe5d5d9c75b07983427ca5f76fdd0
+[2026-11-14T07:18:55Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
+tcpdump: Couldn't change to 'tcpdump' uid=100 gid=101: Operation not permitted
+[2026-11-14T07:18:55Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v2_main_01_20261114T071852Z_150864 (bounded Docker timeout)
+[2026-11-14T07:18:55Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v2_main_01/capture_container_20261114T071852Z_150864.log
+p3cap_staged_v2_main_01_20261114T071852Z_150864
+[2026-11-14T07:18:55Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-14T07:18:55Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete
 (.venv-cuda) fastlab@gup-admin-Precision-3680:~/deepFakeDetection/adaptive-network-intrusion-detection$ 
