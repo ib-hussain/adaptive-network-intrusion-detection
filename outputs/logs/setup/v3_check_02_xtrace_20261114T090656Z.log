@@ -1,0 +1,440 @@
++ set -Eeuo pipefail
+++ dirname ./setup/staged_collect_v3.sh
++ cd ./setup/..
+++ date -u +%Y%m%dT%H%M%SZ
++ RUN_ID=staged_v3_20261114T090656Z_165976
++ ROUNDS=12
++ TEST_ROUNDS=12
++ SEED=20261114
++ CAPTURE=1
++ RESUME=0
++ ((  10  ))
++ case "$1" in
++ ((  10 >= 2  ))
++ RUN_ID=staged_v3_check_02
++ shift 2
++ ((  8  ))
++ case "$1" in
++ ((  8 >= 2  ))
++ ROUNDS=3
++ shift 2
++ ((  6  ))
++ case "$1" in
++ ((  6 >= 2  ))
++ TEST_ROUNDS=3
++ shift 2
++ ((  4  ))
++ case "$1" in
++ ((  4 >= 2  ))
++ SEED=20261114
++ shift 2
++ ((  2  ))
++ case "$1" in
++ CAPTURE=1
++ shift
++ ((  1  ))
++ case "$1" in
++ RESUME=1
++ shift
++ ((  0  ))
++ [[ staged_v3_check_02 =~ ^[A-Za-z0-9_-]{1,80}$ ]]
++ [[ 3 =~ ^[0-9]+$ ]]
++ [[ 3 =~ ^[0-9]+$ ]]
++ [[ 20261114 =~ ^[0-9]+$ ]]
++ ((  ROUNDS>=3 && ROUNDS<=150 && TEST_ROUNDS>=3 && TEST_ROUNDS<=150  ))
++ for cmd in flock timeout docker python3
++ command -v flock
++ for cmd in flock timeout docker python3
++ command -v timeout
++ for cmd in flock timeout docker python3
++ command -v docker
++ for cmd in flock timeout docker python3
++ command -v python3
++ mkdir -p outputs/locks
++ exec
++ flock -n 9
++ docker info
++ COMPOSE=(docker compose -f compose.yaml)
++ RAW=src/data/raw/runs/staged_v3_check_02
++ PY=python3
++ [[ -x .venv-cuda/bin/python ]]
++ PY=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/python
++ ((  RESUME  ))
++ [[ -s src/data/raw/runs/staged_v3_check_02/scenario_config.json ]]
++ /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/python - src/data/raw/runs/staged_v3_check_02/scenario_config.json 3 3 20261114
+++ date -u +%Y%m%dT%H%M%SZ
++ STAMP=20261114T090656Z_165976
++ LOG=src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
++ :
++ CAP_NAME=
++ CAP_STARTED=0
++ CAP_FILE=
++ STOP_OK=1
++ trap 'on_exit $?' EXIT
++ trap 'exit 130' INT
++ trap 'exit 143' TERM
++ trap 'log "SIGTSTP received: use Ctrl+C, not Ctrl+Z, to interrupt collectors safely"' TSTP
++ log 'Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:06:56Z 'Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1'
+[2026-11-14T09:06:56Z] [STAGE-V3] Starting run=staged_v3_check_02 rounds=3 test_rounds=3 seed=20261114 capture=1 resume=1
++ status STARTING
++ local state=STARTING
++ STATUS_STATE=STARTING
++ local tmp=src/data/raw/runs/staged_v3_check_02/.collector_status_v3.json.pending.165976
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '{"schema":"stage_v3_collector","run_id":"%s","status":"%s","updated_utc":"%s","log":"%s"}\n' staged_v3_check_02 STARTING 2026-11-14T09:06:56Z src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
++ mv -f src/data/raw/runs/staged_v3_check_02/.collector_status_v3.json.pending.165976 src/data/raw/runs/staged_v3_check_02/collector_status_v3.json
++ [[ -s src/data/raw/runs/staged_v3_check_02/complete.json ]]
++ log 'Checking Compose service configuration without the broken V2 capture overlay'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:06:56Z 'Checking Compose service configuration without the broken V2 capture overlay'
+[2026-11-14T09:06:56Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
++ step docker compose -f compose.yaml config --quiet
++ docker compose -f compose.yaml config --quiet
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
++ return 0
++ log 'Starting authorised isolated lab services'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:06:56Z 'Starting authorised isolated lab services'
+[2026-11-14T09:06:56Z] [STAGE-V3] Starting authorised isolated lab services
++ step docker compose -f compose.yaml up -d server_a server_b gateway
++ docker compose -f compose.yaml up -d server_a server_b gateway
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+time="2026-11-14T09:06:56Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
++ return 0
++ for network in phase3-adaptive-nids_clients phase3-adaptive-nids_services
+++ docker network inspect -f '{{.Internal}}' phase3-adaptive-nids_clients
++ [[ true == true ]]
++ for network in phase3-adaptive-nids_clients phase3-adaptive-nids_services
+++ docker network inspect -f '{{.Internal}}' phase3-adaptive-nids_services
++ [[ true == true ]]
++ log 'Both Compose network segments confirmed internal'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:06:56Z 'Both Compose network segments confirmed internal'
+[2026-11-14T09:06:56Z] [STAGE-V3] Both Compose network segments confirmed internal
+++ docker network inspect -f '{{.Id}}' phase3-adaptive-nids_services
++ SVC_NETWORK_ID=9cd72e468a258c859029948b60f7139d88901b6c57e37b1643fc47951f2d0aff
++ SVC_BRIDGE=br-9cd72e468a25
+++ pgrep -a -x tcpdump
+++ grep -F -- '-i br-9cd72e468a25'
+++ true
++ OLD_HOST_CAPTURE=
++ [[ -z '' ]]
+++ docker ps -q --filter name=phase3-adaptive-nids-capture --filter status=running
++ [[ -n '' ]]
+++ docker ps -q --filter label=phase3.staged.capture=1 --filter status=running
++ [[ -n '' ]]
++ READY=0
+++ seq 1 30
++ for attempt in $(seq 1 30)
++ docker compose -f compose.yaml exec -T gateway python -c 'import socket; [socket.create_connection((h,8080),timeout=2).close() for h in ("127.0.0.1","server_a","server_b")]'
++ READY=1
++ break
++ ((  READY  ))
++ log 'Gateway and backends ready'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:06:56Z 'Gateway and backends ready'
+[2026-11-14T09:06:56Z] [STAGE-V3] Gateway and backends ready
++ ((  CAPTURE  ))
++ IMAGE=phase3-adaptive-nids-capture:latest
++ docker image inspect phase3-adaptive-nids-capture:latest
++ CAP_NAME=p3cap_staged_v3_check_02_20261114T090656Z_165976
++ CAP_FILE=traffic_20261114T090656Z_165976.pcap
+++ docker compose -f compose.yaml ps -q gateway
++ GATEWAY_CID=631e6c1d5b89afd8bef3fb4f896669e7285cbc9265a24c85ecd2541c7b731d41
++ [[ -n 631e6c1d5b89afd8bef3fb4f896669e7285cbc9265a24c85ecd2541c7b731d41 ]]
+++ realpath src/data/raw/runs/staged_v3_check_02
++ ROOT_RAW=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02
++ log 'Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:06:56Z 'Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap'
+[2026-11-14T09:06:56Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap
++ step docker run -d --name p3cap_staged_v3_check_02_20261114T090656Z_165976 --network container:631e6c1d5b89afd8bef3fb4f896669e7285cbc9265a24c85ecd2541c7b731d41 --cap-drop ALL --cap-add NET_RAW --security-opt no-new-privileges:true --read-only --stop-signal SIGINT --stop-timeout 8 --pids-limit 32 --label phase3.staged.capture=1 --label phase3.staged.run=staged_v3_check_02 --mount type=bind,src=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02,dst=/captures phase3-adaptive-nids-capture:latest -Z root -i any -p -nn -s 0 -U -w /captures/traffic_20261114T090656Z_165976.pcap 'tcp port 8080'
++ docker run -d --name p3cap_staged_v3_check_02_20261114T090656Z_165976 --network container:631e6c1d5b89afd8bef3fb4f896669e7285cbc9265a24c85ecd2541c7b731d41 --cap-drop ALL --cap-add NET_RAW --security-opt no-new-privileges:true --read-only --stop-signal SIGINT --stop-timeout 8 --pids-limit 32 --label phase3.staged.capture=1 --label phase3.staged.run=staged_v3_check_02 --mount type=bind,src=/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/staged_v3_check_02,dst=/captures phase3-adaptive-nids-capture:latest -Z root -i any -p -nn -s 0 -U -w /captures/traffic_20261114T090656Z_165976.pcap 'tcp port 8080'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+d51082015789267b6624ad78b4fd4e5700dc8d0ede391db8d6627804810a7aa6
++ return 0
++ CAP_STARTED=1
++ sleep 2
+++ docker inspect -f '{{.State.Running}}' p3cap_staged_v3_check_02_20261114T090656Z_165976
++ [[ true == true ]]
++ log 'Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:06:59Z 'Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment'
+[2026-11-14T09:06:59Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
++ PROBE='import urllib.request; services=["a","b","a","b"]; statuses=[urllib.request.urlopen(urllib.request.Request("http://gateway:8080/"+svc,data=b"capture_check"*8,headers={"X-Lab-Episode":"v3_capture_probe_not_an_experiment"},method="POST"),timeout=5).status for svc in services]; assert statuses==[200]*4; print("CAPTURE_PROBE_HTTP_OK",len(statuses),flush=True)'
++ step timeout 45s docker compose -f compose.yaml --profile runner run --rm -T --no-deps runner python -c 'import urllib.request; services=["a","b","a","b"]; statuses=[urllib.request.urlopen(urllib.request.Request("http://gateway:8080/"+svc,data=b"capture_check"*8,headers={"X-Lab-Episode":"v3_capture_probe_not_an_experiment"},method="POST"),timeout=5).status for svc in services]; assert statuses==[200]*4; print("CAPTURE_PROBE_HTTP_OK",len(statuses),flush=True)'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
++ timeout 45s docker compose -f compose.yaml --profile runner run --rm -T --no-deps runner python -c 'import urllib.request; services=["a","b","a","b"]; statuses=[urllib.request.urlopen(urllib.request.Request("http://gateway:8080/"+svc,data=b"capture_check"*8,headers={"X-Lab-Episode":"v3_capture_probe_not_an_experiment"},method="POST"),timeout=5).status for svc in services]; assert statuses==[200]*4; print("CAPTURE_PROBE_HTTP_OK",len(statuses),flush=True)'
+time="2026-11-14T09:06:59Z" level=warning msg="Found orphan containers (phase3-adaptive-nids-capture-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container phase3-adaptive-nids-runner-run-0248b341c896 Creating 
+ Container phase3-adaptive-nids-runner-run-0248b341c896 Created 
+CAPTURE_PROBE_HTTP_OK 4
++ return 0
++ captured=0
+++ seq 1 8
++ for attempt in $(seq 1 8)
++ /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/python -m setup.staged_capture_audit --pcap src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap --min-packets 4 --quiet
++ log 'Capture probe verification 1/8: packets not yet flushed; waiting'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:06:59Z 'Capture probe verification 1/8: packets not yet flushed; waiting'
+[2026-11-14T09:06:59Z] [STAGE-V3] Capture probe verification 1/8: packets not yet flushed; waiting
++ sleep 1
++ for attempt in $(seq 1 8)
++ /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/python -m setup.staged_capture_audit --pcap src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap --min-packets 4 --quiet
++ captured=1
++ break
++ ((  !captured  ))
++ log 'Capture preflight passed: actual packet records observed'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:00Z 'Capture preflight passed: actual packet records observed'
+[2026-11-14T09:07:00Z] [STAGE-V3] Capture preflight passed: actual packet records observed
++ status COLLECTING
++ local state=COLLECTING
++ STATUS_STATE=COLLECTING
++ local tmp=src/data/raw/runs/staged_v3_check_02/.collector_status_v3.json.pending.165976
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '{"schema":"stage_v3_collector","run_id":"%s","status":"%s","updated_utc":"%s","log":"%s"}\n' staged_v3_check_02 COLLECTING 2026-11-14T09:07:00Z src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
++ mv -f src/data/raw/runs/staged_v3_check_02/.collector_status_v3.json.pending.165976 src/data/raw/runs/staged_v3_check_02/collector_status_v3.json
++ RUNLOG=src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ log 'Launching runner; full per-round output: src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:00Z 'Launching runner; full per-round output: src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log'
+[2026-11-14T09:07:00Z] [STAGE-V3] Launching runner; full per-round output: src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ CMD=(python -m lab.staged_generate --output "/out/runs/$RUN_ID" --gateway http://gateway:8080 --rounds "$ROUNDS" --test-rounds "$TEST_ROUNDS" --seed "$SEED" --resume)
++ RUNNER_PID=166659
++ timeout -s INT -k 10s 1800s docker compose -f compose.yaml --profile runner run --rm -T --no-deps runner python -m lab.staged_generate --output /out/runs/staged_v3_check_02 --gateway http://gateway:8080 --rounds 3 --test-rounds 3 --seed 20261114 --resume
++ kill -0 166659
++ sleep 5
+++ find src/data/raw/runs/staged_v3_check_02/rounds -maxdepth 1 -type f -name '*.json'
+++ wc -l
++ completed=1
+++ tail -n 1 src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ last='fixed round 1/3 committed; 2 complete episodes'
++ log 'HEARTBEAT runner PID=166659 completed_rounds=1/12; last_output=fixed round 1/3 committed; 2 complete episodes'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:05Z 'HEARTBEAT runner PID=166659 completed_rounds=1/12; last_output=fixed round 1/3 committed; 2 complete episodes'
+[2026-11-14T09:07:05Z] [STAGE-V3] HEARTBEAT runner PID=166659 completed_rounds=1/12; last_output=fixed round 1/3 committed; 2 complete episodes
++ kill -0 166659
++ sleep 5
+++ find src/data/raw/runs/staged_v3_check_02/rounds -maxdepth 1 -type f -name '*.json'
+++ wc -l
++ completed=3
+++ tail -n 1 src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ last='fixed round 3/3 committed; 6 complete episodes'
++ log 'HEARTBEAT runner PID=166659 completed_rounds=3/12; last_output=fixed round 3/3 committed; 6 complete episodes'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:10Z 'HEARTBEAT runner PID=166659 completed_rounds=3/12; last_output=fixed round 3/3 committed; 6 complete episodes'
+[2026-11-14T09:07:10Z] [STAGE-V3] HEARTBEAT runner PID=166659 completed_rounds=3/12; last_output=fixed round 3/3 committed; 6 complete episodes
++ kill -0 166659
++ sleep 5
+++ find src/data/raw/runs/staged_v3_check_02/rounds -maxdepth 1 -type f -name '*.json'
+++ wc -l
++ completed=5
+++ tail -n 1 src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ last='random round 2/3 committed; 10 complete episodes'
++ log 'HEARTBEAT runner PID=166659 completed_rounds=5/12; last_output=random round 2/3 committed; 10 complete episodes'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:15Z 'HEARTBEAT runner PID=166659 completed_rounds=5/12; last_output=random round 2/3 committed; 10 complete episodes'
+[2026-11-14T09:07:15Z] [STAGE-V3] HEARTBEAT runner PID=166659 completed_rounds=5/12; last_output=random round 2/3 committed; 10 complete episodes
++ kill -0 166659
++ sleep 5
+++ find src/data/raw/runs/staged_v3_check_02/rounds -maxdepth 1 -type f -name '*.json'
+++ wc -l
++ completed=7
+++ tail -n 1 src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ last='strategic round 1/3 committed; 14 complete episodes'
++ log 'HEARTBEAT runner PID=166659 completed_rounds=7/12; last_output=strategic round 1/3 committed; 14 complete episodes'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:20Z 'HEARTBEAT runner PID=166659 completed_rounds=7/12; last_output=strategic round 1/3 committed; 14 complete episodes'
+[2026-11-14T09:07:20Z] [STAGE-V3] HEARTBEAT runner PID=166659 completed_rounds=7/12; last_output=strategic round 1/3 committed; 14 complete episodes
++ kill -0 166659
++ sleep 5
+++ find src/data/raw/runs/staged_v3_check_02/rounds -maxdepth 1 -type f -name '*.json'
+++ wc -l
++ completed=9
+++ tail -n 1 src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ last='strategic round 3/3 committed; 18 complete episodes'
++ log 'HEARTBEAT runner PID=166659 completed_rounds=9/12; last_output=strategic round 3/3 committed; 18 complete episodes'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:25Z 'HEARTBEAT runner PID=166659 completed_rounds=9/12; last_output=strategic round 3/3 committed; 18 complete episodes'
+[2026-11-14T09:07:25Z] [STAGE-V3] HEARTBEAT runner PID=166659 completed_rounds=9/12; last_output=strategic round 3/3 committed; 18 complete episodes
++ kill -0 166659
++ sleep 5
+++ find src/data/raw/runs/staged_v3_check_02/rounds -maxdepth 1 -type f -name '*.json'
+++ wc -l
++ completed=10
+++ tail -n 1 src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ last='test round 1/3 committed; 20 complete episodes'
++ log 'HEARTBEAT runner PID=166659 completed_rounds=10/12; last_output=test round 1/3 committed; 20 complete episodes'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:30Z 'HEARTBEAT runner PID=166659 completed_rounds=10/12; last_output=test round 1/3 committed; 20 complete episodes'
+[2026-11-14T09:07:30Z] [STAGE-V3] HEARTBEAT runner PID=166659 completed_rounds=10/12; last_output=test round 1/3 committed; 20 complete episodes
++ kill -0 166659
++ sleep 5
+++ find src/data/raw/runs/staged_v3_check_02/rounds -maxdepth 1 -type f -name '*.json'
+++ wc -l
++ completed=12
+++ tail -n 1 src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ last='{"complete": true, "episodes": 24, "run_dir": "/out/runs/staged_v3_check_02"}'
++ log 'HEARTBEAT runner PID=166659 completed_rounds=12/12; last_output={"complete": true, "episodes": 24, "run_dir": "/out/runs/staged_v3_check_02"}'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'HEARTBEAT runner PID=166659 completed_rounds=12/12; last_output={"complete": true, "episodes": 24, "run_dir": "/out/runs/staged_v3_check_02"}'
+[2026-11-14T09:07:35Z] [STAGE-V3] HEARTBEAT runner PID=166659 completed_rounds=12/12; last_output={"complete": true, "episodes": 24, "run_dir": "/out/runs/staged_v3_check_02"}
++ kill -0 166659
++ set +e
++ wait 166659
++ RUNNER_RC=0
++ set -e
++ log 'Runner exit code: 0; last 15 lines of generator log:'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'Runner exit code: 0; last 15 lines of generator log:'
+[2026-11-14T09:07:35Z] [STAGE-V3] Runner exit code: 0; last 15 lines of generator log:
++ tail -n 15 src/data/raw/runs/staged_v3_check_02/generator_20261114T090656Z_165976.log
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+ Container phase3-adaptive-nids-runner-run-09e7886c8f6b Creating 
+ Container phase3-adaptive-nids-runner-run-09e7886c8f6b Created 
+fixed round 1/3 committed; 2 complete episodes
+fixed round 2/3 committed; 4 complete episodes
+fixed round 3/3 committed; 6 complete episodes
+random round 1/3 committed; 8 complete episodes
+random round 2/3 committed; 10 complete episodes
+random round 3/3 committed; 12 complete episodes
+strategic round 1/3 committed; 14 complete episodes
+strategic round 2/3 committed; 16 complete episodes
+strategic round 3/3 committed; 18 complete episodes
+test round 1/3 committed; 20 complete episodes
+test round 2/3 committed; 22 complete episodes
+test round 3/3 committed; 24 complete episodes
+{"complete": true, "episodes": 24, "run_dir": "/out/runs/staged_v3_check_02"}
++ ((  RUNNER_RC != 0  ))
++ [[ -s src/data/raw/runs/staged_v3_check_02/complete.json ]]
++ log 'All round records committed. Closing packet capture before extraction.'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'All round records committed. Closing packet capture before extraction.'
+[2026-11-14T09:07:35Z] [STAGE-V3] All round records committed. Closing packet capture before extraction.
++ ((  CAPTURE  ))
++ capture_stop
++ ((  CAP_STARTED  ))
++ log 'Stopping only our capture container: p3cap_staged_v3_check_02_20261114T090656Z_165976 (bounded Docker timeout)'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'Stopping only our capture container: p3cap_staged_v3_check_02_20261114T090656Z_165976 (bounded Docker timeout)'
+[2026-11-14T09:07:35Z] [STAGE-V3] Stopping only our capture container: p3cap_staged_v3_check_02_20261114T090656Z_165976 (bounded Docker timeout)
+++ timeout 5s docker inspect -f '{{.State.Running}}' p3cap_staged_v3_check_02_20261114T090656Z_165976
++ [[ true == true ]]
++ step timeout 16s docker stop --signal SIGINT --timeout 8 p3cap_staged_v3_check_02_20261114T090656Z_165976
++ timeout 16s docker stop --signal SIGINT --timeout 8 p3cap_staged_v3_check_02_20261114T090656Z_165976
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+p3cap_staged_v3_check_02_20261114T090656Z_165976
++ return 0
++ local running
+++ timeout 5s docker inspect -f '{{.State.Running}}' p3cap_staged_v3_check_02_20261114T090656Z_165976
++ running=false
++ [[ false == true ]]
++ timeout 8s docker logs p3cap_staged_v3_check_02_20261114T090656Z_165976
++ log 'Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T090656Z_165976.log'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T090656Z_165976.log'
+[2026-11-14T09:07:35Z] [STAGE-V3] Capture log saved to src/data/raw/runs/staged_v3_check_02/capture_container_20261114T090656Z_165976.log
++ CAP_STARTED=0
++ step timeout 8s docker rm p3cap_staged_v3_check_02_20261114T090656Z_165976
++ timeout 8s docker rm p3cap_staged_v3_check_02_20261114T090656Z_165976
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+p3cap_staged_v3_check_02_20261114T090656Z_165976
++ return 0
++ log 'Capture process confirmed stopped'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'Capture process confirmed stopped'
+[2026-11-14T09:07:35Z] [STAGE-V3] Capture process confirmed stopped
++ status POSTPROCESSING
++ local state=POSTPROCESSING
++ STATUS_STATE=POSTPROCESSING
++ local tmp=src/data/raw/runs/staged_v3_check_02/.collector_status_v3.json.pending.165976
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '{"schema":"stage_v3_collector","run_id":"%s","status":"%s","updated_utc":"%s","log":"%s"}\n' staged_v3_check_02 POSTPROCESSING 2026-11-14T09:07:35Z src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
++ mv -f src/data/raw/runs/staged_v3_check_02/.collector_status_v3.json.pending.165976 src/data/raw/runs/staged_v3_check_02/collector_status_v3.json
++ [[ ! -s src/data/raw/runs/staged_v3_check_02/gateway_subset.jsonl ]]
++ log 'Extracting ground-truth-aligned gateway observations'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'Extracting ground-truth-aligned gateway observations'
+[2026-11-14T09:07:35Z] [STAGE-V3] Extracting ground-truth-aligned gateway observations
++ step /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/python -m setup.university_extract_events --manifest src/data/raw/runs/staged_v3_check_02/episodes.jsonl --gateway src/data/raw/gateway_requests.jsonl --out src/data/raw/runs/staged_v3_check_02/gateway_subset.jsonl
++ /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/python -m setup.university_extract_events --manifest src/data/raw/runs/staged_v3_check_02/episodes.jsonl --gateway src/data/raw/gateway_requests.jsonl --out src/data/raw/runs/staged_v3_check_02/gateway_subset.jsonl
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+{
+  "status": "validated_observed_gateway_subset_not_real_attack_data",
+  "episodes": 24,
+  "events": 480,
+  "output": "src/data/raw/runs/staged_v3_check_02/gateway_subset.jsonl"
+}
++ return 0
++ ((  CAPTURE  ))
++ log 'Validating closed PCAP structure and nonzero observed packet count'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'Validating closed PCAP structure and nonzero observed packet count'
+[2026-11-14T09:07:35Z] [STAGE-V3] Validating closed PCAP structure and nonzero observed packet count
+++ wc -l
++ episode_count=24
++ MIN_PACKETS=96
++ AUDIT=src/data/raw/runs/staged_v3_check_02/capture_audit_20261114T090656Z_165976.json
++ step /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/python -m setup.staged_capture_audit --pcap src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap --min-packets 96 --output src/data/raw/runs/staged_v3_check_02/capture_audit_20261114T090656Z_165976.json
++ /home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/.venv-cuda/bin/python -m setup.staged_capture_audit --pcap src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap --min-packets 96 --output src/data/raw/runs/staged_v3_check_02/capture_audit_20261114T090656Z_165976.json
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+{"complete": true, "issue": null, "linktype": 276, "min_packets": 96, "packets": 13550, "path": "src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap", "payload_bytes": 1479740, "size_bytes": 1696564, "valid": true, "version": [2, 4]}
++ return 0
++ log 'Packet audit written: src/data/raw/runs/staged_v3_check_02/capture_audit_20261114T090656Z_165976.json (independent Zeek alignment still required)'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'Packet audit written: src/data/raw/runs/staged_v3_check_02/capture_audit_20261114T090656Z_165976.json (independent Zeek alignment still required)'
+[2026-11-14T09:07:35Z] [STAGE-V3] Packet audit written: src/data/raw/runs/staged_v3_check_02/capture_audit_20261114T090656Z_165976.json (independent Zeek alignment still required)
++ status COLLECTION_COMPLETE
++ local state=COLLECTION_COMPLETE
++ STATUS_STATE=COLLECTION_COMPLETE
++ local tmp=src/data/raw/runs/staged_v3_check_02/.collector_status_v3.json.pending.165976
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '{"schema":"stage_v3_collector","run_id":"%s","status":"%s","updated_utc":"%s","log":"%s"}\n' staged_v3_check_02 COLLECTION_COMPLETE 2026-11-14T09:07:35Z src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
++ mv -f src/data/raw/runs/staged_v3_check_02/.collector_status_v3.json.pending.165976 src/data/raw/runs/staged_v3_check_02/collector_status_v3.json
++ log 'SUCCESS: staged_v3_check_02; manifest=src/data/raw/runs/staged_v3_check_02/episodes.jsonl, gateway=src/data/raw/runs/staged_v3_check_02/gateway_subset.jsonl, packet=src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'SUCCESS: staged_v3_check_02; manifest=src/data/raw/runs/staged_v3_check_02/episodes.jsonl, gateway=src/data/raw/runs/staged_v3_check_02/gateway_subset.jsonl, packet=src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap'
+[2026-11-14T09:07:35Z] [STAGE-V3] SUCCESS: staged_v3_check_02; manifest=src/data/raw/runs/staged_v3_check_02/episodes.jsonl, gateway=src/data/raw/runs/staged_v3_check_02/gateway_subset.jsonl, packet=src/data/raw/runs/staged_v3_check_02/traffic_20261114T090656Z_165976.pcap
++ log 'Reminder: benign laboratory behavioural profiles, NOT evidence of genuine network intrusion.'
++ tee -a src/data/raw/runs/staged_v3_check_02/collector_v3_20261114T090656Z_165976.log
+++ date -u +%Y-%m-%dT%H:%M:%SZ
++ printf '[%s] [STAGE-V3] %s\n' 2026-11-14T09:07:35Z 'Reminder: benign laboratory behavioural profiles, NOT evidence of genuine network intrusion.'
+[2026-11-14T09:07:35Z] [STAGE-V3] Reminder: benign laboratory behavioural profiles, NOT evidence of genuine network intrusion.
++ on_exit 0
++ local rc=0
++ trap - EXIT
++ ((  CAP_STARTED  ))
++ ((  rc != 0  ))
++ exit 0

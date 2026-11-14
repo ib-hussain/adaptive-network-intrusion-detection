@@ -122,18 +122,3 @@ This will refuse to launch training if the run lacks sufficient independent pack
 
 **Next action:** Install V3, clear the verified suspended launcher, recover the previous gateway data, and execute `staged_v3_check_02`. The first live capture-probe result will tell us whether packet collection is now functioning correctly.
 
-
-
-
-
-
-
-
-
-Read AGENTS.md, MEMORY.md, SKILLS.md, and INSTRUCTIONS.md completely. These files define your project context, engineering constraints, and current development mission.
-
-Inspect the actual repository, runtime, logs, processes, and saved research artefacts before modifying anything.
-
-Execute the prioritised plan in INSTRUCTIONS.md autonomously. Preserve all existing work. Provide live progress logs and persistent checkpoints. Verify every modification, record failures accurately, and continue with independent useful tasks when a workstream is blocked.
-
-Begin with the Stage V3 packet-capture issue.

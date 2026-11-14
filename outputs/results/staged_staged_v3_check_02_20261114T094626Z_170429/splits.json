@@ -1,0 +1,48 @@
+{
+  "fixed": {
+    "train": [
+      "v2-fixed-0-576daee7f339-benign",
+      "v2-fixed-0-576daee7f339-incident",
+      "v2-fixed-1-9b314ccac19f-incident",
+      "v2-fixed-2-ee71a21e5868-benign"
+    ],
+    "validation": [
+      "v2-fixed-1-9b314ccac19f-benign",
+      "v2-fixed-2-ee71a21e5868-incident"
+    ]
+  },
+  "random": {
+    "train": [
+      "v2-random-0-7e26a401f2e4-benign",
+      "v2-random-0-7e26a401f2e4-incident",
+      "v2-random-1-d3be882fabc2-incident",
+      "v2-random-2-d54235cd9a33-benign"
+    ],
+    "validation": [
+      "v2-random-1-d3be882fabc2-benign",
+      "v2-random-2-d54235cd9a33-incident"
+    ]
+  },
+  "strategic": {
+    "train": [
+      "v2-strategic-0-5d85b3073956-benign",
+      "v2-strategic-0-5d85b3073956-incident",
+      "v2-strategic-1-e10a0c290b6f-incident",
+      "v2-strategic-2-0096e9da4c1a-benign"
+    ],
+    "validation": [
+      "v2-strategic-1-e10a0c290b6f-benign",
+      "v2-strategic-2-0096e9da4c1a-incident"
+    ]
+  },
+  "test": {
+    "held_out": [
+      "v2-test-0-03236b64d93f-benign",
+      "v2-test-0-03236b64d93f-incident",
+      "v2-test-1-d9bba24f7349-benign",
+      "v2-test-1-d9bba24f7349-incident",
+      "v2-test-2-5a15cc77d3e0-benign",
+      "v2-test-2-5a15cc77d3e0-incident"
+    ]
+  }
+}

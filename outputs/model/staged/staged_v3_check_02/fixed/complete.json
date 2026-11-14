@@ -1,0 +1,74 @@
+{
+  "causal_labels": true,
+  "detection": {
+    "episode_f1": 0.2857142857142857,
+    "episode_pr_auc": 0.38333333333333336,
+    "episode_precision": 0.25,
+    "episode_recall": 0.3333333333333333,
+    "episode_roc_auc": 0.0,
+    "n_scored_episodes": 6
+  },
+  "device": "cuda",
+  "early_warning": {
+    "conditional_mean_lead_s": 1.0568246841430664,
+    "conditional_median_lead_s": 1.0568246841430664,
+    "coverage_adjusted_mean_lead_s": 0.35227489471435547,
+    "false_alarms_per_benign_hour": 2436.8542160442043,
+    "false_positive_episode_rate": 1.0,
+    "late_incidents": 0,
+    "missed_incidents": 2,
+    "n_benign": 3,
+    "n_incidents": 3,
+    "pre_milestone_coverage": 0.3333333333333333,
+    "pre_onset_warning_episodes": 0,
+    "pre_onset_warning_rate": 0.0
+  },
+  "epochs": 80,
+  "per_episode": [
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-0-03236b64d93f-benign",
+      "lead_s": null,
+      "outcome": "false_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-2-5a15cc77d3e0-benign",
+      "lead_s": null,
+      "outcome": "false_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-1-d9bba24f7349-incident",
+      "lead_s": null,
+      "outcome": "missed"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-0-03236b64d93f-incident",
+      "lead_s": 1.0568246841430664,
+      "outcome": "early_warning"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-1-d9bba24f7349-benign",
+      "lead_s": null,
+      "outcome": "false_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-2-5a15cc77d3e0-incident",
+      "lead_s": null,
+      "outcome": "missed"
+    }
+  ],
+  "policy": "fixed",
+  "samples": {
+    "held_out": 108,
+    "train": 70,
+    "val": 35
+  },
+  "seed": 20261112,
+  "status": "LAB_TRAFFIC_ENGINEERING_BASELINE_NOT_CYBERSECURITY_EVIDENCE",
+  "threshold_validation_only": 0.95
+}

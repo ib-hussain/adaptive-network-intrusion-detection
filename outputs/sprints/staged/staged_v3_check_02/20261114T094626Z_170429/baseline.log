@@ -1,0 +1,13 @@
+fixed/rf: evaluated
+fixed/isolation_forest: evaluated
+random/rf: evaluated
+random/isolation_forest: evaluated
+strategic/rf: evaluated
+strategic/isolation_forest: evaluated
+Wrote outputs/results/staged_staged_v3_check_02_20261114T094626Z_170429/results.json
+{
+  "status": "validated_structure_and_finiteness",
+  "policies": 3,
+  "held_out_episodes": 6,
+  "experimental_validity": "not_established_by_this_checker"
+}

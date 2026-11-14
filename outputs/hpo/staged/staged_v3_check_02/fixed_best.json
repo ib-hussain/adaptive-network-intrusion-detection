@@ -1,0 +1,15 @@
+{
+  "best_params": {
+    "max_depth": 11,
+    "max_features": 0.9033338734177401,
+    "min_samples_leaf": 1,
+    "n_estimators": 140
+  },
+  "best_validation_pr_auc": 1.0,
+  "causal_labels": true,
+  "finished_trials": 30,
+  "note": "Validation-only tuning on tiny controlled lab data, NOT a claimed real-intrusion result",
+  "policy": "fixed",
+  "run_id": "staged_v3_check_02",
+  "study_db": "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/outputs/hpo/staged/staged_v3_check_02/fixed.sqlite3"
+}

@@ -1,0 +1,15 @@
+{
+  "causal_labels": true,
+  "device": "cuda",
+  "epochs": 80,
+  "policy": "strategic",
+  "samples": {
+    "held_out": 108,
+    "train": 70,
+    "val": 35
+  },
+  "seed": 20261112,
+  "status": "LAB_TRAFFIC_ENGINEERING_BASELINE_NOT_CYBERSECURITY_EVIDENCE",
+  "threshold_validation_only": null,
+  "warning": "No validation threshold meets constrained false positive episode rate; no test metrics at a chosen threshold"
+}

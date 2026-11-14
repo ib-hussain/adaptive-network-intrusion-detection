@@ -1,0 +1,48 @@
+{
+  "caution": "Zeek -C ignores checksum validation; does not prove full bidirectional visibility or realistic attacks.",
+  "episodes_total": 24,
+  "episodes_with_3_or_more_conns": 24,
+  "gateway_flow_duplicate_warning": "Gateway namespace captures two distinct links; do not equate Zeek flows to request counts.",
+  "pcap_parts": [
+    {
+      "bytes": 24,
+      "filename": "traffic_20261114T071659Z_149199.pcap",
+      "pcap_sha256": "e3f42e2687636327d7f18c9635173252505b4a838fa6829a755bab06c9c69749",
+      "stderr": "",
+      "zeek_rc": 0
+    },
+    {
+      "bytes": 24,
+      "filename": "traffic_20261114T071711Z_149860.pcap",
+      "pcap_sha256": "e3f42e2687636327d7f18c9635173252505b4a838fa6829a755bab06c9c69749",
+      "stderr": "",
+      "zeek_rc": 0
+    },
+    {
+      "bytes": 13108,
+      "filename": "traffic_20261114T081753Z_153376.pcap",
+      "pcap_sha256": "fb027451b57c110789c0664226832b48a54881023c43fca4728babb8c2560e7c",
+      "stderr": "",
+      "zeek_rc": 0
+    },
+    {
+      "bytes": 13108,
+      "filename": "traffic_20261114T082144Z_154831.pcap",
+      "pcap_sha256": "0f074ea1e44897b6496f202b41764ad6419ee6fbd1083debe5b4da1869fe7985",
+      "stderr": "",
+      "zeek_rc": 0
+    },
+    {
+      "bytes": 1696564,
+      "filename": "traffic_20261114T090656Z_165976.pcap",
+      "pcap_sha256": "5d4710ff35351e5e505775acbd08478f15aa2fe5dab2183b715037e50e9f32f0",
+      "stderr": "",
+      "zeek_rc": 0
+    }
+  ],
+  "run": "staged_v3_check_02",
+  "test_episodes_missing_3_connections": [],
+  "window_coverage": 1.0,
+  "zeek_assigned_conn": 960,
+  "zeek_raw_conn": 984
+}
