@@ -190,14 +190,30 @@ def _source_hashes(repo: Path) -> dict[str, str]:
     return hashes
 
 
+def parse_porcelain_paths(porcelain: str) -> list[str]:
+    """Extract paths from ``git status --porcelain`` without trimming them.
+
+    Each line is ``XY<space>path``; the leading space of a worktree-only
+    modification is significant, so the text must not be ``strip()``ped before
+    slicing. ``str.strip()`` on the whole output silently ate the first
+    character of the first path.
+    """
+
+    return [line[3:] for line in porcelain.splitlines() if line.strip()]
+
+
 def _git_state(repo: Path) -> dict[str, object]:
     def run(*args: str) -> str:
         return subprocess.run(
             ["git", "-C", str(repo), *args], check=True, capture_output=True, text=True
         ).stdout.strip()
 
-    porcelain = run("status", "--porcelain")
-    dirty_paths = [line[3:] for line in porcelain.splitlines() if line.strip()]
+    def run_raw(*args: str) -> str:
+        return subprocess.run(
+            ["git", "-C", str(repo), *args], check=True, capture_output=True, text=True
+        ).stdout
+
+    dirty_paths = parse_porcelain_paths(run_raw("status", "--porcelain"))
     return {
         "commit": run("rev-parse", "HEAD"),
         "branch": run("rev-parse", "--abbrev-ref", "HEAD"),

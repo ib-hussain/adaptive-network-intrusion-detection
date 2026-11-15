@@ -87,3 +87,11 @@ def test_test_summary_reads_the_real_count(tmp_path: Path) -> None:
     summary = pkg._test_summary(tmp_path)
     assert summary["passed"] == 50
     assert summary["pytest_rc"] == 0
+
+
+def test_porcelain_paths_keep_the_first_character() -> None:
+    porcelain = " M instructions_temp.md\n?? deliverables/\n"
+    assert pkg.parse_porcelain_paths(porcelain) == [
+        "instructions_temp.md",
+        "deliverables/",
+    ]
