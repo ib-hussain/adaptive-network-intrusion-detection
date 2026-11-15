@@ -65,7 +65,12 @@ export CUDA_VISIBLE_DEVICES="" TOKENIZERS_PARALLELISM=false
 
 ## 4. Repository and inputs
 
-The transferred archive was extracted as a source tree rather than a Git checkout. Therefore use file hashes, explicit backup directories, logs and run IDs for continuity; do not invent a commit hash. The likely root contains:
+The transferred archive was originally extracted as a source tree rather than a
+Git checkout. It is **now a normal Git repository** on `master` with a linear
+history; use `git rev-parse HEAD` for the current commit, and continue to keep
+file hashes, dated backups (`outputs/backups/`), logs and run IDs for evidence
+continuity. Raw evidence (PCAPs, `src/data/raw/*`, checkpoints) is intentionally
+Git-ignored and belongs in the submission bundle, not in Git. The root contains:
 
 | Location | Role |
 |---|---|
@@ -189,6 +194,8 @@ For every final run, preserve:
 - `metrics.csv` with raw counts as well as rates; predictions/alerts keyed by episode/window;
 - generated figure source data and scripts; no manually edited plots;
 - final report table mapping each claim to artifact path/run ID;
+- submission bundle produced by `setup/package_phase3_submission.py`
+  (`submission_manifest.json`, `SHA256SUMS.txt`, `README_REPRODUCE.md`, ZIP);
 - failures and limitations log.
 
 ## 10. Append-only current progress log
@@ -340,8 +347,8 @@ Artefacts: `outputs/reports/<run>/seed_comparison.csv`,
 The number check now covers **102** quoted values across both seeds.
 
 **Verification.** `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests`
-→ **45 passed**. `python -m setup.verify_report_numbers ...` → **102 checks, 0
-mismatches, PASS** (`outputs/reports/<run>/report_number_verification.json`).
+→ **50 passed** (45 at the first freeze, plus 5 for the submission packager).
+`python -m setup.verify_report_numbers ...` → **102 checks, 0 mismatches, PASS** (`outputs/reports/<run>/report_number_verification.json`).
 `claim_artifact_table.csv` maps 177 reported values to their artefacts.
 
 **Still true and still to be respected.** The traffic is harmless and synthetic:
@@ -350,3 +357,36 @@ NIDS performance claim. Two seeds only. One topology only. The strategic reward
 is a **heuristic** scenario-selection reward, not detector feedback and not a
 Nash equilibrium. The `zeek -C` / checksum-offload caveat remains and is
 surfaced in every sensor artefact.
+
+### 15 November 2026 — Finalisation and submission packaging (VERIFIED)
+
+The study was frozen and packaged for submission; no new collection or training
+was performed.
+
+* **Verification captured** under `outputs/logs/final_verification/<UTC>/`:
+  `compileall` rc 0, `bash -n setup/*.sh` rc 0,
+  `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests` → **50 passed**
+  (log `outputs/logs/final_verification/20261115T174058Z/verification.log`),
+  and `setup/verify_report_numbers.py` → **102 checks, 0 mismatches, PASS**.
+* **Documentation reconciled.** `README.md` now describes a completed study and
+  separates *reviewing existing evidence* from *reproducing from scratch*;
+  the stale "implementation foundation" wording and the broken
+  `docs/IMPLEMENTATION_PLAN.md` link are gone. `AGENTS.md` §12 carries the
+  verified state instead of the obsolete capture blocker. This file and
+  `INSTRUCTIONS.md` were brought in line with the final run IDs.
+* **Report corrections** (each supported by a stored artefact, no metric
+  changed): the §2.4 checksum demonstration now quotes the *main* run's
+  numbers (15,376 strict records vs 7,688 usable connections) instead of the
+  pilot's; the stale "no second seed" deviation text now points to §6.6; the
+  number-verifier count is 102; the failed-pilot ID is corrected to
+  `cpu_v3_pilot_20261115T162845Z`.
+* **Evidence bundle** built by `setup/package_phase3_submission.py`, which fails
+  closed if any required raw artefact is missing. It writes
+  `submission_manifest.json`, `SHA256SUMS.txt` and `README_REPRODUCE.md`, and
+  produces one ZIP **outside Git tracking** (PCAPs, journals, studies,
+  figures, audits, environment and verification logs). Raw PCAPs and run
+  directories remain uncommitted by design.
+
+Remaining limitations are unchanged and are listed in §9 of the report: two
+seeds, one topology, synthetic harmless traffic, checksum-repaired derived
+PCAP, heuristic reward, and no graph model or topology generalisation.

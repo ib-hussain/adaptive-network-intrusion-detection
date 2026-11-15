@@ -1,0 +1,27 @@
+# final verification 20261115T174058Z
+## git
+Sun Nov 15 05:40:58 PM UTC 2026
+## master...origin/master
+ M AGENTS.md
+ M MEMORY.md
+ M README.md
+ M instructions_temp.md
+ M outputs/reports/cpu_v3_main_v2_20261115T164430Z/PHASE3_REPORT.md
+?? deliverables/
+?? outputs/backups/finalisation_20261115T173221Z/
+?? outputs/logs/final_verification/
+?? setup/build_submission_deliverables.py
+?? setup/package_phase3_submission.py
+?? tests/test_package_submission.py
+b4342ccfefe39052311eb72fb4e80107f726be9e
+
+## compileall
+compileall_rc=0
+
+## bash -n
+bashn_rc=0
+
+## pytest
+..................................................                       [100%]
+50 passed in 9.97s
+pytest_rc=0

@@ -121,9 +121,39 @@ Use parallelism only for independent outputs/safe workloads: data audit, CPU bas
 
 A claim is **VERIFIED** only if supported by reproducible commands and artefacts. A successful `pytest` run verifies code properties, not scientific validity. A nonempty PCAP file header does not prove packet capture; audit packets, TCP/application content, Zeek connections and episode alignment. A successful GRU run does not prove a GNN. A result with excellent PR-AUC on a few harmless profiles does not establish actual intrusion detection or zero-day behaviour detection. Capture negative results, open risks and weak statistical power as part of honest reporting.
 
-## 12. On the current known blocker
+## 12. Current verified state (supersedes the 14 November capture blocker)
 
-On **14 November 2026**, the latest supplied university logs show `tcpdump` exiting immediately inside a restricted V3 capture container because it cannot switch to user `tcpdump` (UID 100/GID 101). A prepared patch changes only the command invocation to `-Z root` and keeps the limited container capabilities. **No live post-hotfix results have yet been received.** The agent's first mission is to confirm live launcher state, apply/review minimal fix if absent, run the four-request packet-capture probe, and prove a proper packet-bearing PCAP before collecting, Zeek-processing or training a staged dataset. Do not promote the older 24-byte PCAPs.
+The historical `tcpdump` blocker (`Couldn't change to 'tcpdump' uid=100 gid=101`)
+is **resolved on this host**: the `-Z root` invocation in the restricted
+`setup/staged_collect_v3.sh` sidecar works, capabilities remain `--cap-drop ALL
+--cap-add NET_RAW` with `no-new-privileges`, and proper packet-bearing PCAPs
+have been collected. The older 24-byte/header-only PCAPs remain historical
+failure evidence and must not be promoted.
+
+A complete, sensor-validated CPU Phase 3 study now exists:
+
+- primary run `cpu_v3_main_v2_20261115T164430Z` (seed `20261115`);
+- independent replication `cpu_v3_main_v2_seed2_20261115T165949Z` (seed `20261116`);
+- both tagged **`SENSOR_VALIDATED`** by `setup/staged_sensor_gate.py`
+  (7 declared checks, 100 % bidirectional visibility, 0 ambiguous joins);
+- report `outputs/reports/cpu_v3_main_v2_20261115T164430Z/PHASE3_REPORT.md`,
+  number check `setup/verify_report_numbers.py` → 102 checks, 0 mismatches;
+- `pytest -q tests` → 50 passed.
+
+The **empirical conclusion is bounded** and must not be overstated: harmless
+synthetic traffic only, two seeds, one topology, checksum-repaired PCAP copies
+as derived artefacts with raw PCAPs unmodified, no established policy ranking,
+and no graph/topology generalisation or real-intrusion claim.
+
+**Raw evidence is intentionally outside Git.** `.gitignore` excludes `*.pcap`,
+`src/data/raw/*`, model checkpoints and SQLite files; those artefacts must be
+supplied through the submission evidence bundle built by
+`setup/package_phase3_submission.py` (`submission_manifest.json`,
+`SHA256SUMS.txt`, `README_REPRODUCE.md`, archive hash). Never commit raw PCAPs,
+datasets or checkpoints to compensate. If the bundle is absent, say so and list
+the missing paths rather than claiming end-to-end reproducibility.
+
+The integration and safety rules in §2, §4, §6 and §11 remain fully in force.
 
 ## 13. Required external documentation
 

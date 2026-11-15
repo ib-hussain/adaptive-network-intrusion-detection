@@ -362,6 +362,8 @@ This queue was executed on the CPU-only machine. The active run is
 | J figures from saved metrics | done | `outputs/reports/<run>/figures/{zeek,gateway}/` (8 figures + source data each) |
 | K report, claim-to-artifact table, limitations, reproducibility | done | `outputs/reports/<run>/PHASE3_REPORT.md`, `claim_artifact_table.csv` |
 | Reproducibility verification | done | `python -m setup.verify_report_numbers` → 102 checks, 0 mismatches (both seeds) |
+| Final verification (post-packaging) | done | 50 tests pass; log `outputs/logs/final_verification/20261115T174058Z/verification.log` |
+| Submission packaging | done | `setup/package_phase3_submission.py`, `setup/build_submission_deliverables.py`, `deliverables/phase3_submission/` |
 | Independent replication (second seed) | done | `cpu_v3_main_v2_seed2_20261115T165949Z`, also `SENSOR_VALIDATED`; `outputs/reports/<run>/seed_comparison.csv` |
 
 **Deviations from this runbook** (all documented in the report, §1.2): the lab

@@ -1,110 +1,151 @@
-# Adaptive Network Intrusion Detection and Early Warning — Phase 3 starter
+# Adaptive Network Intrusion Detection and Early Warning — Phase 3
 
-**Status: IMPLEMENTATION FOUNDATION, NOT A COMPLETED PHASE 3 STUDY.** This package creates a small bounded network observation lab and the first testable model-comparison pipeline, grounded in the replacement Phase 2 methodology. The original AIOps repository is NOT modified.
+**Status: COMPLETED Phase 3 study (exploratory, two collection seeds).** A real,
+sensor-validated CPU experiment was collected and evaluated on this machine.
+The canonical write-up is
+[`outputs/reports/cpu_v3_main_v2_20261115T164430Z/PHASE3_REPORT.md`](outputs/reports/cpu_v3_main_v2_20261115T164430Z/PHASE3_REPORT.md),
+with a submission-ready copy under
+[`deliverables/phase3_submission/`](deliverables/phase3_submission/).
 
-## Research question
+| Item | Value |
+|---|---|
+| Primary run | `cpu_v3_main_v2_20261115T164430Z` (seed `20261115`) |
+| Replication run | `cpu_v3_main_v2_seed2_20261115T165949Z` (seed `20261116`) |
+| Evidence tag | `SENSOR_VALIDATED` for both (strict 7-check gate) |
+| Scale | 192 episodes, 3,840 HTTP requests, 13.4 MB PCAP (107,628 packets), 7,688 Zeek connections |
+| Report number check | 102 quoted values re-read from stored artefacts, 0 mismatches |
+| Tests | 50 passed |
 
-Can bounded game-theoretic scenario selection improve the detection and **pre-milestone early warning** of previously unseen multi-stage network communication behaviours relative to fixed and random selection, under equal budgets and independent test episodes?
+The result is **deliberately bounded**: it is an isolated synthetic lab with
+harmless traffic profiles. It makes no malware, zero-day, enterprise or
+production-NIDS claim, and the two-seed comparison does **not** establish a
+stable ranking of the collection policies. Read
+[`docs/VALIDITY.md`](docs/VALIDITY.md) and §9 of the report before citing any
+number.
 
-**Mandatory:** detection + early warning. **Later:** genuinely independent topology holdouts, stronger graph-temporal model, full Zeek PCAP sensor validation, properly powered experiments, ablations and uncertainty.
+## What this project answers
 
-The adapted development rules are in [`AGENTS.md`](AGENTS.md) and [`SKILLS.md`](SKILLS.md).
+Can bounded game-theoretic (EXP3-style) scenario selection improve the
+detection and **pre-milestone early warning** of previously unseen multi-stage
+network communication behaviours relative to fixed and random selection, under
+equal budgets and independent test episodes?
+
+**Mandatory:** detection + early warning. **Implemented:** a bounded scenario
+controller, fixed/random/strategic policies, isolated clients/gateway/services,
+an independent ground-truth journal, a restricted PCAP capture re-read by Zeek,
+an application-gateway sensor, causal episode-safe features, rule / Isolation
+Forest / Random Forest baselines, a compact CPU GRU, a frozen common test set,
+early-warning metrics with episode-bootstrap intervals, and five real
+ablations. **Not implemented (explicit limitations):** a graph neural network,
+topology generalisation and future-stage prediction — see §9 of the report.
+
+The adapted development rules are in [`AGENTS.md`](AGENTS.md) and
+[`SKILLS.md`](SKILLS.md).
+
+## Two ways to use this repository
+
+### A. Review the existing evidence (no collection needed)
+
+Everything needed to read and check the results is committed, or supplied in
+the submission evidence bundle:
+
+```bash
+# 1. the canonical report
+less outputs/reports/cpu_v3_main_v2_20261115T164430Z/PHASE3_REPORT.md
+
+# 2. the claim -> artefact map and the seed comparison
+column -s, -t < outputs/reports/cpu_v3_main_v2_20261115T164430Z/claim_artifact_table.csv
+column -s, -t < outputs/reports/cpu_v3_main_v2_20261115T164430Z/seed_comparison.csv
+
+# 3. re-verify every quoted number against the stored artefacts
+. .venv/bin/activate
+python -m setup.verify_report_numbers \
+  --zeek-study outputs/studies/cpu_v3_main_v2_20261115T164430Z_zeek_20261115T165446Z \
+  --gateway-study outputs/studies/cpu_v3_main_v2_20261115T164430Z_gateway_20261115T165446Z \
+  --gru-csv outputs/reports/cpu_v3_main_v2_20261115T164430Z/gru_metrics.csv \
+  --audit outputs/audits/cpu_v3_main_v2_20261115T164430Z/sensor_audit.json \
+  --inventory outputs/reports/cpu_v3_main_v2_20261115T164430Z/run_inventory.json \
+  --seed2-study outputs/studies/cpu_v3_main_v2_seed2_20261115T165949Z_zeek_20261115T170436Z \
+  --seed2-gru-csv outputs/reports/cpu_v3_main_v2_seed2_20261115T165949Z/gru_metrics.csv
+# -> {"checks_performed": 102, "mismatches": [], "status": "PASS"}
+```
+
+### B. Reproduce from scratch (collects new traffic)
+
+This needs Docker (Compose) and Zeek. It creates a **new** run ID; existing
+runs are never overwritten. Raw PCAPs and run directories are intentionally
+Git-ignored, so a fresh reproduction regenerates them rather than fetching them.
+
+```bash
+python3 -m venv .venv && . .venv/bin/activate
+python -m pip install -r requirements.txt
+./setup/preflight.sh
+
+export PATH="/opt/zeek/bin:$PATH" PYTHONUNBUFFERED=1 PYTHONHASHSEED=20261115 CUDA_VISIBLE_DEVICES=""
+export OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 NUMEXPR_NUM_THREADS=2
+
+RUN="cpu_v3_main_v2_$(date -u +%Y%m%dT%H%M%SZ)"
+./setup/staged_collect_v3.sh --run-id "$RUN" --rounds 24 --test-rounds 24 --seed 20261115 --capture \
+  2>&1 | tee "outputs/logs/collection_${RUN}.log"
+python -m setup.staged_sensor_gate --run "$RUN" \
+  --output "outputs/audits/$RUN/sensor_audit.json" --require-validated
+python -m src.code.study --run "$RUN" --source zeek \
+  --zeek-conn "outputs/audits/$RUN/zeek/repaired_strict_000/conn.log" \
+  --output "outputs/studies/${RUN}_zeek" --seed 20261115 --evidence-tag SENSOR_VALIDATED
+```
+
+The full sequence, including the gateway study, GRU, figures and packaging, is
+in §10.2 of the report and in [`docs/RUNBOOK.md`](docs/RUNBOOK.md). The
+reproducibility bundle for the submitted results is built with
+`python -m setup.package_phase3_submission`; it fails closed if any raw
+artefact is missing.
 
 ## Project organisation
 
 ```
 compose.yaml                         Two internal networks; gateway bridging clients / services
+lab/staged_generate.py              Scenario controller: policies, profiles, independent journal
 lab/http_service.py                 Actual HTTP services, gateway observation log
-lab/generate.py                     Seeded, bounded scenario episodes + ground truth
 src/code/game.py                    Transparent two-player bounded EXP3 game
 src/code/ingest.py                  Validated gateway or Zeek conn.log JSON ingestion
 src/code/features.py                Causal window features (no episode/scenario IDs)
-src/code/early_warning.py           Lead time, coverage, false alarm outcomes
-src/code/models.py                  Random Forest, Isolation Forest, optional Optuna
-src/code/pipeline.py                Episode-disjoint train/val + frozen shared test
-src/code/figures.py                 Plot empirical results after valid input
-src/data/raw/                       Captures and manifests (local, ignored by Git)
-src/data/processed/                 Derived datasets (local, ignored by Git)
-baselineReproduction/               Baseline reproduction modules (later)
-outputs/                            Results/models/HPO (local, ignored by Git)
-researchPapers/                     Phase 1/2 reviews and references when copied in
-setup/                               Commands for local smoke/Zeek processing
-configs/                             Versioned proposed experiment defaults
-tests/                               Pure-unit validation and leakage checks
+src/code/early_warning.py           Lead time, coverage, strict first-alert, false alarms
+src/code/models.py                  Rule/rate baseline, Isolation Forest, Random Forest
+src/code/study.py                   Leakage-safe preprocessing, splits, baselines, ablations
+src/code/temporal_gru_sprint.py     Compact CPU GRU (temporal, NOT a graph model)
+src/code/report_figures.py          Figures generated from saved metrics
+setup/                              Collection, sensor gate, checksum repair, audits, packaging
+outputs/reports/<run>/              Report, figures + source data, claim map, inventories
+outputs/studies/<run>_*/            Derived dataset, metrics, ablations, results
+outputs/audits/<run>/               sensor_audit.json plus strict/repaired Zeek logs
+src/data/raw/runs/<run_id>/         Raw journals, gateway log, PCAPs (Git-ignored)
+deliverables/phase3_submission/     Final Markdown report, figures, verification log
+docs/                               Runbooks, validity notes and sensor-validation guide
+tests/                               Focused regression tests
 ```
 
-## 1. Prepare your WSL or Linux host (Bash)
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-./setup/preflight.sh
-```
-
-**This environment:** Docker and Zeek were not installed and therefore their runtime cannot be claimed to have passed. Local tests and loopback smoke verify code paths but do NOT validate container isolation or packet capture.
-
-## 2. Non-isolated LOOPBACK SMOKE (software verification ONLY)
-
-```bash
-python -m setup.run_local_smoke --episodes 4
-```
-
-This runs real HTTP requests between services bound to 127.0.0.1, captures application-level timings and produces a result JSON. It is NOT an isolated experiment and its scores must not be submitted as research findings. The smoke uses controlled non-malicious traffic: `incident` is simply an experimental label for unusual scenario activity and an inert test milestone.
-
-## 3. Isolated Docker Compose lab
-
-With Docker Compose available and its image dependencies provisioned:
-
-```bash
-docker compose -f compose.yaml config --quiet
-docker compose -f compose.yaml up -d server_a server_b gateway
-docker compose -f compose.yaml --profile runner run --rm runner
-```
-
-The Compose project defines `clients` and `services` with `internal: true`; only the gateway spans both. It has no published host ports, no privileged containers and no external traffic generator. Verify actual isolation on YOUR machine before recording experiments. No exploit or malware code is provided.
-
-A run refuses to overwrite an existing `src/data/raw/episodes.jsonl`. For additional independent runs, move the raw directory to a new timestamped experiment location and empty only *after* preserving the original and its SHA-256 hashes.
-
-## 4. Build feature windows, train baselines, assess early warnings
-
-```bash
-python -m src.code.pipeline --manifest src/data/raw/episodes.jsonl --events src/data/raw/gateway_requests.jsonl --output outputs/results/first_real_lab_run --source gateway --trials 0
-python -m src.code.figures --results outputs/results/first_real_lab_run/results.json --output outputs/figs/first_real_lab_run
-```
-
-For actual supervised research, rerun with an unused output directory and `--trials 10` (or more) for persistent Optuna TPE HPO. All test episodes belong to `policy=test`. Neither detector tuning nor the repeated game sees their outcomes during development. The shared test is reused unchanged for all three training policies. Thresholds are selected on validation episodes subject to the allowed false-alarm episode rate; `threshold_unavailable_under_constraint` is a legitimate failure, not a suppressed result.
-
-### Alternate Zeek input
-
-After recording an authorised lab PCAP by a correctly configured sensor, convert it to JSON connection logs using:
-
-```bash
-./setup/zeek_from_pcap.sh path/to/capture.pcap outputs/logs/zeek_run_01
-python -m src.code.pipeline --manifest src/data/raw/episodes.jsonl --events outputs/logs/zeek_run_01/conn.log --source zeek --output outputs/results/zeek_01
-```
-
-**Caution:** A Zeek connection record may describe different traffic than an application-gateway request. Zeek episode assignment uses timestamp intervals, assumes sequential non-overlapping episodes, and must be separately verified against packet captures, interface visibility and flow timeouts. Do NOT mix gateway and Zeek records into one evaluation silently.
-
-## 5. Definitions that protect research validity
+## Definitions that protect research validity
 
 - `onset_ts`: start of a controlled incident-like communication scenario, not proof of actual compromise.
 - `milestone_ts`: time immediately before the final harmless dummy-data transfer in the experiment.
-- `T_lead = milestone_ts - first_valid_alert_ts`, counted only if alert is **before** milestone.
+- `T_lead = milestone_ts - first_valid_alert_ts`, counted only if the alert is **on or after onset and before** the milestone.
+- A pre-onset alert is not a valid early warning; a post-milestone alert is a late detection; no alert is a miss.
 - False alarms are evaluated independently on benign episodes.
-- Incidents with no valid early warning count as zero in coverage-adjusted lead-time.
-- A higher conditional mean lead time alone cannot establish improvement: always report warning coverage and false positives.
+- Incidents with no valid early warning count as zero in coverage-adjusted lead time.
 - All feature windows are causal and episode-contained; scenario labels and policy IDs are NEVER model features.
-- An `incident` episode does **not** mean a real attack/zero-day exploit was executed. Avoid security performance claims from harmless traffic profiles.
+- An `incident` episode does **not** mean a real attack or zero-day exploit was executed.
 
-## 6. Validate output structure
+## Validate output structure
 
 ```bash
-python -m tools.validate_outputs --results-directory outputs/results/first_real_lab_run
+python -m tools.validate_outputs --results-directory outputs/results/<run>
 ```
 
 This checks invariants, not scientific validity.
 
-## 7. What remains for research-grade Phase 3
+## Further reading
 
-See [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md) and [docs/VALIDITY.md](docs/VALIDITY.md). Next step is to validate network capture (PCAP -> Zeek), capture richer truly independent multi-stage sequences, use unseen protocol/workload/topology conditions, build meaningful temporal host graph sequences, implement graph/temporal baseline and all ablations, and compare to published research only on comparable datasets and protocols.
+- [`docs/VALIDITY.md`](docs/VALIDITY.md) — what the evidence does and does not support.
+- [`docs/SENSOR_VALIDATION.md`](docs/SENSOR_VALIDATION.md) — the strict gate and checksum-repair rationale.
+- [`docs/RUNBOOK.md`](docs/RUNBOOK.md) — operational sequence.
+- [`MEMORY.md`](MEMORY.md) — verified project history and evidence log.

@@ -69,7 +69,9 @@ not a GNN, and no valid attributed graph corpus was built); no topology
 generalisation (only one network configuration exists); no future-stage
 prediction task (no independently defined future-positive set was built); no
 Optuna sweep (a bounded study on CPU is preferable to an unreproducible
-sweep); no second independent seed (reported as a limitation, not hidden).
+sweep). A **second independent collection seed was added** (run
+`cpu_v3_main_v2_seed2_20261115T165949Z`, §6.6); two seeds are still too few to
+establish a stable policy ranking, which is stated as a limitation.
 
 ---
 
@@ -123,20 +125,22 @@ results are labelled `SENSOR_VALIDATED`.
 The container veth leaves NIC **transmit offloading** in place, so the captured
 TCP checksums are invalid. Measured on the raw trace:
 
-* strict Zeek (checksum validation **enabled**) → 1,936 connection records with
-  `orig_pkts=0`, `orig_bytes=0`, `history="C"` (control packets only) and
+* strict Zeek (checksum validation **enabled**) → 15,376 connection records
+  with `orig_pkts=0`, `orig_bytes=0`, `history="C"` (control packets only) and
   `bad_TCP_checksum` weird events — Zeek discards the payload of every data
-  segment;
-* Zeek `-C` (checksum validation bypassed) → 968 connections, **all** with
+  segment and splits them differently;
+* Zeek `-C` (checksum validation bypassed) → 7,688 connections, **all** with
   positive bytes, `service=http`, port 8080.
 
 `setup/pcap_checksum_repair.py` therefore derives a **copy** in which only the
 IPv4/TCP/UDP checksum fields are recomputed from the captured payload. The tool
 proves its own minimality: it compares the two buffers and asserts that no byte
 outside the checksum fields changed. The repaired trace was then re-read by
-Zeek **with checksum validation enabled**, yielding 968 connections with
+Zeek **with checksum validation enabled**, yielding 7,688 connections with
 positive bytes and **zero** `weird.log` entries — and exactly the same
-connection count as the independent `-C` read of the raw trace.
+connection count as the independent `-C` read of the raw trace. (The earlier
+24-episode pilot showed the same pattern at its own scale: 1,936 discarded
+records under strict validation versus 968 usable connections.)
 
 * The raw PCAP is **never modified**; its SHA256 is recorded in the audit.
 * The audit sets `checksum_validation_ignored: false` and
@@ -198,7 +202,7 @@ are reported:
 
 | Quantity | Value |
 |---|---|
-| Episodes | **192** (48 benign + 144 incident… precisely: 96 benign + 96 incident) |
+| Episodes | **192** (96 benign + 96 incident) |
 | Requests per episode | 20 (controller journal) |
 | Gateway events | **3,840** (exactly 20 per episode) |
 | PCAP | 13,415,368 bytes, **107,628** packet records |
@@ -311,7 +315,7 @@ the strict first-alert measure changes the interpretation completely:
    8/8/8, random 5/11/8), so the strategic training corpus is skewed towards a
    destination-diversity signature that is also present in the pre-onset
    warm-up of the held-out episodes.
-   **Section 6.7 shows that this pre-onset artefact does not reproduce in the
+   **Section 6.6 shows that this pre-onset artefact does not reproduce in the
    independent second seed, so it must be read as a seed-specific instability
    and not as a structural property of the strategic policy.**
 3. **Isolation Forest never warns.** With the declared budget the best
@@ -578,7 +582,7 @@ seen-family → unseen-family collapse of the rule baseline.
 | Environment | `outputs/environment/environment_20261115T162353Z.txt` |
 | Machine inventory | `outputs/logs/setup/20261115T162353Z/machine_inventory.log` |
 | Setup logs | `outputs/logs/setup/20261115T162353Z/` |
-| Tests | `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests` → **45 passed** |
+| Tests | `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests` → **50 passed** (final log: `outputs/logs/final_verification/20261115T174058Z/verification.log`) |
 | Seed | 20261115 (collection, models, bootstrap) |
 | Threads | `OMP/MKL/OPENBLAS/NUMEXPR_NUM_THREADS=2`, `torch.set_num_threads(2)` |
 
@@ -588,8 +592,8 @@ See `claim_artifact_table.csv` (this directory). Every headline number above is
 traceable to a stored file; nothing is recomputed by hand.
 
 The mapping is machine-checked: `setup/verify_report_numbers.py` re-reads every
-artefact and compares **79** quoted values with the stored ones at the report's
-own rounding. The run of that check is stored in
+artefact and compares **102** quoted values across both seeds with the stored
+ones at the report's own rounding. The run of that check is stored in
 `report_number_verification.json`:
 
 ```bash
@@ -601,7 +605,7 @@ python -m setup.verify_report_numbers \
   --inventory outputs/reports/cpu_v3_main_v2_20261115T164430Z/run_inventory.json \
   --seed2-study outputs/studies/cpu_v3_main_v2_seed2_20261115T165949Z_zeek_20261115T170436Z \
   --seed2-gru-csv outputs/reports/cpu_v3_main_v2_seed2_20261115T165949Z/gru_metrics.csv
-# -> {"checks_performed": N, "mismatches": [], "status": "PASS"}
+# -> {"checks_performed": 102, "mismatches": [], "status": "PASS"}
 ```
 
 ### 10.2 Reproduce from scratch
@@ -622,9 +626,23 @@ python -m src.code.temporal_gru_sprint --run "$RUN" --output "outputs/studies/${
   --zeek-conn "outputs/audits/$RUN/zeek/repaired_strict_000/conn.log"
 ```
 
-### 10.3 Preserved failures and negatives
+### 10.3 Raw evidence is distributed separately from Git
 
-* `cpu_v3_pilot_20261115T162800Z` — capture sidecar could not create the PCAP
+The raw evidence — the PCAPs, the per-request gateway log, the controller
+journal and the Zeek connection logs — is **intentionally outside Git**:
+`.gitignore` excludes `*.pcap`, `src/data/raw/*` and derived bulk logs so that
+packet records and multi-megabyte datasets are never committed. The repository
+alone reproduces the **analysis** from the derived study tables, but not the raw
+capture. The raw run directories and the figures' source data are supplied in
+the submission evidence bundle (`submission_manifest.json`, `SHA256SUMS.txt`,
+`README_REPRODUCE.md` and the archive whose hash is recorded there), built by
+`setup/package_phase3_submission.py`. If the archive is absent, the exact
+missing paths are listed by that tool and no claim of end-to-end
+reproducibility is made.
+
+### 10.4 Preserved failures and negatives
+
+* `cpu_v3_pilot_20261115T162845Z` — capture sidecar could not create the PCAP
   (restricted writer); fixed by D2.
 * `cpu_v3_pilot_20261115T163008Z` — gateway could not write its event log
   (restricted writer); fixed by D1.
