@@ -1,0 +1,35 @@
+                                          ibrahim@ib-desktop
+
+                                          ┌────────────────────── Operating System ──────────────────────┐
+                                          󰨡 OS: ▸ Ubuntu 26.04 (Resolute Raccoon) x86_64
+                  -`                       Kernel:   ▸ Linux 7.0.0-42-generic
+                 .o+`                      Shell:  ▸ bash 5.3.9
+                `ooo/                      Terminal:  ▸ Ptyxis 50.1
+               `+oooo:                     Terminal Font:  ▸ Noto Sans Mono (12pt)
+              `+oooooo:                   󰌾 DM:  ▸ gdm-password 50.1 (Wayland)
+              -+oooooo+:                   DE:  ▸ GNOME 50.1
+            `/:-:++oooo+:                  WM:  ▸ Mutter (Wayland)
+           `/++++/+++++++:                󰃣 WM Theme:  ▸ MacTahoe-Dark-blue
+          `/++++++++++++++:                Packages:  ▸ 2213 (dpkg)
+         `/+++ooooooooooooo/`             ├────────────────────── Device ────────────────────────────────┤
+        ./ooosssso++osssssso+`            󰟀 Host:  ▸ OptiPlex 7040
+       .oossssso-````/ossssss+`            BIOS:  ▸ 1.24.0 (1.24)
+      -osssssso.      :ssssssso.           RAM Memory:  ▸ 4.01 GiB / 14.95 GiB (27%)
+     :osssssss/        osssso+++.         󰾴 Swap:  ▸ 0 B / 4.00 GiB (0%)
+    /ossssssss/        +ssssooo/-         󰍛 Processor:  ▸ Intel(R) Core(TM) i5-6500 (4) @ 3.60 GHz
+  `/ossssso+/:-        -:/+osssso+-       󰢮 Videocard:  ▸ Intel HD Graphics 530 @ 1.05 GHz [Integrated]
+ `+sso+:-`                 `.-/+oso:      │ Storage:   ▸ 152.59 GiB / 227.14 GiB (67%) - ext4
+`++:.                           `-/+/     │ Storage:   ▸ 168.66 MiB / 171.90 GiB (0%) - ext4
+.`                                 `/     ├─────────────────────── Machine Information ──────────────────┤
+                                           Uptime:  ▸ 1 hour, 11 mins
+                                           DateTime:  ▸ 2026-11-15 20:29:38
+                                           OS Time Life:  ▸ 72 days
+                                          󰇧 Locale:  ▸ en_US.UTF-8
+                                          └──────────────────────────────────────────────────────────────┘
+                                                                  ● ● ● ● ● ● ● ●
+
+ibrahim@ib-desktop{~/Downloads/adaptive-network-intrusion-detection}: zeek --version
+zeek version 9.0.1
+ibrahim@ib-desktop{~/Downloads/adaptive-network-intrusion-detection}: docker --version
+Docker version 29.9.3, build 5457199
+ibrahim@ib-desktop{~/Downloads/adaptive-network-intrusion-detection}: 
