@@ -1,0 +1,2 @@
+ef20d4f1431f4f686e11aab4a16151902fa7d4eea4916636d3baab3137e9da52  setup/staged_collect_v3.sh
+ef20d4f1431f4f686e11aab4a16151902fa7d4eea4916636d3baab3137e9da52  outputs/backups/stage_c_capture_perm_20261115T162945Z/setup_staged_collect_v3.sh

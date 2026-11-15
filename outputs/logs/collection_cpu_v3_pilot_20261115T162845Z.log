@@ -1,0 +1,18 @@
+{"episode_budget": 24, "initialised": true, "run_dir": "src/data/raw/runs/cpu_v3_pilot_20261115T162845Z"}
+[2026-11-15T16:28:45Z] [STAGE-V3] Starting run=cpu_v3_pilot_20261115T162845Z rounds=3 test_rounds=3 seed=20261115 capture=1 resume=0
+[2026-11-15T16:28:45Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-15T16:28:46Z] [STAGE-V3] Starting authorised isolated lab services
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-15T16:28:46Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-15T16:28:46Z] [STAGE-V3] Gateway and backends ready
+[2026-11-15T16:28:46Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_pilot_20261115T162845Z/traffic_20261115T162845Z_170962.pcap
+23e1a4d78be47ef3117274fb8b1a995f72b3fe39dac147b892db2978534fc109
+[2026-11-15T16:28:50Z] [STAGE-V3] ERROR: capture process exited immediately; showing its Docker log
+tcpdump: /captures/traffic_20261115T162845Z_170962.pcap: Permission denied
+[2026-11-15T16:28:51Z] [STAGE-V3] Stopping only our capture container: p3cap_cpu_v3_pilot_20261115T162845Z_20261115T162845Z_170962 (bounded Docker timeout)
+[2026-11-15T16:28:51Z] [STAGE-V3] Capture log saved to src/data/raw/runs/cpu_v3_pilot_20261115T162845Z/capture_container_20261115T162845Z_170962.log
+p3cap_cpu_v3_pilot_20261115T162845Z_20261115T162845Z_170962
+[2026-11-15T16:28:51Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-15T16:28:51Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete

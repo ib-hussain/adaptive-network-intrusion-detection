@@ -1,0 +1,37 @@
+=== STAGE C: SYNTAX + FOCUSED TESTS ===
+UTC_START=2026-11-15T16:25:08Z
+--- bash -n setup/*.sh ---
+OK   setup/orglab_run.sh
+OK   setup/orglab_train_parallel.sh
+OK   setup/orglab_v3_diagnose.sh
+OK   setup/preflight.sh
+OK   setup/sprint_start.sh
+OK   setup/sprint_status.sh
+OK   setup/staged_collect_v2.sh
+OK   setup/staged_collect_v3.sh
+OK   setup/staged_recover_v2.sh
+OK   setup/staged_status.sh
+OK   setup/staged_train_guard_v3.sh
+OK   setup/staged_train_start.sh
+OK   setup/staged_v3_status.sh
+OK   setup/university_backup.sh
+OK   setup/university_check.sh
+OK   setup/university_finish_existing.sh
+OK   setup/university_pilot.sh
+OK   setup/university_pilot_v2.sh
+OK   setup/university_pilot_v3.sh
+OK   setup/zeek_from_pcap.sh
+OK   setup/zeek_from_pcap_v3.sh
+--- compileall lab src setup tools ---
+COMPILEALL_OK
+--- pytest (scoped) ---
+...............................                                          [100%]
+=============================== warnings summary ===============================
+tests/test_orglab.py::test_graphsage_gru_cpu_checkpoint_and_real_resume
+  /home/ibrahim/.pyenv/versions/3.12.7/lib/python3.12/site-packages/networkx/utils/backends.py:102: RuntimeWarning: networkx backend defined more than once: nx_loopback
+    backends = _get_backends("networkx.backends")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+31 passed, 1 warning in 12.45s
+PYTEST_RC=0
+UTC_END=2026-11-15T16:25:22Z

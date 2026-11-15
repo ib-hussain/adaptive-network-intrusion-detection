@@ -1,0 +1,20 @@
+{
+  "caution": "Zeek -C ignores checksum validation; does not prove full bidirectional visibility or realistic attacks.",
+  "episodes_total": 24,
+  "episodes_with_3_or_more_conns": 24,
+  "gateway_flow_duplicate_warning": "Gateway namespace captures two distinct links; do not equate Zeek flows to request counts.",
+  "pcap_parts": [
+    {
+      "bytes": 1696652,
+      "filename": "traffic_20261115T163257Z_177780.pcap",
+      "pcap_sha256": "3c453175cf0305852ba4f9f226c52034997d99ddf3c1f085317bf63d12fbe2f9",
+      "stderr": "",
+      "zeek_rc": 0
+    }
+  ],
+  "run": "cpu_v3_pilot_20261115T163257Z",
+  "test_episodes_missing_3_connections": [],
+  "window_coverage": 1.0,
+  "zeek_assigned_conn": 960,
+  "zeek_raw_conn": 968
+}

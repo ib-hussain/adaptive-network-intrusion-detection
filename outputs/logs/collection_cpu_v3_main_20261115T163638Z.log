@@ -1,0 +1,16 @@
+[2026-11-15T16:36:38Z] [STAGE-V3] Lab services will run as uid=1000 gid=1000 (host user; no added capabilities)
+{"episode_budget": 64, "initialised": true, "run_dir": "src/data/raw/runs/cpu_v3_main_20261115T163638Z"}
+[2026-11-15T16:36:38Z] [STAGE-V3] Starting run=cpu_v3_main_20261115T163638Z rounds=8 test_rounds=8 seed=20261115 capture=1 resume=0
+[2026-11-15T16:36:38Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-15T16:36:38Z] [STAGE-V3] Starting authorised isolated lab services
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+ Container phase3-adaptive-nids-server_b-1 Running 
+[2026-11-15T16:36:39Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-15T16:36:39Z] [STAGE-V3] Gateway and backends ready
+[2026-11-15T16:36:39Z] [STAGE-V3] Capture file pre-created for restricted writer: src/data/raw/runs/cpu_v3_main_20261115T163638Z/traffic_20261115T163638Z_185569.pcap
+[2026-11-15T16:36:40Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261115T163638Z/traffic_20261115T163638Z_185569.pcap
+88af5d6ecf0740cb4131100277ba7e92937db625d1beead9ba0d3df45afb26d9
+[2026-11-15T16:36:45Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+ Container phase3-adaptive-nids-runner-run-ddf9254a8b4b Creating 
+ Container phase3-adaptive-nids-runner-run-ddf9254a8b4b Created 

@@ -1,0 +1,35 @@
+=== STAGE D: COMPOSE PREFLIGHT ===
+UTC_START=2026-11-15T16:27:22Z
+--- compose config ---
+CONFIG_OK
+--- up -d server_a server_b gateway ---
+ Network phase3-adaptive-nids_clients Creating 
+ Network phase3-adaptive-nids_services Creating 
+ Network phase3-adaptive-nids_services Created 
+ Container phase3-adaptive-nids-server_a-1 Creating 
+ Container phase3-adaptive-nids-server_b-1 Creating 
+ Network phase3-adaptive-nids_clients Created 
+ Container phase3-adaptive-nids-server_a-1 Created 
+ Container phase3-adaptive-nids-server_b-1 Created 
+ Container phase3-adaptive-nids-gateway-1 Creating 
+ Container phase3-adaptive-nids-gateway-1 Created 
+ Container phase3-adaptive-nids-server_a-1 Starting 
+ Container phase3-adaptive-nids-server_b-1 Starting 
+ Container phase3-adaptive-nids-server_a-1 Started 
+ Container phase3-adaptive-nids-server_b-1 Started 
+ Container phase3-adaptive-nids-gateway-1 Starting 
+ Container phase3-adaptive-nids-gateway-1 Started 
+RC=0
+--- network internal flags ---
+phase3-adaptive-nids_clients internal=true driver=bridge
+phase3-adaptive-nids_services internal=true driver=bridge
+--- compose ps ---
+NAME                              IMAGE              COMMAND                  SERVICE    CREATED          STATUS         PORTS
+phase3-adaptive-nids-gateway-1    python:3.12-slim   "python -m lab.http_…"   gateway    10 seconds ago   Up 5 seconds   
+phase3-adaptive-nids-server_a-1   python:3.12-slim   "python -m lab.http_…"   server_a   19 seconds ago   Up 7 seconds   
+phase3-adaptive-nids-server_b-1   python:3.12-slim   "python -m lab.http_…"   server_b   19 seconds ago   Up 5 seconds   
+--- gateway/server logs ---
+--- readiness probe from gateway container ---
+GATEWAY_READY_OK
+RC=0
+UTC_END=2026-11-15T16:27:42Z

@@ -1,0 +1,43 @@
+{"episode_budget": 24, "initialised": true, "run_dir": "src/data/raw/runs/cpu_v3_pilot_20261115T163008Z"}
+[2026-11-15T16:30:08Z] [STAGE-V3] Starting run=cpu_v3_pilot_20261115T163008Z rounds=3 test_rounds=3 seed=20261115 capture=1 resume=0
+[2026-11-15T16:30:08Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-15T16:30:08Z] [STAGE-V3] Starting authorised isolated lab services
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+[2026-11-15T16:30:09Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-15T16:30:09Z] [STAGE-V3] Gateway and backends ready
+[2026-11-15T16:30:09Z] [STAGE-V3] Capture file pre-created for restricted writer: src/data/raw/runs/cpu_v3_pilot_20261115T163008Z/traffic_20261115T163008Z_172853.pcap
+[2026-11-15T16:30:09Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_pilot_20261115T163008Z/traffic_20261115T163008Z_172853.pcap
+5d0b8b05f26e7812d40d08d1f413484bbdb0f10ec7395da772a5db9ab171b899
+[2026-11-15T16:30:13Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+ Container phase3-adaptive-nids-runner-run-c68777726acc Creating 
+ Container phase3-adaptive-nids-runner-run-c68777726acc Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-15T16:30:17Z] [STAGE-V3] Capture preflight passed: actual packet records observed
+[2026-11-15T16:30:17Z] [STAGE-V3] Launching runner; full per-round output: src/data/raw/runs/cpu_v3_pilot_20261115T163008Z/generator_20261115T163008Z_172853.log
+[2026-11-15T16:30:22Z] [STAGE-V3] HEARTBEAT runner PID=173428 completed_rounds=0/12; last_output=PermissionError: [Errno 13] Permission denied: '/out/runs/cpu_v3_pilot_20261115T163008Z/rounds'
+[2026-11-15T16:30:27Z] [STAGE-V3] HEARTBEAT runner PID=173428 completed_rounds=0/12; last_output=waiting for first result
+[2026-11-15T16:30:27Z] [STAGE-V3] Runner exit code: 1; last 15 lines of generator log:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/app/lab/staged_generate.py", line 280, in <module>
+    main()
+  File "/app/lab/staged_generate.py", line 276, in main
+    result = run(a.output, a.gateway, a.rounds, a.test_rounds, a.seed, a.delay_scale, a.resume, a.stop_after_rounds, a.init_only)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lab/staged_generate.py", line 250, in run
+    atomic_json(dest, bundle)
+  File "/app/lab/staged_generate.py", line 37, in atomic_json
+    path.parent.mkdir(parents=True, exist_ok=True)
+  File "/usr/local/lib/python3.12/pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [Errno 13] Permission denied: '/out/runs/cpu_v3_pilot_20261115T163008Z/rounds'
+
+[2026-11-15T16:30:27Z] [STAGE-V3] Runner failed; preserving completed round journals. Same config with --resume restarts safely.
+[2026-11-15T16:30:27Z] [STAGE-V3] Stopping only our capture container: p3cap_cpu_v3_pilot_20261115T163008Z_20261115T163008Z_172853 (bounded Docker timeout)
+p3cap_cpu_v3_pilot_20261115T163008Z_20261115T163008Z_172853
+[2026-11-15T16:30:29Z] [STAGE-V3] Capture log saved to src/data/raw/runs/cpu_v3_pilot_20261115T163008Z/capture_container_20261115T163008Z_172853.log
+p3cap_cpu_v3_pilot_20261115T163008Z_20261115T163008Z_172853
+[2026-11-15T16:30:29Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-15T16:30:29Z] [STAGE-V3] EXIT 1: run journal and captures preserved; rerun with --resume if incomplete

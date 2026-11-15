@@ -1,0 +1,163 @@
+=== STAGE A MACHINE/REPO INVENTORY ===
+UTC_START=2026-11-15T16:23:53Z
+STAMP=20261115T162353Z
+
+--- pwd ---
+/home/ibrahim/Downloads/adaptive-network-intrusion-detection
+--- git toplevel ---
+/home/ibrahim/Downloads/adaptive-network-intrusion-detection
+--- git status ---
+## master...origin/master
+ M instructions_temp.md
+?? outputs/logs/setup/20261115T162353Z/
+--- git log ---
+fef5398 added 2 prompts
+eb06b69 Refactor MEMORY.md for Phase 3 continuity and remove README_INSTALL.md
+cb7e155 Add hardware specification details for system configuration
+5d462fd Add Zeek output logs and audit report for org20 smoke test
+42f297f Add Zeek log files and audit report for org20_pilot_02
+89ee4aa Update org20_pilot_02 logs and status after completing additional episodes
+110dd2c Add initial logs and round data for org20 pilot 02
+b4909b1 docs: update instructions for pilot recovery and test fixes
+--- key files ---
+./AGENTS.md
+./compose.yaml
+./INSTRUCTIONS.md
+./MEMORY.md
+./requirements.txt
+--- python ---
+Python 3.12.7
+--- nproc/free ---
+4
+               total        used        free      shared  buff/cache   available
+Mem:            14Gi       5.2Gi       615Mi       731Mi        10Gi       9.7Gi
+Swap:          4.0Gi       596Ki       4.0Gi
+--- df ---
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdb6       172G  169M  163G   1% /home/ibrahim/Downloads
+/dev/sda2       228G  156G   60G  73% /
+--- docker ---
+Docker version 29.9.3, build 5457199
+Docker Compose version v5.7.1
+--- docker root ---
+/var/lib/docker
+--- docker ps -a ---
+CONTAINER ID   IMAGE         COMMAND    CREATED             STATUS                         PORTS     NAMES
+45fd7db1f6ba   hello-world   "/hello"   About an hour ago   Exited (0) About an hour ago             gallant_newton
+--- docker networks ---
+NETWORK ID     NAME      DRIVER    SCOPE
+4fdf80088684   bridge    bridge    local
+88f384865658   host      host      local
+eb6bd860219f   none      null      local
+--- compose config ---
+COMPOSE_CONFIG_OK
+--- zeek ---
+/opt/zeek/bin/zeek
+zeek version 9.0.1
+--- tcpdump ---
+/usr/bin/tcpdump
+tcpdump version 4.99.6
+libpcap version 1.10.6 (64-bit time_t, with TPACKET_V3)
+--- nvidia ---
+/bin/bash: line 27: nvidia-smi: command not found
+NO_NVIDIA_SMI
+--- jobs ---
+--- procs ---
+ 163873  157244 Ss         00:00 /bin/bash -c set -Eeuo pipefail export PATH="/opt/zeek/bin:$PATH" STAMP=$(date -u +%Y%m%dT%H%M%SZ) LOG="outputs/logs/setup/${STAMP}/machine_inventory.log" mkdir -p "$(dirname "$LOG")" { echo "=== STAGE A MACHINE/REPO INVENTORY ===" echo "UTC_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)" echo "STAMP=$STAMP" echo echo "--- pwd ---"; pwd echo "--- git toplevel ---"; git rev-parse --show-toplevel 2>&1 || true echo "--- git status ---"; git status --short --branch 2>&1 | head -60 echo "--- git log ---"; git log --oneline -8 2>&1 || true echo "--- key files ---" find . -maxdepth 2 -type f \( -name 'AGENTS.md' -o -name 'MEMORY.md' -o -name 'INSTRUCTIONS.md' -o -name 'compose.yaml' -o -name 'requirements.txt' \) -print | sort echo "--- python ---"; python3 --version 2>&1 echo "--- nproc/free ---"; nproc; free -h echo "--- df ---"; df -h . /var/lib/docker 2>&1 || true echo "--- docker ---"; docker --version 2>&1 || true; docker compose version 2>&1 || true echo "--- docker root ---"; docker info --format '{{.DockerRootDir}}' 2>&1 || true echo "--- docker ps -a ---"; docker ps -a 2>&1 || true echo "--- docker networks ---"; docker network ls 2>&1 || true echo "--- compose config ---"; docker compose -f compose.yaml config --quiet 2>&1 && echo "COMPOSE_CONFIG_OK" || echo "COMPOSE_CONFIG_FAILED" echo "--- zeek ---"; command -v zeek 2>&1 || true; zeek --version 2>&1 || echo "ZEEK_MISSING" echo "--- tcpdump ---"; command -v tcpdump 2>&1 || true; tcpdump --version 2>&1 | head -2 || true echo "--- nvidia ---"; (nvidia-smi 2>&1 | head -5) || echo "NO_NVIDIA_SMI" echo "--- jobs ---"; jobs -l 2>&1 || true echo "--- procs ---"; ps -eo pid,ppid,stat,etime,args | grep -E '[s]taged_collect|[t]cpdump|[d]ocker compose' || true echo "--- raw runs / artefacts ---" find src/data/raw/runs outputs -maxdepth 3 -type f \( -name 'complete.json' -o -name 'collector_status_v3.json' -o -name '*.pcap' -o -name '*.sqlite3' -o -name '*.pt' \) -printf '%p %s\n' 2>/dev/null | sort | head -200 echo "--- raw run dirs ---"; find src/data/raw/runs -maxdepth 1 -mindepth 1 -type d 2>/dev/null | sort | head -60 echo "--- outputs tree (2 levels) ---"; find outputs -maxdepth 2 -type d 2>/dev/null | sort | head -80 echo "--- du ---"; du -sh src/data/raw outputs researchPapers 2>/dev/null || true echo "UTC_END=$(date -u +%Y-%m-%dT%H:%M:%SZ)" echo "EXIT_CODE=0" } 2>&1 | tee "$LOG" echo "SAVED_TO=$LOG"
+ 163877  163873 S          00:00 /bin/bash -c set -Eeuo pipefail export PATH="/opt/zeek/bin:$PATH" STAMP=$(date -u +%Y%m%dT%H%M%SZ) LOG="outputs/logs/setup/${STAMP}/machine_inventory.log" mkdir -p "$(dirname "$LOG")" { echo "=== STAGE A MACHINE/REPO INVENTORY ===" echo "UTC_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)" echo "STAMP=$STAMP" echo echo "--- pwd ---"; pwd echo "--- git toplevel ---"; git rev-parse --show-toplevel 2>&1 || true echo "--- git status ---"; git status --short --branch 2>&1 | head -60 echo "--- git log ---"; git log --oneline -8 2>&1 || true echo "--- key files ---" find . -maxdepth 2 -type f \( -name 'AGENTS.md' -o -name 'MEMORY.md' -o -name 'INSTRUCTIONS.md' -o -name 'compose.yaml' -o -name 'requirements.txt' \) -print | sort echo "--- python ---"; python3 --version 2>&1 echo "--- nproc/free ---"; nproc; free -h echo "--- df ---"; df -h . /var/lib/docker 2>&1 || true echo "--- docker ---"; docker --version 2>&1 || true; docker compose version 2>&1 || true echo "--- docker root ---"; docker info --format '{{.DockerRootDir}}' 2>&1 || true echo "--- docker ps -a ---"; docker ps -a 2>&1 || true echo "--- docker networks ---"; docker network ls 2>&1 || true echo "--- compose config ---"; docker compose -f compose.yaml config --quiet 2>&1 && echo "COMPOSE_CONFIG_OK" || echo "COMPOSE_CONFIG_FAILED" echo "--- zeek ---"; command -v zeek 2>&1 || true; zeek --version 2>&1 || echo "ZEEK_MISSING" echo "--- tcpdump ---"; command -v tcpdump 2>&1 || true; tcpdump --version 2>&1 | head -2 || true echo "--- nvidia ---"; (nvidia-smi 2>&1 | head -5) || echo "NO_NVIDIA_SMI" echo "--- jobs ---"; jobs -l 2>&1 || true echo "--- procs ---"; ps -eo pid,ppid,stat,etime,args | grep -E '[s]taged_collect|[t]cpdump|[d]ocker compose' || true echo "--- raw runs / artefacts ---" find src/data/raw/runs outputs -maxdepth 3 -type f \( -name 'complete.json' -o -name 'collector_status_v3.json' -o -name '*.pcap' -o -name '*.sqlite3' -o -name '*.pt' \) -printf '%p %s\n' 2>/dev/null | sort | head -200 echo "--- raw run dirs ---"; find src/data/raw/runs -maxdepth 1 -mindepth 1 -type d 2>/dev/null | sort | head -60 echo "--- outputs tree (2 levels) ---"; find outputs -maxdepth 2 -type d 2>/dev/null | sort | head -80 echo "--- du ---"; du -sh src/data/raw outputs researchPapers 2>/dev/null || true echo "UTC_END=$(date -u +%Y-%m-%dT%H:%M:%SZ)" echo "EXIT_CODE=0" } 2>&1 | tee "$LOG" echo "SAVED_TO=$LOG"
+--- raw runs / artefacts ---
+--- [CONTINUED AFTER find FAILURE: src/data/raw/runs absent] ---
+--- src/data tree ---
+src/data
+src/data/processed
+src/data/processed/.gitkeep
+src/data/__init__.py
+src/data/raw
+src/data/raw/.gitkeep
+--- raw run dirs ---
+--- artefact files (complete.json/status/pcap/sqlite/pt) ---
+--- outputs tree (2 levels) ---
+outputs
+outputs/backups
+outputs/backups/capture_runtime_fix_20261114T120500Z
+outputs/backups/staged_v2_20261114T033705Z
+outputs/backups/stage_v2_capture_hotfix_20261114T050945Z
+outputs/backups/stage_v3_tcpdump_privileges_20261114T081743Z_153317
+outputs/backups/v3_test_fix_20261114T122604Z
+outputs/figs
+outputs/figs/pilot_20261113T083155Z_61354
+outputs/figs/pilot_20261113T083155Z_61354_postprocess_20261113T102524Z_78279
+outputs/figs/pilot_20261113T083155Z_61354_postprocess_20261114T112919Z_251214
+outputs/figs/pilot_20261113T102813Z_79699_postprocess_20261113T110338Z_93002
+outputs/hpo
+outputs/hpo/sprints
+outputs/hpo/staged
+outputs/locks
+outputs/logs
+outputs/logs/setup
+outputs/logs/zeek
+outputs/model
+outputs/model/sprints
+outputs/model/staged
+outputs/orglab
+outputs/orglab/org20_flat_01
+outputs/orglab/org20_main_01
+outputs/orglab/org20_main_1114123039
+outputs/orglab/org20_main_1114123047
+outputs/orglab/org20_pilot_01
+outputs/orglab/org20_pilot_02
+outputs/orglab/org20_smoke_1114122633
+outputs/orglab/org50_pilot_01
+outputs/results
+outputs/results/pilot_20261113T083155Z_61354
+outputs/results/pilot_20261113T083155Z_61354_postprocess_20261113T102524Z_78279
+outputs/results/pilot_20261113T083155Z_61354_postprocess_20261114T112919Z_251214
+outputs/results/pilot_20261113T102813Z_79699_postprocess_20261113T110338Z_93002
+outputs/results/staged_staged_v3_check_02_20261114T094626Z_170429
+outputs/results/staged_zeek_staged_v3_check_02_20261114T094626Z_170429
+outputs/sprints
+outputs/sprints/pilot_20261113T083155Z_61354
+outputs/sprints/staged
+outputs/zeek_audit
+outputs/zeek_audit/staged_v3_check_02
+--- du ---
+12K	src/data
+13M	outputs
+90M	researchPapers
+160K	setup
+40K	lab
+64K	src
+48K	tests
+--- docker system df ---
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          1         1         36.94kB   0B (0%)
+Containers      1         0         4.096kB   4.096kB (100%)
+Local Volumes   0         0         0B        0B
+Build Cache     0         0         0B        0B
+--- /var/lib/docker df ---
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       228G  156G   60G  73% /
+--- second volume candidates ---
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           3.0G  5.1M  3.0G   1% /run
+/dev/sda2       228G  156G   60G  73% /
+tmpfs           7.5G   36M  7.5G   1% /dev/shm
+efivarfs        256K  224K   28K  90% /sys/firmware/efi/efivars
+tmpfs           7.5G   81M  7.4G   2% /tmp
+/dev/sda1       1.1G  6.4M  1.1G   1% /boot/efi
+tmpfs           1.5G  180K  1.5G   1% /run/user/1000
+/dev/sdb6       172G  169M  163G   1% /home/ibrahim/Downloads
+none            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+none            1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+--- uname ---
+Linux ib-desktop 7.0.0-42-generic #42-Ubuntu SMP PREEMPT_DYNAMIC Thu Oct 15 08:06:44 UTC 2026 x86_64 GNU/Linux
+--- lscpu summary ---
+CPU(s):                                  4
+Model name:                              Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz
+Thread(s) per core:                      1
+Core(s) per socket:                      4
+CPU(s) scaling MHz:                      94%
+--- groups ---
+ibrahim adm cdrom sudo dip plugdev users lpadmin lxd docker
+UTC_END=2026-11-15T16:24:02Z
+EXIT_CODE=0

@@ -28,7 +28,7 @@ while (( $# )); do
 done
 [[ "$RUN_ID" =~ ^[A-Za-z0-9_-]{1,80}$ && "$ROUNDS" =~ ^[0-9]+$ && "$TEST_ROUNDS" =~ ^[0-9]+$ && "$SEED" =~ ^[0-9]+$ ]] || { echo 'Invalid run ID/arguments' >&2; exit 2; }
 (( ROUNDS>=3 && ROUNDS<=150 && TEST_ROUNDS>=3 && TEST_ROUNDS<=150 )) || { echo 'Rounds must be 3..150' >&2; exit 2; }
-for cmd in flock timeout docker python3; do command -v "$cmd" >/dev/null || { echo "Missing command: $cmd" >&2; exit 1; }; done
+for cmd in flock timeout docker python3 install; do command -v "$cmd" >/dev/null || { echo "Missing command: $cmd" >&2; exit 1; }; done
 mkdir -p outputs/locks
 exec 9>outputs/locks/staged_capture.lock
 if ! flock -n 9; then
@@ -38,6 +38,11 @@ if ! flock -n 9; then
   exit 1
 fi
 docker info >/dev/null || { echo 'Docker unavailable to this shell. Re-login to activate group membership.' >&2; exit 1; }
+# Services run with cap_drop: ALL (no DAC_OVERRIDE), so they must write as the
+# invoking host user. Export the real ids instead of hardcoding them.
+export LAB_UID="${LAB_UID:-$(id -u)}" LAB_GID="${LAB_GID:-$(id -g)}"
+printf '[%s] [STAGE-V3] Lab services will run as uid=%s gid=%s (host user; no added capabilities)\n' \
+  "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$LAB_UID" "$LAB_GID"
 COMPOSE=(docker compose -f compose.yaml)
 RAW="src/data/raw/runs/$RUN_ID"
 PY=python3
@@ -90,6 +95,9 @@ capture_stop() {
   CAP_STARTED=0
   # Container is removed only after its log is saved; data files remain intact.
   step timeout 8s docker rm "$CAP_NAME" || log 'WARNING: stopped capture container remains; manually inspect it later'
+  # The capture file was pre-created 0666 so the restricted container could open it;
+  # restore a read-only evidence mode now that the capture is closed.
+  [[ -n "$CAP_FILE" && -f "$RAW/$CAP_FILE" ]] && chmod 644 "$RAW/$CAP_FILE" || true
   log 'Capture process confirmed stopped'
 }
 on_exit() {
@@ -180,6 +188,12 @@ if (( CAPTURE )); then
   GATEWAY_CID="$("${COMPOSE[@]}" ps -q gateway)"
   [[ -n "$GATEWAY_CID" ]] || { log 'Gateway container ID missing'; exit 1; }
   ROOT_RAW="$(realpath "$RAW")"
+  # The restricted sidecar runs with --cap-drop ALL (no DAC_OVERRIDE), so it cannot
+  # create a file inside the bind-mounted run directory, which is owned by the host
+  # user with mode 0755. Pre-create an empty, group/other-writable capture file so
+  # tcpdump can open it for writing without widening container capabilities.
+  install -m 666 /dev/null "$RAW/$CAP_FILE"
+  log "Capture file pre-created for restricted writer: $RAW/$CAP_FILE"
   log "Starting capture in gateway network namespace; file: $ROOT_RAW/$CAP_FILE"
   # Direct docker run avoids Compose overlay interpolation and stuck Compose stop wrapper.
   step docker run -d --name "$CAP_NAME" --network "container:$GATEWAY_CID" \

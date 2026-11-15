@@ -27,6 +27,17 @@ class TestV3Contract(unittest.TestCase):
         self.assertIsNotNone(match)
         ast.parse(match.group(1))
 
+    def test_restricted_capture_can_write_the_bind_mount(self):
+        """--cap-drop ALL removes DAC_OVERRIDE, so the capture file must be pre-created."""
+        self.assertIn('install -m 666 /dev/null "$RAW/$CAP_FILE"', SRC)
+        self.assertIn('install', re.search(r'for cmd in ([^;]+); do', SRC).group(1))
+        # The privileged-surface policy must remain unchanged.
+        self.assertIn('--cap-drop ALL --cap-add NET_RAW', SRC)
+        self.assertIn('--security-opt no-new-privileges:true', SRC)
+        self.assertNotIn('--privileged', SRC)
+        self.assertNotIn('--network host', SRC)
+        self.assertIn('-Z root', SRC)
+
 
 if __name__ == '__main__':
     unittest.main()

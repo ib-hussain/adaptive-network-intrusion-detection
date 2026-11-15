@@ -1,0 +1,74 @@
+[2026-11-15T16:32:57Z] [STAGE-V3] Lab services will run as uid=1000 gid=1000 (host user; no added capabilities)
+{"episode_budget": 24, "initialised": true, "run_dir": "src/data/raw/runs/cpu_v3_pilot_20261115T163257Z"}
+[2026-11-15T16:32:57Z] [STAGE-V3] Starting run=cpu_v3_pilot_20261115T163257Z rounds=3 test_rounds=3 seed=20261115 capture=1 resume=0
+[2026-11-15T16:32:57Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-15T16:32:57Z] [STAGE-V3] Starting authorised isolated lab services
+ Network phase3-adaptive-nids_services Creating 
+ Network phase3-adaptive-nids_clients Creating 
+ Network phase3-adaptive-nids_clients Created 
+ Network phase3-adaptive-nids_services Created 
+ Container phase3-adaptive-nids-server_b-1 Creating 
+ Container phase3-adaptive-nids-server_a-1 Creating 
+ Container phase3-adaptive-nids-server_b-1 Created 
+ Container phase3-adaptive-nids-server_a-1 Created 
+ Container phase3-adaptive-nids-gateway-1 Creating 
+ Container phase3-adaptive-nids-gateway-1 Created 
+ Container phase3-adaptive-nids-server_b-1 Starting 
+ Container phase3-adaptive-nids-server_a-1 Starting 
+ Container phase3-adaptive-nids-server_b-1 Started 
+ Container phase3-adaptive-nids-server_a-1 Started 
+ Container phase3-adaptive-nids-gateway-1 Starting 
+ Container phase3-adaptive-nids-gateway-1 Started 
+[2026-11-15T16:33:14Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-15T16:33:16Z] [STAGE-V3] Gateway and backends ready
+[2026-11-15T16:33:16Z] [STAGE-V3] Capture file pre-created for restricted writer: src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/traffic_20261115T163257Z_177780.pcap
+[2026-11-15T16:33:16Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/traffic_20261115T163257Z_177780.pcap
+c0e8e0cc0805b6e5876180138d1fd7177439aa2b1a0074efed1ba678cbd57c1a
+[2026-11-15T16:33:22Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+ Container phase3-adaptive-nids-runner-run-a0d0a67836f9 Creating 
+ Container phase3-adaptive-nids-runner-run-a0d0a67836f9 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-15T16:33:30Z] [STAGE-V3] Capture preflight passed: actual packet records observed
+[2026-11-15T16:33:30Z] [STAGE-V3] Launching runner; full per-round output: src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/generator_20261115T163257Z_177780.log
+[2026-11-15T16:33:35Z] [STAGE-V3] HEARTBEAT runner PID=179277 completed_rounds=0/12; last_output= Container phase3-adaptive-nids-runner-run-74875e2b1c3a Created 
+[2026-11-15T16:33:40Z] [STAGE-V3] HEARTBEAT runner PID=179277 completed_rounds=2/12; last_output=fixed round 2/3 committed; 4 complete episodes
+[2026-11-15T16:33:45Z] [STAGE-V3] HEARTBEAT runner PID=179277 completed_rounds=4/12; last_output=random round 1/3 committed; 8 complete episodes
+[2026-11-15T16:33:50Z] [STAGE-V3] HEARTBEAT runner PID=179277 completed_rounds=6/12; last_output=random round 3/3 committed; 12 complete episodes
+[2026-11-15T16:33:55Z] [STAGE-V3] HEARTBEAT runner PID=179277 completed_rounds=8/12; last_output=strategic round 2/3 committed; 16 complete episodes
+[2026-11-15T16:34:00Z] [STAGE-V3] HEARTBEAT runner PID=179277 completed_rounds=10/12; last_output=test round 1/3 committed; 20 complete episodes
+[2026-11-15T16:34:05Z] [STAGE-V3] HEARTBEAT runner PID=179277 completed_rounds=12/12; last_output={"complete": true, "episodes": 24, "run_dir": "/out/runs/cpu_v3_pilot_20261115T163257Z"}
+[2026-11-15T16:34:10Z] [STAGE-V3] HEARTBEAT runner PID=179277 completed_rounds=12/12; last_output={"complete": true, "episodes": 24, "run_dir": "/out/runs/cpu_v3_pilot_20261115T163257Z"}
+[2026-11-15T16:34:10Z] [STAGE-V3] Runner exit code: 0; last 15 lines of generator log:
+ Container phase3-adaptive-nids-runner-run-74875e2b1c3a Creating 
+ Container phase3-adaptive-nids-runner-run-74875e2b1c3a Created 
+fixed round 1/3 committed; 2 complete episodes
+fixed round 2/3 committed; 4 complete episodes
+fixed round 3/3 committed; 6 complete episodes
+random round 1/3 committed; 8 complete episodes
+random round 2/3 committed; 10 complete episodes
+random round 3/3 committed; 12 complete episodes
+strategic round 1/3 committed; 14 complete episodes
+strategic round 2/3 committed; 16 complete episodes
+strategic round 3/3 committed; 18 complete episodes
+test round 1/3 committed; 20 complete episodes
+test round 2/3 committed; 22 complete episodes
+test round 3/3 committed; 24 complete episodes
+{"complete": true, "episodes": 24, "run_dir": "/out/runs/cpu_v3_pilot_20261115T163257Z"}
+[2026-11-15T16:34:10Z] [STAGE-V3] All round records committed. Closing packet capture before extraction.
+[2026-11-15T16:34:10Z] [STAGE-V3] Stopping only our capture container: p3cap_cpu_v3_pilot_20261115T163257Z_20261115T163257Z_177780 (bounded Docker timeout)
+p3cap_cpu_v3_pilot_20261115T163257Z_20261115T163257Z_177780
+[2026-11-15T16:34:12Z] [STAGE-V3] Capture log saved to src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/capture_container_20261115T163257Z_177780.log
+p3cap_cpu_v3_pilot_20261115T163257Z_20261115T163257Z_177780
+[2026-11-15T16:34:12Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-15T16:34:12Z] [STAGE-V3] Extracting ground-truth-aligned gateway observations
+{
+  "status": "validated_observed_gateway_subset_not_real_attack_data",
+  "episodes": 24,
+  "events": 480,
+  "output": "src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/gateway_subset.jsonl"
+}
+[2026-11-15T16:34:12Z] [STAGE-V3] Validating closed PCAP structure and nonzero observed packet count
+{"complete": true, "issue": null, "linktype": 276, "min_packets": 96, "packets": 13551, "path": "src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/traffic_20261115T163257Z_177780.pcap", "payload_bytes": 1479812, "size_bytes": 1696652, "valid": true, "version": [2, 4]}
+[2026-11-15T16:34:12Z] [STAGE-V3] Packet audit written: src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/capture_audit_20261115T163257Z_177780.json (independent Zeek alignment still required)
+[2026-11-15T16:34:12Z] [STAGE-V3] SUCCESS: cpu_v3_pilot_20261115T163257Z; manifest=src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/episodes.jsonl, gateway=src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/gateway_subset.jsonl, packet=src/data/raw/runs/cpu_v3_pilot_20261115T163257Z/traffic_20261115T163257Z_177780.pcap
+[2026-11-15T16:34:12Z] [STAGE-V3] Reminder: benign laboratory behavioural profiles, NOT evidence of genuine network intrusion.

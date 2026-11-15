@@ -1,7 +1,11 @@
 name: phase3-adaptive-nids
+# Every service runs with cap_drop: ALL, so container-root has no DAC_OVERRIDE and
+# cannot write into the bind-mounted host data directory. LAB_UID/LAB_GID make the
+# containers write as the invoking host user instead of widening capabilities.
 services:
   server_a:
     image: python:3.12-slim
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
     working_dir: /app
     command: ["python", "-m", "lab.http_service", "--role", "service", "--port", "8080"]
     volumes: ["./lab:/app/lab:ro"]
@@ -11,6 +15,7 @@ services:
     cap_drop: [ALL]
   server_b:
     image: python:3.12-slim
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
     working_dir: /app
     command: ["python", "-m", "lab.http_service", "--role", "service", "--port", "8080"]
     volumes: ["./lab:/app/lab:ro"]
@@ -20,6 +25,7 @@ services:
     cap_drop: [ALL]
   gateway:
     image: python:3.12-slim
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
     working_dir: /app
     command: ["python", "-m", "lab.http_service", "--role", "gateway", "--port", "8080", "--events", "/out/gateway_requests.jsonl"]
     volumes: ["./lab:/app/lab:ro", "./src/data/raw:/out"]
@@ -29,6 +35,7 @@ services:
     cap_drop: [ALL]
   runner:
     image: python:3.12-slim
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
     profiles: [runner]
     working_dir: /app
     command: ["python", "-m", "lab.generate", "--output", "/out", "--gateway", "http://gateway:8080", "--episodes", "12", "--test-episodes", "12"]

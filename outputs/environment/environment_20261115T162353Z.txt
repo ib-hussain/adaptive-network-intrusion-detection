@@ -1,0 +1,168 @@
+=== Phase 3 execution environment ===
+generated_utc=2026-11-15T16:27:07Z
+repo_root=/home/ibrahim/Downloads/adaptive-network-intrusion-detection
+python_executable=/home/ibrahim/Downloads/adaptive-network-intrusion-detection/.venv/bin/python
+python_version=3.12.7 (main, Sep  4 2026, 04:22:22) [GCC 15.2.0]
+platform=Linux-7.0.0-42-generic-x86_64-with-glibc2.43
+machine=x86_64
+processor=
+
+--- operating system ---
+Linux ib-desktop 7.0.0-42-generic #42-Ubuntu SMP PREEMPT_DYNAMIC Thu Oct 15 08:06:44 UTC 2026 x86_64 GNU/Linux
+
+--- cpu / memory ---
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           39 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  4
+On-line CPU(s) list:                     0-3
+Vendor ID:                               GenuineIntel
+Model name:                              Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz
+CPU family:                              6
+Model:                                   94
+Thread(s) per core:                      1
+Core(s) per socket:                      4
+Socket(s):                               1
+Stepping:                                3
+CPU(s) scaling MHz:                      96%
+CPU max MHz:                             3600.0000
+CPU min MHz:                             800.0000
+BogoMIPS:                                6399.96
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb pti ssbd ibrs ibpb stibp tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust sgx bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp vnmi md_clear flush_l1d arch_capabilities
+Virtualization:                          VT-x
+L1d cache:                               128 KiB (4 instances)
+L1i cache:                               128 KiB (4 instances)
+L2 cache:                                1 MiB (4 instances)
+L3 cache:                                6 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-3
+Vulnerability Gather data sampling:      Vulnerable: No microcode
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             KVM: Mitigation: Split huge pages
+Vulnerability L1tf:                      Mitigation; PTE Inversion; VMX conditional cache flushes, SMT disabled
+Vulnerability Mds:                       Mitigation; Clear CPU buffers; SMT disabled
+Vulnerability Meltdown:                  Mitigation; PTI
+Vulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT disabled
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Mitigation; IBRS
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; IBRS; IBPB conditional; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Mitigation; Microcode
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Mitigation; TSX disabled
+Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace
+total        used        free      shared  buff/cache   available
+Mem:            14Gi       5.4Gi       1.2Gi       644Mi       9.3Gi       9.5Gi
+Swap:          4.0Gi        21Mi       4.0Gi
+
+--- storage ---
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           3.0G  5.1M  3.0G   1% /run
+/dev/sda2       228G  157G   60G  73% /
+tmpfs           7.5G   38M  7.5G   1% /dev/shm
+efivarfs        256K  224K   28K  90% /sys/firmware/efi/efivars
+tmpfs           7.5G   82M  7.4G   2% /tmp
+/dev/sda1       1.1G  6.4M  1.1G   1% /boot/efi
+tmpfs           1.5G  180K  1.5G   1% /run/user/1000
+/dev/sdb6       172G  1.5G  162G   1% /home/ibrahim/Downloads
+none            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+none            1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+
+--- python packages (pip freeze) ---
+alembic==1.20.1
+cloudpickle==3.1.2
+colorlog==6.12.0
+contourpy==1.4.0
+cycler==0.12.1
+filelock==4.2.10
+fonttools==4.68.0
+fsspec==2026.9.0
+iniconfig==2.3.1
+Jinja2==3.1.6
+joblib==1.6.0
+kiwisolver==1.5.1
+Mako==1.4.3
+MarkupSafe==3.0.4
+matplotlib==3.11.2
+mpmath==1.3.0
+narwhals==2.28.0
+networkx==3.7
+numpy==2.5.4
+optuna==4.9.0
+packaging==26.3
+pandas==2.3.3
+pillow==13.0.0
+pluggy==1.7.0
+Pygments==2.21.0
+pyparsing==3.3.3
+pytest==9.2.0
+python-dateutil==4.0.0
+pytz==2026.6
+PyYAML==6.0.3
+scikit-learn==1.9.1
+scipy==1.18.1
+setuptools==84.2.1
+SQLAlchemy==2.1.8
+sympy==1.14.0
+threadpoolctl==3.8.0
+torch==2.7.1+cpu
+tqdm==4.70.1
+typing_extensions==4.16.0
+tzdata==2026.6
+wheel==0.48.0
+
+--- key runtime libraries ---
+torch 2.7.1+cpu cuda_available False
+numpy 2.5.4
+pandas 2.3.3
+sklearn 1.9.1
+optuna 4.9.0
+matplotlib 3.11.2
+
+--- docker ---
+Docker version 29.9.3, build 5457199
+Docker Compose version v5.7.1
+docker_root_dir=/var/lib/docker
+
+--- zeek / tcpdump ---
+zeek version 9.0.1
+tcpdump version 4.99.6
+libpcap version 1.10.6 (64-bit time_t, with TPACKET_V3)
+OpenSSL 3.5.5 27 Jan 2026
+64-bit build, 64-bit time_t
+
+--- relevant environment variables ---
+PYTHONUNBUFFERED=1
+PYTHONHASHSEED=20261115
+TOKENIZERS_PARALLELISM=false
+CUDA_VISIBLE_DEVICES=
+OMP_NUM_THREADS=2
+MKL_NUM_THREADS=2
+OPENBLAS_NUM_THREADS=2
+NUMEXPR_NUM_THREADS=2
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=<unset>
+
+--- sha256 of core scripts ---
+ef20d4f1431f4f686e11aab4a16151902fa7d4eea4916636d3baab3137e9da52  setup/staged_collect_v3.sh
+2b0663873e3e0ec9337c43ce53b45f5856dd8c428ffaac6eb99d4998b36380c2  setup/staged_zeek.py
+fdb933ad85c74759c1c08c209f3edf17c38e38d9b1c4e77ebf4c27a5f15bd388  setup/staged_sensor_gate.py
+3b65111c4aa7d8d0a543d7878a0d14a09df814a297d85cb83af6f7d2350a442f  setup/staged_capture_audit.py
+190548c8f5af1710ce091628e2b71afe35edf600569bc194ab54e0c1c407f3d2  setup/staged_train_guard_v3.sh
+1693206512139ccd0907ad88603dfce66f5d819d61a2cb73655ac1050388e3ca  setup/staged_train_start.sh
+4993c455f7314763b566cae089cd88236e9d1c86d070a515bd422c5c72faeb1d  lab/staged_generate.py
+8d5ca226b0459d7bfd88459737081fa522d5c3bc9ad44575414d526ee11571c2  lab/http_service.py
+c8fde717150cd679e56bbca1d7014b175c58c43d19ca069a377d716896fdcbd8  src/code/ingest.py
+e9bcf974945699a0e9f369013df025998c2317a00c1e7f59d10e34ef602e9c66  src/code/features.py
+90a339cc9b009427ee182f51a6bbbabf38c77a5eee857578ed9d32973b66ab22  src/code/models.py
+63cf708aa37c41d49ae259708664720e62709ed11bc51172a20df322717023be  src/code/pipeline.py
+37085c891d46d2b670bbc7a485c855590b5ef66d1e6df6612db5c242b1848544  src/code/early_warning.py
+1dee8982bb0d54bbfb99df15aefc93c57dee39746b8cd886b93391b9fd95fd2f  src/code/game.py
+291189e27ef1b105fc7c79ab7dc01632461c4f84b3357b05182150fad936f339  src/code/figures.py
+aee3905bb1d53d8a353db7a7081a79465bde6e477ad463644a886cde09f41730  src/code/temporal_gru_sprint.py
+8b8ef18ac378829ffab65820445c5c68e01b64fd91fc2430d48f4ad72129d84a  compose.yaml
+e6c051c642ddd445e237475b661db1e40bfa27570310a111b41fc40b974b0648  requirements.txt

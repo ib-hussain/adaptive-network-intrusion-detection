@@ -1,0 +1,44 @@
+name: phase3-adaptive-nids
+services:
+  server_a:
+    image: python:3.12-slim
+    working_dir: /app
+    command: ["python", "-m", "lab.http_service", "--role", "service", "--port", "8080"]
+    volumes: ["./lab:/app/lab:ro"]
+    networks: [services]
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+  server_b:
+    image: python:3.12-slim
+    working_dir: /app
+    command: ["python", "-m", "lab.http_service", "--role", "service", "--port", "8080"]
+    volumes: ["./lab:/app/lab:ro"]
+    networks: [services]
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+  gateway:
+    image: python:3.12-slim
+    working_dir: /app
+    command: ["python", "-m", "lab.http_service", "--role", "gateway", "--port", "8080", "--events", "/out/gateway_requests.jsonl"]
+    volumes: ["./lab:/app/lab:ro", "./src/data/raw:/out"]
+    networks: [clients, services]
+    depends_on: [server_a, server_b]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+  runner:
+    image: python:3.12-slim
+    profiles: [runner]
+    working_dir: /app
+    command: ["python", "-m", "lab.generate", "--output", "/out", "--gateway", "http://gateway:8080", "--episodes", "12", "--test-episodes", "12"]
+    volumes: ["./lab:/app/lab:ro", "./src:/app/src:ro", "./src/data/raw:/out"]
+    networks: [clients]
+    depends_on: [gateway]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+networks:
+  clients:
+    internal: true
+  services:
+    internal: true
