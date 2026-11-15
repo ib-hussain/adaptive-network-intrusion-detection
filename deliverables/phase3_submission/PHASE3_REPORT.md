@@ -582,7 +582,7 @@ seen-family → unseen-family collapse of the rule baseline.
 | Environment | `outputs/environment/environment_20261115T162353Z.txt` |
 | Machine inventory | `outputs/logs/setup/20261115T162353Z/machine_inventory.log` |
 | Setup logs | `outputs/logs/setup/20261115T162353Z/` |
-| Tests | `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests` → **50 passed** (final log: `outputs/logs/final_verification/20261115T174058Z/verification.log`) |
+| Tests | `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests` → **52 passed** (final log: `outputs/logs/final_verification/20261115T174440Z/verification.log`) |
 | Seed | 20261115 (collection, models, bootstrap) |
 | Threads | `OMP/MKL/OPENBLAS/NUMEXPR_NUM_THREADS=2`, `torch.set_num_threads(2)` |
 

@@ -347,7 +347,7 @@ Artefacts: `outputs/reports/<run>/seed_comparison.csv`,
 The number check now covers **102** quoted values across both seeds.
 
 **Verification.** `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests`
-→ **50 passed** (45 at the first freeze, plus 5 for the submission packager).
+→ **52 passed** (45 at the first freeze, plus tests for the submission packagers).
 `python -m setup.verify_report_numbers ...` → **102 checks, 0 mismatches, PASS** (`outputs/reports/<run>/report_number_verification.json`).
 `claim_artifact_table.csv` maps 177 reported values to their artefacts.
 
@@ -365,8 +365,8 @@ was performed.
 
 * **Verification captured** under `outputs/logs/final_verification/<UTC>/`:
   `compileall` rc 0, `bash -n setup/*.sh` rc 0,
-  `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests` → **50 passed**
-  (log `outputs/logs/final_verification/20261115T174058Z/verification.log`),
+  `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests` → **52 passed**
+  (log `outputs/logs/final_verification/20261115T174440Z/verification.log`),
   and `setup/verify_report_numbers.py` → **102 checks, 0 mismatches, PASS**.
 * **Documentation reconciled.** `README.md` now describes a completed study and
   separates *reviewing existing evidence* from *reproducing from scratch*;

@@ -138,7 +138,7 @@ A complete, sensor-validated CPU Phase 3 study now exists:
   (7 declared checks, 100 % bidirectional visibility, 0 ambiguous joins);
 - report `outputs/reports/cpu_v3_main_v2_20261115T164430Z/PHASE3_REPORT.md`,
   number check `setup/verify_report_numbers.py` → 102 checks, 0 mismatches;
-- `pytest -q tests` → 50 passed.
+- `pytest -q tests` → 52 passed.
 
 The **empirical conclusion is bounded** and must not be overstated: harmless
 synthetic traffic only, two seeds, one topology, checksum-repaired PCAP copies

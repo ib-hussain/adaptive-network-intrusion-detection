@@ -72,3 +72,18 @@ def test_is_within_matches_only_real_descendants(tmp_path: Path) -> None:
     parent.mkdir()
     assert pkg._is_within(parent / "sub", parent)
     assert not pkg._is_within(tmp_path / "project-copy", parent)
+
+
+def test_test_summary_refuses_a_log_without_a_result(tmp_path: Path) -> None:
+    (tmp_path / "verification.log").write_text("no pytest output here\n", encoding="utf-8")
+    with pytest.raises(pkg.PackagingError):
+        pkg._test_summary(tmp_path)
+
+
+def test_test_summary_reads_the_real_count(tmp_path: Path) -> None:
+    (tmp_path / "verification.log").write_text(
+        "## pytest\n50 passed in 9.7s\npytest_rc=0\n", encoding="utf-8"
+    )
+    summary = pkg._test_summary(tmp_path)
+    assert summary["passed"] == 50
+    assert summary["pytest_rc"] == 0

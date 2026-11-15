@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import re
 import json
 import os
 import shutil
@@ -195,12 +196,33 @@ def _git_state(repo: Path) -> dict[str, object]:
             ["git", "-C", str(repo), *args], check=True, capture_output=True, text=True
         ).stdout.strip()
 
+    porcelain = run("status", "--porcelain")
+    dirty_paths = [line[3:] for line in porcelain.splitlines() if line.strip()]
     return {
         "commit": run("rev-parse", "HEAD"),
         "branch": run("rev-parse", "--abbrev-ref", "HEAD"),
         "describe": run("describe", "--always", "--dirty"),
-        "dirty": bool(run("status", "--porcelain")),
+        "dirty": bool(dirty_paths),
+        "dirty_paths": dirty_paths,
     }
+
+
+def _test_summary(verification_dir: Path) -> dict:
+    """Read the real pytest result from the verification log.
+
+    The manifest must never carry a hard-coded test count; if the log has no
+    recognisable result the packager fails rather than quoting an old number.
+    """
+
+    log = verification_dir / "verification.log"
+    if not log.is_file():
+        raise PackagingError(f"verification log missing: {log}")
+    text = log.read_text(encoding="utf-8", errors="replace")
+    passed = re.findall(r"(\d+) passed", text)
+    rc = re.findall(r"pytest_rc=(\d+)", text)
+    if not passed or not rc:
+        raise PackagingError(f"cannot read a pytest result from {log}")
+    return {"passed": int(passed[-1]), "pytest_rc": int(rc[-1]), "log": str(log)}
 
 
 def _copy_tree(files: Iterable[Path], repo: Path, staging: Path) -> list[str]:
@@ -409,7 +431,7 @@ def build(
         "source_hashes": _source_hashes(repo),
         "file_count": len(copied),
         "verification": {
-            "tests": "45 passed",
+            "tests": _test_summary(verification),
             "report_numbers": json.loads(
                 (repo / primary_report / "report_number_verification.json").read_text()
             ),

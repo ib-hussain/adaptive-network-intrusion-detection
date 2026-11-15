@@ -14,7 +14,7 @@ with a submission-ready copy under
 | Evidence tag | `SENSOR_VALIDATED` for both (strict 7-check gate) |
 | Scale | 192 episodes, 3,840 HTTP requests, 13.4 MB PCAP (107,628 packets), 7,688 Zeek connections |
 | Report number check | 102 quoted values re-read from stored artefacts, 0 mismatches |
-| Tests | 50 passed |
+| Tests | 52 passed |
 
 The result is **deliberately bounded**: it is an isolated synthetic lab with
 harmless traffic profiles. It makes no malware, zero-day, enterprise or
