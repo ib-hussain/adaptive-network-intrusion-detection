@@ -361,7 +361,8 @@ This queue was executed on the CPU-only machine. The active run is
 | I policy comparison + feasible ablations | done | `outputs/studies/<run>_zeek_*/ablations.csv` |
 | J figures from saved metrics | done | `outputs/reports/<run>/figures/{zeek,gateway}/` (8 figures + source data each) |
 | K report, claim-to-artifact table, limitations, reproducibility | done | `outputs/reports/<run>/PHASE3_REPORT.md`, `claim_artifact_table.csv` |
-| Reproducibility verification | done | `python -m setup.verify_report_numbers` → 79 checks, 0 mismatches |
+| Reproducibility verification | done | `python -m setup.verify_report_numbers` → 102 checks, 0 mismatches (both seeds) |
+| Independent replication (second seed) | done | `cpu_v3_main_v2_seed2_20261115T165949Z`, also `SENSOR_VALIDATED`; `outputs/reports/<run>/seed_comparison.csv` |
 
 **Deviations from this runbook** (all documented in the report, §1.2): the lab
 services and the capture sidecar had to be made able to write into the
@@ -373,4 +374,7 @@ the main run was scaled to 24 + 24 rounds so the false-alarm budget is
 estimable on a non-trivial validation set.
 
 **Not done, and listed as unavailable:** graph relations, topology
-generalisation, future-stage prediction, and a second independent seed.
+generalisation, and future-stage prediction. A second independent seed **was**
+collected and evaluated; it shows that the capture and sensor pipeline
+replicates exactly but that the **coverage ranking of the collection policies
+does not** move-with-seed, so no policy ranking is claimed.

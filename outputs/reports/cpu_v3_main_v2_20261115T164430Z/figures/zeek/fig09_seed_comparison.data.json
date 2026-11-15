@@ -1,0 +1,127 @@
+{
+  "panels": {
+    "false_positive_episode_rate": {
+      "keys": [
+        "fixed/isolation_forest",
+        "fixed/rf",
+        "fixed/rule",
+        "random/isolation_forest",
+        "random/rf",
+        "random/rule",
+        "strategic/isolation_forest",
+        "strategic/rf",
+        "strategic/rule"
+      ],
+      "seed_a": [
+        0.0,
+        0.625,
+        0.20833333333333334,
+        0.0,
+        1.0,
+        0.125,
+        0.0,
+        0.08333333333333333,
+        0.20833333333333334
+      ],
+      "seed_b": [
+        0.041666666666666664,
+        0.16666666666666666,
+        0.25,
+        0.16666666666666666,
+        0.041666666666666664,
+        0.25,
+        0.08333333333333333,
+        0.20833333333333334,
+        0.25
+      ]
+    },
+    "pre_milestone_coverage": {
+      "keys": [
+        "fixed/isolation_forest",
+        "fixed/rf",
+        "fixed/rule",
+        "random/isolation_forest",
+        "random/rf",
+        "random/rule",
+        "strategic/isolation_forest",
+        "strategic/rf",
+        "strategic/rule"
+      ],
+      "seed_a": [
+        0.0,
+        0.9583333333333334,
+        0.3333333333333333,
+        0.0,
+        0.8333333333333334,
+        0.3333333333333333,
+        0.0,
+        1.0,
+        0.3333333333333333
+      ],
+      "seed_b": [
+        0.2916666666666667,
+        0.9166666666666666,
+        0.7916666666666666,
+        0.3333333333333333,
+        0.5416666666666666,
+        0.4583333333333333,
+        0.3333333333333333,
+        0.875,
+        0.4583333333333333
+      ]
+    },
+    "strict_first_alert_coverage": {
+      "keys": [
+        "fixed/isolation_forest",
+        "fixed/rf",
+        "fixed/rule",
+        "random/isolation_forest",
+        "random/rf",
+        "random/rule",
+        "strategic/isolation_forest",
+        "strategic/rf",
+        "strategic/rule"
+      ],
+      "seed_a": [
+        0.0,
+        0.9166666666666666,
+        0.3333333333333333,
+        0.0,
+        0.8333333333333334,
+        0.3333333333333333,
+        0.0,
+        0.041666666666666664,
+        0.3333333333333333
+      ],
+      "seed_b": [
+        0.2916666666666667,
+        0.9166666666666666,
+        0.7916666666666666,
+        0.3333333333333333,
+        0.5416666666666666,
+        0.4583333333333333,
+        0.3333333333333333,
+        0.875,
+        0.4583333333333333
+      ]
+    }
+  },
+  "protocol_a": {
+    "causal_labels": true,
+    "evidence_tag": "SENSOR_VALIDATED",
+    "n_episodes": 192,
+    "n_events_per_window": 8,
+    "run_id": "cpu_v3_main_v2_20261115T164430Z",
+    "source_sensor": "zeek",
+    "test_episodes": 48
+  },
+  "protocol_b": {
+    "causal_labels": true,
+    "evidence_tag": "SENSOR_VALIDATED",
+    "n_episodes": 192,
+    "n_events_per_window": 8,
+    "run_id": "cpu_v3_main_v2_seed2_20261115T165949Z",
+    "source_sensor": "zeek",
+    "test_episodes": 48
+  }
+}

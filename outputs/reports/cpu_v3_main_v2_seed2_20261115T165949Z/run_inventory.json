@@ -1,0 +1,169 @@
+{
+  "collection_command": "./setup/staged_collect_v3.sh --run-id cpu_v3_main_v2_seed2_20261115T165949Z --rounds 24 --test-rounds 24 --seed 20261116 --capture",
+  "collection_log": "outputs/logs/collection_cpu_v3_main_v2_seed2_20261115T165949Z.log",
+  "complete_marker": {
+    "condition": "HARMLess_CONTROLLED_NETWORK_SCENARIOS_NOT_REAL_INTRUSIONS",
+    "episodes": 192,
+    "expected_episodes": 192,
+    "schema": "staged_v2_2"
+  },
+  "counts": {
+    "episodes": 192,
+    "episodes_by_condition": {
+      "benign": 96,
+      "incident": 96
+    },
+    "episodes_by_policy": {
+      "fixed": 48,
+      "random": 48,
+      "strategic": 48,
+      "test": 48
+    },
+    "episodes_by_policy_profile": {
+      "fixed/approved_bulk": 6,
+      "fixed/destination_shift": 8,
+      "fixed/jittered_burst": 8,
+      "fixed/maintenance_burst": 6,
+      "fixed/rapid_repeat": 8,
+      "fixed/service_fanout": 6,
+      "fixed/steady": 6,
+      "random/approved_bulk": 6,
+      "random/destination_shift": 8,
+      "random/jittered_burst": 9,
+      "random/maintenance_burst": 6,
+      "random/rapid_repeat": 7,
+      "random/service_fanout": 6,
+      "random/steady": 6,
+      "strategic/approved_bulk": 6,
+      "strategic/destination_shift": 13,
+      "strategic/jittered_burst": 6,
+      "strategic/maintenance_burst": 6,
+      "strategic/rapid_repeat": 5,
+      "strategic/service_fanout": 6,
+      "strategic/steady": 6,
+      "test/approved_bulk": 6,
+      "test/destination_shift": 4,
+      "test/jittered_burst": 4,
+      "test/maintenance_burst": 6,
+      "test/rapid_repeat": 4,
+      "test/service_fanout": 6,
+      "test/slow_ramp": 12,
+      "test/steady": 6
+    },
+    "episodes_by_profile": {
+      "approved_bulk": 24,
+      "destination_shift": 33,
+      "jittered_burst": 27,
+      "maintenance_burst": 24,
+      "rapid_repeat": 24,
+      "service_fanout": 24,
+      "slow_ramp": 12,
+      "steady": 24
+    },
+    "game_rounds": 72,
+    "gateway_events": 3840,
+    "gateway_events_per_episode": 20.0,
+    "pcap_bytes": 13415468,
+    "pcap_packets": 107629,
+    "pcap_segments": 1,
+    "requests_in_manifest": 3840,
+    "zeek_conn_entries": 7688
+  },
+  "environment": {
+    "host": "ib-desktop",
+    "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "python": "3.12.7"
+  },
+  "evidence": {
+    "caveats": [
+      "The raw capture carries invalid TCP checksums because the container veth leaves NIC transmit offloading in place. Strict Zeek therefore discarded every data segment on the raw trace. The primary evidence was produced by a derived copy in which only the IPv4/TCP/UDP checksum fields were recomputed from the captured payload (setup/pcap_checksum_repair.py); the raw pcap is unchanged and its SHA256 is recorded. The repaired trace was re-read by Zeek WITH checksum validation enabled and produced the same connection count as an independent checksum-ignored read of the raw trace."
+    ],
+    "checks": {
+      "C1": {
+        "detail": "all required artefacts present",
+        "passed": true
+      },
+      "C2": {
+        "detail": "segments=1 complete=True packets=107629 required>=768",
+        "passed": true
+      },
+      "C3": {
+        "detail": "mode=strict_checksum_repaired zeek_rc=[0] conn_entries=7688 stderr=",
+        "passed": true
+      },
+      "C4": {
+        "detail": "tcp_connections=7688 on_port_8080=7688",
+        "passed": true
+      },
+      "C5": {
+        "detail": "bidirectional=7680/7680 fraction=1.0000 required>=0.8 (orig>0:7680, resp>0:7680)",
+        "passed": true
+      },
+      "C6": {
+        "detail": "assigned=7680 ambiguous=0 outside=8 episodes_with_conns=192/192",
+        "passed": true
+      },
+      "C7": {
+        "detail": "test_episodes_with_pre_milestone_windows=48/48 required>=1",
+        "passed": true
+      }
+    },
+    "checksum_repaired": true,
+    "checksum_validation_ignored": false,
+    "sensor_audit_path": "outputs/audits/cpu_v3_main_v2_seed2_20261115T165949Z/sensor_audit.json",
+    "sensor_audit_sha256": "5991d8b2c4ef2c7844ca66e57780e2ad80b151fb09e00004048cb2717fbbe4a7",
+    "tag": "SENSOR_VALIDATED"
+  },
+  "generated_utc": "2026-11-15T17:05:35Z",
+  "paths": {
+    "capture_audits": [
+      "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/capture_audit_20261115T165949Z_229039.json"
+    ],
+    "capture_container_logs": [
+      "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/capture_container_20261115T165949Z_229039.log"
+    ],
+    "collector_logs": [
+      "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/collector_v3_20261115T165949Z_229039.log"
+    ],
+    "collector_status": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/collector_status_v3.json",
+    "complete_marker": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/complete.json",
+    "episodes_manifest": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/episodes.jsonl",
+    "game_rounds": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/game_rounds.jsonl",
+    "gateway_subset": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/gateway_subset.jsonl",
+    "generator_logs": [
+      "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/generator_20261115T165949Z_229039.log"
+    ],
+    "pcaps": [
+      "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/traffic_20261115T165949Z_229039.pcap"
+    ],
+    "scenario_config": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/scenario_config.json"
+  },
+  "raw_dir": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z",
+  "run_id": "cpu_v3_main_v2_seed2_20261115T165949Z",
+  "scenario_config": {
+    "delay_scale": 1.0,
+    "held_out_profile": "slow_ramp",
+    "requests": 20,
+    "rounds": 24,
+    "schema": "staged_v2_2",
+    "seed": 20261116,
+    "test_profile_rule": "j % 2 == 0 -> held_out_profile; else TRAIN_PROFILES[(j // 2) % 3]",
+    "test_rounds": 24,
+    "topology": "docker_two_internal_segments_two_services",
+    "train_profiles": [
+      "rapid_repeat",
+      "destination_shift",
+      "jittered_burst"
+    ]
+  },
+  "scenario_config_sha256": "37f52fba28c2fa1684e25268b21ef15a0913b3ac576abbf403ba5d4259b10e5f",
+  "schema": "phase3_run_inventory_v1",
+  "source_hashes": {
+    "complete.json": "d9173430337c067cc785ff3d610029c77dce10c579a63136200c70c8fe384297",
+    "episodes.jsonl": "77ac2006a191fa2a7c9ca913f02bec343e92d7dd0362eda1ce401a69fb1367ba",
+    "game_rounds.jsonl": "3fd59727f8b9e44a4a91d7ac169562cedfc0a4dc53a28da3862073ef3a9c5ac9",
+    "gateway_subset.jsonl": "94745d0d753d8792c4af7d8c570a849ff14dc50757e90b338a721461a724f5de",
+    "scenario_config.json": "37f52fba28c2fa1684e25268b21ef15a0913b3ac576abbf403ba5d4259b10e5f",
+    "traffic_20261115T165949Z_229039.pcap": "2d4faabe077cbdc70b0be235a37b327799ac56f1ca172a52541af2dc413a5f5f"
+  }
+}

@@ -29,6 +29,8 @@ def main():
     parser.add_argument("--gru-csv", required=True, type=Path)
     parser.add_argument("--audit", required=True, type=Path)
     parser.add_argument("--inventory", required=True, type=Path)
+    parser.add_argument("--seed2-study", type=Path, default=None)
+    parser.add_argument("--seed2-gru-csv", type=Path, default=None)
     parser.add_argument("--nd", type=int, default=3)
     args = parser.parse_args()
 
@@ -133,6 +135,30 @@ def main():
     chk("random/rf persistence-2 false positive rate", 0.000, ab[("random", "rf", "persistence_2")]["false_positive_episode_rate"])
     chk("strategic/rf persistence-2 coverage", 0.625, ab[("strategic", "rf", "persistence_2")]["pre_milestone_coverage"])
     chk("fixed/rf persistence-2 strict coverage", 0.917, ab[("fixed", "rf", "persistence_2")]["strict_first_alert_coverage"])
+
+    # --- second seed replication -------------------------------------------
+    if args.seed2_study:
+        z2 = _load_metrics(args.seed2_study)
+        res2 = json.loads((args.seed2_study / "results.json").read_text(encoding="utf-8"))
+        gru2 = {r["train_policy"]: r for r in csv.DictReader(args.seed2_gru_csv.open(encoding="utf-8"))}
+        chk("seed2 episodes", 192, res2["n_episodes"], 0)
+        chk("seed2 test episodes", 48, res2["test_episodes"], 0)
+        for policy, cov, strict, fpr, preonset in [
+            ("fixed", 0.917, 0.917, 0.167, 0),
+            ("random", 0.542, 0.542, 0.042, 0),
+            ("strategic", 0.875, 0.875, 0.208, 0),
+        ]:
+            row = z2[(policy, "rf")]
+            chk(f"seed2 {policy}/rf coverage", cov, row["pre_milestone_coverage"])
+            chk(f"seed2 {policy}/rf strict coverage", strict, row["strict_first_alert_coverage"])
+            chk(f"seed2 {policy}/rf false positive rate", fpr, row["false_positive_episode_rate"])
+            chk(f"seed2 {policy}/rf pre-onset alarms", preonset, row["pre_onset_warning_episodes"], 0)
+        for policy, cov, fpr in [("fixed", 1.000, 0.333), ("random", 0.917, 0.250),
+                                 ("strategic", 0.750, 0.042)]:
+            row = gru2[policy]
+            chk(f"seed2 gru {policy} coverage", cov, row["pre_milestone_coverage"])
+            chk(f"seed2 gru {policy} false positive rate", fpr, row["false_positive_episode_rate"])
+            chk(f"seed2 gru {policy} pre-onset alarms", 0, row["pre_onset_warning_episodes"], 0)
 
     result = {"checks_performed": checks, "mismatches": failures,
               "status": "PASS" if not failures else "FAIL"}

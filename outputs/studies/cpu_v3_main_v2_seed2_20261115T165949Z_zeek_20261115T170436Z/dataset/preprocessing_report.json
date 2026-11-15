@@ -1,0 +1,111 @@
+{
+  "created_utc": "2026-11-15T17:04:39Z",
+  "exclusions": {
+    "episodes_without_any_window": [],
+    "exclusion_reason": "incident windows whose end is at or after the controller milestone",
+    "windows_excluded_from_training": 144
+  },
+  "fit_only_transforms": "StandardScaler for the Isolation Forest is fitted on benign TRAINING windows only; the Random Forest and the rule baseline are fitted on training windows only",
+  "inputs": {
+    "episodes": 192,
+    "events": "outputs/audits/cpu_v3_main_v2_seed2_20261115T165949Z/zeek/repaired_strict_000/conn.log",
+    "events_sha256": "fd1aaa8323327913c4209022e67a234a6f3d1f32f1d458d132f06fb25456c934",
+    "manifest": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/episodes.jsonl",
+    "manifest_sha256": "77ac2006a191fa2a7c9ca913f02bec343e92d7dd0362eda1ce401a69fb1367ba",
+    "observations": 7680
+  },
+  "label_definition": {
+    "causal_stage_labels": true,
+    "milestone_source": "scenario controller (lab/staged_generate.py)",
+    "onset_source": "scenario controller (lab/staged_generate.py), independent of any detector"
+  },
+  "missing_value_strategy": "no imputation: every Zeek/gateway record carries numeric byte and duration fields; absent byte counters are read as 0.0 and recorded as such by the sensor audit",
+  "observations_by_episode": {
+    "max": 40,
+    "min": 40
+  },
+  "schema": "phase3_preprocessing_report_v1",
+  "source_sensor": "zeek",
+  "splits": {
+    "episodes_by_split": {
+      "test": 48,
+      "train": 96,
+      "validation": 48
+    },
+    "negative_windows_by_split": {
+      "test": 864,
+      "train": 1728,
+      "validation": 864
+    },
+    "policy_seed": 20261116,
+    "positive_windows_by_split": {
+      "test": 720,
+      "train": 1440,
+      "validation": 720
+    },
+    "test_episodes": [
+      "v2-test-0-11847737d03a-benign",
+      "v2-test-0-11847737d03a-incident",
+      "v2-test-1-eed2a3d217be-benign",
+      "v2-test-1-eed2a3d217be-incident",
+      "v2-test-10-9de3710eeb9c-benign",
+      "v2-test-10-9de3710eeb9c-incident",
+      "v2-test-11-ada43637bea4-benign",
+      "v2-test-11-ada43637bea4-incident",
+      "v2-test-12-a2e52a946d72-benign",
+      "v2-test-12-a2e52a946d72-incident",
+      "v2-test-13-4688eed4abdc-benign",
+      "v2-test-13-4688eed4abdc-incident",
+      "v2-test-14-3ec19d16ad91-benign",
+      "v2-test-14-3ec19d16ad91-incident",
+      "v2-test-15-a941698164ee-benign",
+      "v2-test-15-a941698164ee-incident",
+      "v2-test-16-3a8b6a74dd12-benign",
+      "v2-test-16-3a8b6a74dd12-incident",
+      "v2-test-17-8153e274f272-benign",
+      "v2-test-17-8153e274f272-incident",
+      "v2-test-18-a8038e70eafe-benign",
+      "v2-test-18-a8038e70eafe-incident",
+      "v2-test-19-abfb9998ec06-benign",
+      "v2-test-19-abfb9998ec06-incident",
+      "v2-test-2-e4592b7d5175-benign",
+      "v2-test-2-e4592b7d5175-incident",
+      "v2-test-20-b6b04f794b24-benign",
+      "v2-test-20-b6b04f794b24-incident",
+      "v2-test-21-b0b7cce05d72-benign",
+      "v2-test-21-b0b7cce05d72-incident",
+      "v2-test-22-a746cc6060ec-benign",
+      "v2-test-22-a746cc6060ec-incident",
+      "v2-test-23-8f74fdc0e46e-benign",
+      "v2-test-23-8f74fdc0e46e-incident",
+      "v2-test-3-fd836405a156-benign",
+      "v2-test-3-fd836405a156-incident",
+      "v2-test-4-4b33a49ee862-benign",
+      "v2-test-4-4b33a49ee862-incident",
+      "v2-test-5-9523512dfaeb-benign",
+      "v2-test-5-9523512dfaeb-incident",
+      "v2-test-6-27dc81ce5479-benign",
+      "v2-test-6-27dc81ce5479-incident",
+      "v2-test-7-c593c8d23e85-benign",
+      "v2-test-7-c593c8d23e85-incident",
+      "v2-test-8-d05cf3b77c24-benign",
+      "v2-test-8-d05cf3b77c24-incident",
+      "v2-test-9-286e428164e1-benign",
+      "v2-test-9-286e428164e1-incident"
+    ],
+    "test_episodes_with_pre_milestone_windows": 48,
+    "test_pre_milestone_windows": 1536,
+    "validation_fraction": 0.33,
+    "windows_by_split": {
+      "test": 1584,
+      "train": 3168,
+      "validation": 1584
+    }
+  },
+  "window_parameters": {
+    "min_events": 8,
+    "n_events": 8,
+    "note": "every window contains exactly n_events observations",
+    "stride": 1
+  }
+}

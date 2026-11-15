@@ -299,14 +299,54 @@ observation source (Zeek vs gateway, never merged); unseen scenario family.
 **Unavailable and explicitly listed:** graph relations (no graph model exists —
 `unique_links` is not a GNN) and topology generalisation (one configuration only).
 
+### 15 November 2026 — Independent replication (second seed), also VERIFIED
+
+Run **`cpu_v3_main_v2_seed2_20261115T165949Z`**, seed **20261116**, identical
+protocol (24 + 24 rounds). 192 episodes, 3,840 gateway events, 107,629 packet
+records, 7,688 Zeek connections, **`SENSOR_VALIDATED`** with 100 % bidirectional
+visibility, 0 ambiguous joins, 192 / 192 episodes covered. The capture and
+sensor pipeline reproduces its counts exactly.
+
+**This changes the conclusion of the first seed, and the change is the most
+important result of the session.**
+
+| Zeek, Random Forest | strict coverage s1 | s2 | FP rate s1 | s2 | pre-onset alarms s1 | s2 |
+|---|---:|---:|---:|---:|---:|---:|
+| fixed | 0.917 | 0.917 | 0.625 | 0.167 | 1 | 0 |
+| random | 0.833 | 0.542 | 1.000 | 0.042 | 0 | 0 |
+| strategic | **0.042** | **0.875** | 0.083 | 0.208 | **23** | **0** |
+
+* **Replicates:** the capture/sensor pipeline; the GRU's total absence of
+  pre-onset alarms (0 in all six GRU configurations); the strategic policy's
+  conservatism under the GRU (lowest FP rate in both seeds); the weakness of
+  the Isolation Forest and the rule baseline on the unseen family; the
+  systematic EXP3 skew towards `destination_shift` (13/24 in seed 2, 11/24 in
+  seed 1).
+* **Does not replicate:** the pre-onset artefact of strategic/RF (23/24
+  episodes in seed 1, **0/24** in seed 2). It was a seed-specific instability,
+  **not** a structural property of the strategic policy — even though the
+  profile skew that was suspected as its cause is itself systematic.
+* **Therefore:** with two seeds the study **cannot** establish a policy
+  ranking on warning coverage; the ranking moves with the seed. The stable
+  finding is a trade-off: the strategic selector yields the most conservative
+  detectors, the fixed selector the most sensitive, and the difference is of
+  the same order as the seed-to-seed variation. A single-seed ranking must
+  not be reported as a result.
+
+Artefacts: `outputs/reports/<run>/seed_comparison.csv`,
+`figures/zeek/fig09_seed_comparison.png`, `outputs/reports/<run2>/run_inventory.json`,
+`outputs/reports/<run2>/gru_metrics.csv`,
+`outputs/studies/<run2>_zeek_20261115T170436Z/`.
+The number check now covers **102** quoted values across both seeds.
+
 **Verification.** `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests`
-→ **45 passed**. `python -m setup.verify_report_numbers ...` → **79 checks, 0
+→ **45 passed**. `python -m setup.verify_report_numbers ...` → **102 checks, 0
 mismatches, PASS** (`outputs/reports/<run>/report_number_verification.json`).
-`claim_artifact_table.csv` maps 123 reported values to their artefacts.
+`claim_artifact_table.csv` maps 177 reported values to their artefacts.
 
 **Still true and still to be respected.** The traffic is harmless and synthetic:
 no malware, no exploitation, no exfiltration, no zero-day claim, no production
-NIDS performance claim. One seed only. One topology only. The strategic reward
+NIDS performance claim. Two seeds only. One topology only. The strategic reward
 is a **heuristic** scenario-selection reward, not detector feedback and not a
 Nash equilibrium. The `zeek -C` / checksum-offload caveat remains and is
 surfaced in every sensor artefact.

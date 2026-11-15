@@ -294,23 +294,26 @@ Raw window counts at the chosen threshold are in `metrics.csv`
 The headline coverage numbers are **not** sufficient to rank the policies, and
 the strict first-alert measure changes the interpretation completely:
 
-1. **Fixed + Random Forest** is the only configuration that combines high
-   warning coverage (0.958 / 0.833) with a **strict** coverage of 0.917 / 0.833
-   — i.e. its first alert really does arrive after onset and before the
-   milestone. Its price is a very high false-alarm rate: 0.625 and **1.000**
-   of benign episodes alarm (1,612 and 2,579 false alarms per benign hour).
-   That is not a usable detector; it is a sensitive detector.
+1. **Fixed + Random Forest** is the only configuration in seed 1 that combines
+   high warning coverage (0.958) with a **strict** coverage of 0.917 — i.e.
+   its first alert really does arrive after onset and before the milestone.
+   Its price is a very high false-alarm rate: 0.625 of benign episodes alarm
+   (1,612 false alarms per benign hour). That is not a usable detector; it is
+   a sensitive detector.
 2. **Strategic + Random Forest** reaches coverage 1.000 with by far the lowest
    false-alarm rate (0.083, 215 FA/h) — but **23 of 24** incident episodes also
    carry a pre-onset alarm, so its **strict coverage is 0.042**. Its "valid
    early warnings" are, in almost every episode, alarms that began *before the
    anomalous stage started*. Under the strict definition, this configuration
    does **not** demonstrate pre-impact warning.
-   The mechanism is visible in the controller journal: the EXP3 selector chose
-   `destination_shift` in **11 of 24** strategic rounds (fixed 8/8/8, random
-   5/11/8), so the strategic training corpus is skewed towards a
-   destination-diversity signature that is also present in the pre-onset warm-up
-   of the held-out episodes.
+   The candidate mechanism is visible in the controller journal: the EXP3
+   selector chose `destination_shift` in **11 of 24** strategic rounds (fixed
+   8/8/8, random 5/11/8), so the strategic training corpus is skewed towards a
+   destination-diversity signature that is also present in the pre-onset
+   warm-up of the held-out episodes.
+   **Section 6.7 shows that this pre-onset artefact does not reproduce in the
+   independent second seed, so it must be read as a seed-specific instability
+   and not as a structural property of the strategic policy.**
 3. **Isolation Forest never warns.** With the declared budget the best
    admissible threshold is 0.999 and the model produces zero alerts, zero
    coverage and zero false alarms. Its PR-AUC (0.79–0.83) is non-trivial, so
@@ -359,7 +362,58 @@ random/RF drops from 0.833 to 0.667 overall. **The sensor choice materially
 changes the measured performance**, which is exactly why the two sources are
 reported separately and never merged.
 
-### 6.6 Figures
+### 6.6 Independent replication - second collection seed
+
+A second, fully independent collection was made with **seed 20261116** under
+the identical protocol: run `cpu_v3_main_v2_seed2_20261115T165949Z`, 24 + 24
+rounds, 192 episodes, 3,840 gateway events, 107,629 packet records, 7,688 Zeek
+connections, **also `SENSOR_VALIDATED`** with 100 % bidirectional visibility,
+0 ambiguous joins and 192 / 192 episodes covered. The capture pipeline
+reproduces its counts exactly across seeds.
+
+`outputs/reports/<run>/seed_comparison.csv` and
+`figures/zeek/fig09_seed_comparison.png` compare the two seeds configuration
+by configuration.
+
+**Random Forest, Zeek sensor**
+
+| Train policy | Strict coverage seed 1 | seed 2 | FP rate seed 1 | seed 2 | Pre-onset alarms seed 1 | seed 2 |
+|---|---:|---:|---:|---:|---:|---:|
+| fixed | 0.917 | 0.917 | 0.625 | 0.167 | 1 | 0 |
+| random | 0.833 | 0.542 | 1.000 | 0.042 | 0 | 0 |
+| strategic | **0.042** | **0.875** | 0.083 | 0.208 | **23** | **0** |
+
+**GRU, Zeek sensor**
+
+| Train policy | Coverage seed 1 | seed 2 | FP rate seed 1 | seed 2 | Pre-onset alarms (both seeds) |
+|---|---:|---:|---:|---:|---:|
+| fixed | 0.875 | 1.000 | 0.375 | 0.333 | 0 |
+| random | 0.833 | 0.917 | 0.042 | 0.250 | 0 |
+| strategic | 0.500 | 0.750 | **0.000** | **0.042** | 0 |
+
+**What replicates and what does not.**
+
+* **Replicates:** the capture and sensor pipeline (identical connection counts
+  and visibility); the GRU's total absence of pre-onset alarms (0 in all six
+  GRU configurations); the strategic policy's conservatism under the GRU (the
+  lowest false-alarm rate in **both** seeds); the weakness of the Isolation
+  Forest and of the rule baseline on the unseen family; the systematic EXP3
+  profile skew towards `destination_shift` (13 / 24 in seed 2, 11 / 24 in
+  seed 1).
+* **Does not replicate:** the pre-onset artefact of strategic/RF (23 / 24
+  episodes in seed 1, **0 / 24** in seed 2), and therefore the ordering of the
+  policies on warning coverage - in seed 1 the strategic policy looked *worst*
+  on strict coverage, in seed 2 the uniform-random policy is worst. The
+  coverage ranking moves with the seed.
+* **Conclusion after two seeds:** this study **cannot** establish a policy
+  ranking on warning coverage. The stable finding is a trade-off rather than a
+  winner - the strategic selector produces the most conservative detectors
+  (lowest false-alarm rate), the fixed selector the most sensitive ones, and
+  the difference between them is of the same order as the seed-to-seed
+  variation. Reporting a single-seed ranking as a result would be
+  over-interpretation; the two-seed comparison is reported instead.
+
+### 6.7 Figures
 
 All under `outputs/reports/<run>/figures/{zeek,gateway}/`, each with its source
 data saved next to it (`*.data.json`):
@@ -374,6 +428,7 @@ data saved next to it (`*.data.json`):
 | `fig06_lead_time` | per-episode lead time of valid warnings |
 | `fig07_architecture` | implementation and data-provenance diagram (describes code, not measurement) |
 | `fig08_sensor_evidence` | the seven declared sensor checks and their outcome |
+| `fig09_seed_comparison` | seed 1 versus seed 2 for every policy/model configuration |
 
 ---
 
@@ -465,8 +520,13 @@ seen-family → unseen-family collapse of the rule baseline.
 1. **Synthetic, harmless profiles.** Every "incident" is a controlled timing or
    destination pattern. Nothing here demonstrates detection of real malware,
    exploitation or exfiltration. No zero-day claim is made or supported.
-2. **One seed.** All numbers come from a single collection seed (20261115).
-   The study is **exploratory**; seed dependence is unmeasured.
+2. **Two seeds only.** The main results come from seed 20261115; one
+   independent replication (seed 20261116) was collected and evaluated under
+   the identical protocol (§6.6). It shows that the *capture and sensor
+   pipeline* replicates exactly, but that the **coverage ranking of the
+   collection policies does not** - it changes with the seed. The study remains
+   **exploratory**; two seeds cannot establish a ranking, and further seeds
+   would be required for a claim of that kind.
 3. **One topology.** A single two-segment Docker configuration exists, so
    topology generalisation is untestable and is listed as unavailable.
 4. **Checksum caveat.** The raw capture carries invalid TCP checksums from NIC
@@ -511,6 +571,10 @@ seen-family → unseen-family collapse of the rule baseline.
 | Zeek study | `outputs/studies/cpu_v3_main_v2_20261115T164430Z_zeek_20261115T165446Z/` |
 | Gateway study | `outputs/studies/cpu_v3_main_v2_20261115T164430Z_gateway_20261115T165446Z/` |
 | GRU study | `outputs/studies/cpu_v3_main_v2_20261115T164430Z_gru_zeek/` |
+| Seed-2 replication run | `src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/` |
+| Seed-2 sensor audit | `outputs/audits/cpu_v3_main_v2_seed2_20261115T165949Z/sensor_audit.json` |
+| Seed-2 Zeek study | `outputs/studies/cpu_v3_main_v2_seed2_20261115T165949Z_zeek_20261115T170436Z/` |
+| Seed comparison table | `outputs/reports/cpu_v3_main_v2_20261115T164430Z/seed_comparison.csv` |
 | Environment | `outputs/environment/environment_20261115T162353Z.txt` |
 | Machine inventory | `outputs/logs/setup/20261115T162353Z/machine_inventory.log` |
 | Setup logs | `outputs/logs/setup/20261115T162353Z/` |
@@ -534,8 +598,10 @@ python -m setup.verify_report_numbers \
   --gateway-study outputs/studies/cpu_v3_main_v2_20261115T164430Z_gateway_20261115T165446Z \
   --gru-csv outputs/reports/cpu_v3_main_v2_20261115T164430Z/gru_metrics.csv \
   --audit outputs/audits/cpu_v3_main_v2_20261115T164430Z/sensor_audit.json \
-  --inventory outputs/reports/cpu_v3_main_v2_20261115T164430Z/run_inventory.json
-# -> {"checks_performed": 79, "mismatches": [], "status": "PASS"}
+  --inventory outputs/reports/cpu_v3_main_v2_20261115T164430Z/run_inventory.json \
+  --seed2-study outputs/studies/cpu_v3_main_v2_seed2_20261115T165949Z_zeek_20261115T170436Z \
+  --seed2-gru-csv outputs/reports/cpu_v3_main_v2_seed2_20261115T165949Z/gru_metrics.csv
+# -> {"checks_performed": N, "mismatches": [], "status": "PASS"}
 ```
 
 ### 10.2 Reproduce from scratch
@@ -570,6 +636,9 @@ python -m src.code.temporal_gru_sprint --run "$RUN" --output "outputs/studies/${
   family (D4).
 * `cpu_v3_pilot_v2_20261115T164336Z` — schema `staged_v2_2` protocol pilot;
   retained.
-* `cpu_v3_main_v2_20261115T164430Z` — **the reported main run**.
+* `cpu_v3_main_v2_20261115T164430Z` — **the reported main run** (seed 20261115).
+* `cpu_v3_main_v2_seed2_20261115T165949Z` — **independent replication**
+  (seed 20261116), 192 episodes, 3,840 gateway events, 107,629 packets,
+  7,688 Zeek connections, `SENSOR_VALIDATED`; used for §6.6.
 * All earlier `outputs/studies/*`, `outputs/backups/*` and `src/data/raw/runs/*`
   directories are retained unmodified.

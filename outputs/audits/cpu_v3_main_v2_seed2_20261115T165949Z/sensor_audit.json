@@ -1,0 +1,227 @@
+{
+  "checks": {
+    "C1": {
+      "criterion": "complete.json, episodes.jsonl, gateway_subset.jsonl and >=1 PCAP exist",
+      "detail": "all required artefacts present",
+      "id": "C1",
+      "missing": [],
+      "passed": true,
+      "pcap_segments": [
+        "traffic_20261115T165949Z_229039.pcap"
+      ],
+      "required_files": {
+        "complete.json": {
+          "bytes": 153,
+          "path": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/complete.json"
+        },
+        "episodes.jsonl": {
+          "bytes": 119874,
+          "path": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/episodes.jsonl"
+        },
+        "gateway_subset.jsonl": {
+          "bytes": 1167264,
+          "path": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/gateway_subset.jsonl"
+        }
+      },
+      "requirement": "run artefacts present"
+    },
+    "C2": {
+      "criterion": "every PCAP complete with packet records; packet count plausible for episode count",
+      "detail": "segments=1 complete=True packets=107629 required>=768",
+      "episode_count": 192,
+      "id": "C2",
+      "packets": 107629,
+      "passed": true,
+      "required_packets": 768,
+      "requirement": "PCAP structurally valid",
+      "segments": [
+        {
+          "bytes": 13415468,
+          "complete": true,
+          "issue": null,
+          "name": "traffic_20261115T165949Z_229039.pcap",
+          "packets": 107629,
+          "sha256": "2d4faabe077cbdc70b0be235a37b327799ac56f1ca172a52541af2dc413a5f5f"
+        }
+      ]
+    },
+    "C3": {
+      "checksum_ignored_conn_entries": 7688,
+      "checksum_weird_entries": 0,
+      "checksum_weird_names": [],
+      "conn_entries": 7688,
+      "criterion": "zeek returned 0 and emitted conn.log entries",
+      "detail": "mode=strict_checksum_repaired zeek_rc=[0] conn_entries=7688 stderr=",
+      "id": "C3",
+      "passed": true,
+      "requirement": "Zeek exit status zero",
+      "strict_conn_entries": 15376,
+      "zeek_rc": [
+        0
+      ]
+    },
+    "C4": {
+      "criterion": "TCP connections observed on the expected service port",
+      "detail": "tcp_connections=7688 on_port_8080=7688",
+      "expected_port": 8080,
+      "id": "C4",
+      "passed": true,
+      "requirement": "expected service traffic",
+      "service_port_connections": 7688,
+      "tcp_connections": 7688
+    },
+    "C5": {
+      "bidirectional_connections": 7680,
+      "bidirectional_fraction": 1.0,
+      "criterion": "fraction of eligible episode connections with orig_bytes>0 AND resp_bytes>0",
+      "detail": "bidirectional=7680/7680 fraction=1.0000 required>=0.8 (orig>0:7680, resp>0:7680)",
+      "eligible_connections": 7680,
+      "id": "C5",
+      "passed": true,
+      "positive_orig_bytes": 7680,
+      "positive_resp_bytes": 7680,
+      "required_fraction": 0.8,
+      "requirement": "bidirectional byte visibility"
+    },
+    "C6": {
+      "ambiguous_timestamp_matches": 0,
+      "assigned_to_one_episode": 7680,
+      "conn_records": 7688,
+      "criterion": "conn timestamps map to independently recorded episode intervals",
+      "detail": "assigned=7680 ambiguous=0 outside=8 episodes_with_conns=192/192",
+      "episode_count": 192,
+      "episodes_with_connections": 192,
+      "id": "C6",
+      "min_connections_per_episode": 3,
+      "outside_any_episode": 8,
+      "passed": true,
+      "requirement": "episode time alignment",
+      "total_episodes": 192
+    },
+    "C7": {
+      "criterion": "test episodes expose eligible pre-milestone windows",
+      "detail": "test_episodes_with_pre_milestone_windows=48/48 required>=1",
+      "id": "C7",
+      "passed": true,
+      "pre_milestone_windows_total": 7104,
+      "required_test_windows": 1,
+      "requirement": "held-out test coverage",
+      "test_episodes": 48,
+      "test_episodes_with_min_connections": 48,
+      "test_episodes_with_windows": 48
+    }
+  },
+  "checksum_repaired": true,
+  "checksum_validation_ignored": false,
+  "evidence_caveats": [
+    "The raw capture carries invalid TCP checksums because the container veth leaves NIC transmit offloading in place. Strict Zeek therefore discarded every data segment on the raw trace. The primary evidence was produced by a derived copy in which only the IPv4/TCP/UDP checksum fields were recomputed from the captured payload (setup/pcap_checksum_repair.py); the raw pcap is unchanged and its SHA256 is recorded. The repaired trace was re-read by Zeek WITH checksum validation enabled and produced the same connection count as an independent checksum-ignored read of the raw trace."
+  ],
+  "evidence_tag": "SENSOR_VALIDATED",
+  "failures": [],
+  "generated_utc": "2026-11-15T17:04:17Z",
+  "pcaps": [
+    {
+      "bytes": 13415468,
+      "complete": true,
+      "issue": null,
+      "linktype": 276,
+      "packets": 107629,
+      "path": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/traffic_20261115T165949Z_229039.pcap",
+      "payload_bytes": 11693380,
+      "sha256": "2d4faabe077cbdc70b0be235a37b327799ac56f1ca172a52541af2dc413a5f5f",
+      "size_bytes": 13415468,
+      "version": [
+        2,
+        4
+      ]
+    }
+  ],
+  "provenance": {
+    "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+    "python": "3.12.7",
+    "repo_root": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection",
+    "zeek_timeout_note": "zeek invoked per PCAP segment, 900s timeout each",
+    "zeek_version": "/opt/zeek/bin/zeek version 9.0.1"
+  },
+  "raw_dir": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z",
+  "run_id": "cpu_v3_main_v2_seed2_20261115T165949Z",
+  "schema": "staged_sensor_gate_v1",
+  "thresholds": {
+    "expected_service_port": 8080,
+    "min_bidirectional_fraction": 0.8,
+    "min_packets_per_episode": 4,
+    "min_test_windows": 1,
+    "zeek_mode": "auto"
+  },
+  "zeek": {
+    "checksum_ignored": [
+      {
+        "checksum_weird_entries": 0,
+        "checksum_weird_names": [],
+        "command": "/opt/zeek/bin/zeek -C -r /home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/traffic_20261115T165949Z_229039.pcap LogAscii::use_json=T",
+        "conn_entries": 7688,
+        "finished_utc": "2026-11-15T17:04:22Z",
+        "ignore_checksums": true,
+        "pcap": "traffic_20261115T165949Z_229039.pcap",
+        "returncode": 0,
+        "started_utc": "2026-11-15T17:04:19Z",
+        "stderr_tail": "",
+        "weird_entries": 0
+      }
+    ],
+    "checksum_repair": [
+      {
+        "captured_bytes": 11693380,
+        "checksum_bytes_changed": 214409,
+        "frames_with_changed_checksums": 107628,
+        "linktype": 276,
+        "note": "Only IPv4 header / TCP / UDP checksum fields were rewritten; all other bytes copied verbatim.",
+        "output": "outputs/audits/cpu_v3_main_v2_seed2_20261115T165949Z/repaired/traffic_20261115T165949Z_229039_checksum_repaired.pcap",
+        "output_sha256": "51772a5560b10d41647170f8d2ddd22c645780f9ad9a57f0890021e7a9c21d0d",
+        "packets": 107629,
+        "source": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/traffic_20261115T165949Z_229039.pcap",
+        "source_sha256": "2d4faabe077cbdc70b0be235a37b327799ac56f1ca172a52541af2dc413a5f5f",
+        "tool": "setup/pcap_checksum_repair.py"
+      }
+    ],
+    "primary_mode": "strict_checksum_repaired",
+    "repair_consistency": {
+      "checksum_ignored_conn_entries": 7688,
+      "counts_match": true,
+      "criterion": "the repaired trace and the independent checksum-ignored run must yield the same connection count",
+      "repaired_strict_conn_entries": 7688
+    },
+    "repaired_strict": [
+      {
+        "checksum_weird_entries": 0,
+        "checksum_weird_names": [],
+        "command": "/opt/zeek/bin/zeek -r /home/ibrahim/Downloads/adaptive-network-intrusion-detection/outputs/audits/cpu_v3_main_v2_seed2_20261115T165949Z/repaired/traffic_20261115T165949Z_229039_checksum_repaired.pcap LogAscii::use_json=T",
+        "conn_entries": 7688,
+        "finished_utc": "2026-11-15T17:04:28Z",
+        "ignore_checksums": false,
+        "pcap": "traffic_20261115T165949Z_229039_checksum_repaired.pcap",
+        "returncode": 0,
+        "started_utc": "2026-11-15T17:04:25Z",
+        "stderr_tail": "",
+        "weird_entries": 0
+      }
+    ],
+    "strict": [
+      {
+        "checksum_weird_entries": 2,
+        "checksum_weird_names": [
+          "bad_TCP_checksum"
+        ],
+        "command": "/opt/zeek/bin/zeek -r /home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/traffic_20261115T165949Z_229039.pcap LogAscii::use_json=T",
+        "conn_entries": 15376,
+        "finished_utc": "2026-11-15T17:04:19Z",
+        "ignore_checksums": false,
+        "pcap": "traffic_20261115T165949Z_229039.pcap",
+        "returncode": 0,
+        "started_utc": "2026-11-15T17:04:17Z",
+        "stderr_tail": "1794762006.287779 warning in /opt/zeek/share/zeek/base/misc/find-checksum-offloading.zeek, line 54: Your trace file likely has invalid TCP checksums, most likely from NIC checksum offloading.  By default, packets with invalid checksums are discarded by Zeek unless using the -C command-line option or toggling the 'ignore_checksums' variable.  Alternatively, disable checksum offloading by the network adapter to ensure Zeek analyzes the actual checksums that are transmitted.\n1794762243.266096 warning in /opt/zeek/share/zeek/base/misc/find-filtered-trace.zeek, line 69: The analyzed trace file was determined to contain only TCP control packets, which may indicate it's been pre-filtered.  By default, Zeek reports the missing segments for this type of trace, but the 'detect_filtered_trace' option may be toggled if that's not desired.\n",
+        "weird_entries": 7242
+      }
+    ]
+  }
+}

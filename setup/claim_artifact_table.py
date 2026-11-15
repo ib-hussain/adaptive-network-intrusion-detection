@@ -14,7 +14,8 @@ from pathlib import Path
 
 
 def build(report_dir: Path, run_id: str, zeek_study: Path, gateway_study: Path,
-          audit: Path, inventory: Path, gru_csv: Path, literature: Path) -> list[dict]:
+          audit: Path, inventory: Path, gru_csv: Path, literature: Path,
+          seed_comparison: Path | None = None) -> list[dict]:
     z = json.loads((zeek_study / "results.json").read_text(encoding="utf-8"))
     g = json.loads((gateway_study / "results.json").read_text(encoding="utf-8"))
     a = json.loads(audit.read_text(encoding="utf-8"))
@@ -88,6 +89,21 @@ def build(report_dir: Path, run_id: str, zeek_study: Path, gateway_study: Path,
             f"train_policy={policy},model={model},ablation={ablation},false_positive_episode_rate")
     add("literature", "Unique references compared", sum(1 for _ in csv.DictReader(literature.open())),
         str(literature), "rows")
+    if seed_comparison and Path(seed_comparison).is_file():
+        for row in csv.DictReader(Path(seed_comparison).open(encoding="utf-8")):
+            key = f"{row['train_policy']}/{row['model']}"
+            add("seed_replication", f"{key} strict coverage seed 1", row["a_strict_first_alert_coverage"],
+                str(seed_comparison), f"train_policy={row['train_policy']},model={row['model']},a_strict_first_alert_coverage")
+            add("seed_replication", f"{key} strict coverage seed 2", row["b_strict_first_alert_coverage"],
+                str(seed_comparison), f"train_policy={row['train_policy']},model={row['model']},b_strict_first_alert_coverage")
+            add("seed_replication", f"{key} false-positive rate seed 1", row["a_false_positive_episode_rate"],
+                str(seed_comparison), f"train_policy={row['train_policy']},model={row['model']},a_false_positive_episode_rate")
+            add("seed_replication", f"{key} false-positive rate seed 2", row["b_false_positive_episode_rate"],
+                str(seed_comparison), f"train_policy={row['train_policy']},model={row['model']},b_false_positive_episode_rate")
+            add("seed_replication", f"{key} pre-onset alarms seed 1", row["a_pre_onset_warning_episodes"],
+                str(seed_comparison), f"train_policy={row['train_policy']},model={row['model']},a_pre_onset_warning_episodes")
+            add("seed_replication", f"{key} pre-onset alarms seed 2", row["b_pre_onset_warning_episodes"],
+                str(seed_comparison), f"train_policy={row['train_policy']},model={row['model']},b_pre_onset_warning_episodes")
     return rows
 
 
@@ -101,9 +117,10 @@ def main():
     parser.add_argument("--inventory", required=True, type=Path)
     parser.add_argument("--gru-csv", required=True, type=Path)
     parser.add_argument("--literature", required=True, type=Path)
+    parser.add_argument("--seed-comparison", type=Path, default=None)
     args = parser.parse_args()
     rows = build(args.report_dir, args.run_id, args.zeek_study, args.gateway_study,
-                 args.audit, args.inventory, args.gru_csv, args.literature)
+                 args.audit, args.inventory, args.gru_csv, args.literature, args.seed_comparison)
     out = args.report_dir / "claim_artifact_table.csv"
     if out.exists():
         raise FileExistsError(f"Refusing to overwrite: {out}")
