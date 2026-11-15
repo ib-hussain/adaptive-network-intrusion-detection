@@ -7,16 +7,67 @@ from sklearn.pipeline import make_pipeline
 from .features import FEATURE_COLUMNS
 
 
-def arrays(windows):
-    x = np.array([[float(r[col]) for col in FEATURE_COLUMNS] for r in windows], dtype=np.float64)
+class RuleRateBaseline:
+    """Transparent rule/rate baseline referenced to the benign training distribution.
+
+    This is deliberately not a learned detector. The score is a monotone function
+    of ONE causal traffic feature, calibrated only on benign windows of the
+    training episodes, so the alert rule can be read directly.
+    """
+
+    def __init__(self, feature, direction, reference_low, reference_high, scale, fit_reference=None):
+        self.feature = feature
+        self.direction = direction
+        self.reference_low = float(reference_low)
+        self.reference_high = float(reference_high)
+        self.scale = max(float(scale), 1e-9)
+        self.fit_reference = fit_reference or {}
+
+    def score(self, windows):
+        values = np.array([float(w[self.feature]) for w in windows], dtype=np.float64)
+        if not np.isfinite(values).all():
+            raise ValueError("Non-finite rule feature")
+        if self.direction == "above":
+            excess = (values - self.reference_high) / self.scale
+        else:
+            excess = (self.reference_low - values) / self.scale
+        return 1.0 / (1.0 + np.exp(-np.clip(excess, -50, 50)))
+
+
+def arrays(windows, feature_columns=None):
+    columns = list(feature_columns) if feature_columns else list(FEATURE_COLUMNS)
+    x = np.array([[float(r[col]) for col in columns] for r in windows], dtype=np.float64)
     y = np.array([int(r["label"]) for r in windows], dtype=np.int64)
-    if x.ndim != 2 or x.shape[1] != len(FEATURE_COLUMNS) or not np.isfinite(x).all():
+    if x.ndim != 2 or x.shape[1] != len(columns) or not np.isfinite(x).all():
         raise ValueError("Invalid model features")
     return x, y
 
 
-def fit_baseline(windows, kind="rf", seed=0, n_estimators=150, max_depth=None, min_samples_leaf=2, max_features=1.0):
-    x, y = arrays(windows)
+def fit_baseline(windows, kind="rf", seed=0, n_estimators=150, max_depth=None, min_samples_leaf=2,
+                 max_features=1.0, rule_feature="rate_per_s", rule_direction="above",
+                 feature_columns=None):
+    if kind == "rule":
+        available = list(feature_columns) if feature_columns else list(FEATURE_COLUMNS)
+        if rule_feature not in FEATURE_COLUMNS:
+            raise ValueError(f"Unknown rule feature: {rule_feature}")
+        if rule_feature not in available:
+            # A rule baseline must never read a feature outside its declared set,
+            # otherwise a feature ablation silently does not apply to it.
+            raise ValueError(f"Rule feature {rule_feature} is not in the declared feature set")
+        if rule_direction not in ("above", "below"):
+            raise ValueError("rule_direction must be 'above' or 'below'")
+        benign = [w for w in windows if int(w["label"]) == 0]
+        if len(benign) < 4:
+            raise ValueError("Insufficient benign training windows for the rule baseline")
+        values = np.array([float(w[rule_feature]) for w in benign], dtype=np.float64)
+        if not np.isfinite(values).all():
+            raise ValueError("Non-finite rule feature")
+        low = float(np.quantile(values, .05))
+        high = float(np.quantile(values, .95))
+        return RuleRateBaseline(rule_feature, rule_direction, low, high, max(high - low, 1e-9),
+                                fit_reference={"n_benign_train_windows": len(benign),
+                                               "quantiles": {"q05": low, "q95": high}})
+    x, y = arrays(windows, feature_columns)
     if len(x) < 6:
         raise ValueError("Too few training windows")
     if kind == "rf":
@@ -37,12 +88,14 @@ def fit_baseline(windows, kind="rf", seed=0, n_estimators=150, max_depth=None, m
     raise ValueError("Unknown model kind")
 
 
-def predict_scores(model, windows, kind="rf"):
+def predict_scores(model, windows, kind="rf", feature_columns=None):
     if not windows:
         return []
-    x, _ = arrays(windows)
+    x, _ = arrays(windows, feature_columns)
     if kind == "rf":
         result = model.predict_proba(x)[:, list(model.classes_).index(1)]
+    elif kind == "rule":
+        result = model.score(windows)
     else:
         raw = model.decision_function(x)
         # Score is monotone relative to anomaly score; NOT calibrated probability.

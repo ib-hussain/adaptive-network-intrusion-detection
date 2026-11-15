@@ -199,3 +199,114 @@ For every final run, preserve:
 - The prior documentation was identified as stale because it said the V3 capture hotfix had not been verified. This memory corrects that statement while preserving the V3 pilot's limited/conditional status.
 - The project archive in this workspace is a transferred source tree, not a Git checkout. No fresh local collection, tests, model training or empirical claims were made while preparing this handover.
 - The next operator must execute `INSTRUCTIONS.md` from the actual local repository and append outcomes here or in the designated progress log. Do not overwrite historical entries.
+
+### 15 November 2026 — CPU Phase 3 executed on the local machine (VERIFIED)
+
+**Status: a complete, sensor-validated Phase 3 study now exists on this machine.**
+Primary run `cpu_v3_main_v2_20261115T164430Z`, evidence tag **`SENSOR_VALIDATED`**.
+Report: `outputs/reports/cpu_v3_main_v2_20261115T164430Z/PHASE3_REPORT.md`.
+
+**What was collected (all fresh, this machine, seed 20261115).**
+
+| Run | Schema | Episodes | Gateway events | PCAP | Packets | Tag |
+|---|---|---:|---:|---:|---:|---|
+| `cpu_v3_pilot_20261115T162845Z` | v2_1 | 24 | 480 | — | — | failed (restricted writer) |
+| `cpu_v3_pilot_20261115T163008Z` | v2_1 | 24 | 480 | — | — | failed (gateway could not write) |
+| `cpu_v3_pilot_20261115T163257Z` | v2_1 | 24 | 480 | 1.70 MB | 13,551 | `SENSOR_VALIDATED` |
+| `cpu_v3_main_20261115T163638Z` | v2_1 | 64 | 1,280 | 4.48 MB | 35,951 | `SENSOR_VALIDATED` (superseded: test set held only the unseen family) |
+| `cpu_v3_pilot_v2_20261115T164336Z` | v2_2 | 24 | 480 | 1.70 MB | 13,545 | `SENSOR_VALIDATED` |
+| **`cpu_v3_main_v2_20261115T164430Z`** | **v2_2** | **192** | **3,840** | **13.42 MB** | **107,628** | **`SENSOR_VALIDATED`** |
+
+**Three real faults were found and fixed (each with a dated backup and a regression test).**
+
+1. *Executable bit lost in transfer* — every `setup/*.sh` was mode 0644, so the
+   documented `./setup/staged_collect_v3.sh` failed with "Permission denied" and
+   `staged_train_guard_v3.sh` could not `exec` its successor. Modes restored to
+   0755; evidence in `outputs/backups/setup_script_modes_20261115T162353Z/`.
+2. *Restricted sidecar could not create the PCAP* — the capture container runs
+   `cap_drop: ALL` (no `DAC_OVERRIDE`) and the bind-mounted run directory is
+   0755 owned by the host user, so tcpdump failed with
+   `/captures/....pcap: Permission denied`. Fixed by **pre-creating the capture
+   file mode 0666** before `docker run`; container capabilities were NOT
+   widened. Regression test added to `tests/test_v3_launcher_contract.py`.
+3. *Lab services could not write their data* — the same `cap_drop: ALL` root
+   cause silently discarded **every gateway event**. Fixed by running the
+   services as the invoking host user (`LAB_UID:LAB_GID` in `compose.yaml`),
+   which removes the need for any capability rather than adding one. This fault
+   was invisible in the logs because the gateway wrote its event *after* sending
+   the HTTP response.
+
+**The `-Z root` hotfix is confirmed working.** The historical blocker
+(`Couldn't change to 'tcpdump' uid=100 gid=101`) does not occur on this host.
+
+**New artefacts (this session).**
+
+* `setup/staged_sensor_gate.py` — strict 7-check gate writing `sensor_audit.json`
+  with an evidence tag; fail-closed; never synthesises flows or bytes.
+* `setup/pcap_checksum_repair.py` — derives a copy with recomputed checksums and
+  *proves* that only checksum bytes changed. The container veth leaves NIC
+  transmit offloading on, so the raw capture has invalid TCP checksums and
+  strict Zeek discards all payload (`orig_pkts=0`). The repaired copy is re-read
+  by Zeek **with checksum validation enabled**; it yields the same connection
+  count as an independent `-C` read (7,688 = 7,688) and no `weird.log`.
+* `setup/record_environment.py`, `setup/run_inventory.py`,
+  `setup/literature_comparison.py` (15 unique references extracted from the held
+  PDFs), `setup/claim_artifact_table.py`, `setup/verify_report_numbers.py`.
+* `src/code/study.py` — leakage-safe preprocessing bundle, strata, baselines,
+  ablations, `metrics.csv`; `src/code/report_figures.py` — 8 figures generated
+  from saved metrics with the source data stored beside each.
+* `src/code/models.py` — `RuleRateBaseline` (transparent rate rule).
+* `src/code/early_warning.py` — added `strict_first_alert_coverage`: the
+  episode's **first** alert must lie in `[onset, milestone)`. This metric
+  changed the headline conclusion and is now reported everywhere.
+
+**Protocol change (documented, versioned).** Scenario schema `staged_v2_2`
+stratifies the frozen test set 50/50 between the held-out family (`slow_ramp`)
+and the three development families. Under `staged_v2_1` the test set contained
+*only* the held-out family, so every policy scored ~0 and the policy comparison
+was uninformative. The old runs are preserved and were **not** retro-fitted.
+
+**Headline verified findings (Zeek sensor, 48 frozen test episodes).**
+
+| Train policy | Model | Coverage | Strict coverage | Coverage-adj. lead (s) | FP-episode rate | Pre-onset alarms |
+|---|---|---:|---:|---:|---:|---:|
+| fixed | RF | 0.958 | 0.917 | 0.664 | 0.625 | 1 |
+| random | RF | 0.833 | 0.833 | 0.567 | 1.000 | 0 |
+| strategic | RF | 1.000 | **0.042** | 0.627 | **0.083** | **23** |
+
+* No policy dominates. `fixed`/`random` give genuine on-set warnings but a very
+  high false-alarm rate; `strategic` is the quietest detector but its first
+  alert precedes onset in 23 of 24 incident episodes, so under the strict
+  definition it does **not** demonstrate pre-impact warning.
+* Mechanism visible in the controller journal: the EXP3 selector chose
+  `destination_shift` in 11/24 strategic rounds (fixed 8/8/8, random 5/11/8),
+  skewing the strategic training corpus towards a signature that is also present
+  in the pre-onset warm-up.
+* The Isolation Forest **never warns** at any admissible threshold (coverage 0,
+  FPR 0) although its PR-AUC is 0.79–0.83 — a genuine negative result.
+* The rule/rate baseline reaches only 0.333 coverage and **0.000** on the
+  unseen family.
+* GRU (CPU, 12 epochs, 10.5 s): `random` is the best balance (coverage 0.833,
+  FPR 0.042, no pre-onset alarms); the GRU never fires before onset.
+* Source dependence is real: on the gateway sensor strategic/RF falls to 0.250
+  coverage on the unseen family.
+
+**Ablations actually run:** scenario policy; temporal causal features (removing
+`rate_per_s`/`gap_*`/`large_flow_fraction` collapses the rule baseline to 0.000
+coverage while the RF degrades gracefully); warning rule (persistence 2 cuts
+coverage and false alarms together, and leaves strict coverage unchanged);
+observation source (Zeek vs gateway, never merged); unseen scenario family.
+**Unavailable and explicitly listed:** graph relations (no graph model exists —
+`unique_links` is not a GNN) and topology generalisation (one configuration only).
+
+**Verification.** `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests`
+→ **45 passed**. `python -m setup.verify_report_numbers ...` → **79 checks, 0
+mismatches, PASS** (`outputs/reports/<run>/report_number_verification.json`).
+`claim_artifact_table.csv` maps 123 reported values to their artefacts.
+
+**Still true and still to be respected.** The traffic is harmless and synthetic:
+no malware, no exploitation, no exfiltration, no zero-day claim, no production
+NIDS performance claim. One seed only. One topology only. The strategic reward
+is a **heuristic** scenario-selection reward, not detector feedback and not a
+Nash equilibrium. The `zeek -C` / checksum-offload caveat remains and is
+surfaced in every sensor artefact.

@@ -56,8 +56,9 @@ else
 fi
 "$PY" - "$RAW/scenario_config.json" "$ROUNDS" "$TEST_ROUNDS" "$SEED" <<'PY_CONFIG'
 import json,sys
+from lab.staged_generate import SCHEMA_VERSION
 c=json.load(open(sys.argv[1],encoding='utf-8'))
-want=('staged_v2_1', *(int(x) for x in sys.argv[2:]))
+want=(SCHEMA_VERSION, *(int(x) for x in sys.argv[2:]))
 actual=(c['schema'],c['rounds'],c['test_rounds'],c['seed'])
 if actual != want:
     raise SystemExit(f'STOP: run settings differ: saved {actual}, requested {want}')

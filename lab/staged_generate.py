@@ -26,11 +26,17 @@ TRAIN_PROFILES = ("rapid_repeat", "destination_shift", "jittered_burst")
 HELD_OUT_PROFILE = "slow_ramp"
 BENIGN_VARIANTS = ("steady", "maintenance_burst", "service_fanout", "approved_bulk")
 DEFENCES = ("rate", "spread")
+# The frozen test set is stratified so that the policy comparison (fixed vs
+# random vs strategic training data on ONE frozen test set) is measurable, while
+# the held-out scenario family is still measured separately as the behavioural
+# novelty stratum. Test round j uses the held-out family when j % 4 == 0 and
+# otherwise one of the three development profiles, deterministically.
+TEST_PROFILE_RULE = "j % 2 == 0 -> held_out_profile; else TRAIN_PROFILES[(j // 2) % 3]"
 REQUESTS = 20
 ONSET_INDEX = 5
 ESCALATION_INDEX = 12
 MILESTONE_INDEX = 19
-SCHEMA_VERSION = "staged_v2_1"
+SCHEMA_VERSION = "staged_v2_2"
 
 
 def atomic_json(path: Path, value) -> None:
@@ -61,6 +67,13 @@ def atomic_jsonl(path: Path, records) -> None:
     finally:
         if tmp.exists():
             tmp.unlink()
+
+
+def profile_for_test_round(round_index: int) -> str:
+    """Deterministic stratified profile for a `test` policy round."""
+    if round_index % 2 == 0:
+        return HELD_OUT_PROFILE
+    return TRAIN_PROFILES[(round_index // 2) % len(TRAIN_PROFILES)]
 
 
 def episode_schedule(incident: bool, profile: str, benign_variant: str, seed: int, index: int):
@@ -198,6 +211,7 @@ def run(root, gateway, rounds, test_rounds, seed, delay_scale=1., resume=False, 
     config = dict(schema=SCHEMA_VERSION, rounds=rounds, test_rounds=test_rounds,
                   seed=seed, requests=REQUESTS, train_profiles=list(TRAIN_PROFILES),
                   held_out_profile=HELD_OUT_PROFILE, delay_scale=delay_scale,
+                  test_profile_rule=TEST_PROFILE_RULE,
                   topology="docker_two_internal_segments_two_services")
     conf_path = root / "scenario_config.json"
     if resume:
@@ -221,7 +235,7 @@ def run(root, gateway, rounds, test_rounds, seed, delay_scale=1., resume=False, 
             profile = (
                 TRAIN_PROFILES[j % len(TRAIN_PROFILES)] if policy == "fixed" else
                 random.Random(seed + j * 719 + 1).choice(TRAIN_PROFILES) if policy == "random" else
-                HELD_OUT_PROFILE if policy == "test" else attacker.choose())
+                profile_for_test_round(j) if policy == "test" else attacker.choose())
             defence = defender.choose() if policy == "strategic" else "rate"
             dest = _bundle_path(root, policy, j)
             if dest.is_file():

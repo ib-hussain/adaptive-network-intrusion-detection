@@ -17,6 +17,8 @@ from torch.nn.utils.rnn import pad_sequence,pack_padded_sequence
 from src.code.ingest import load_manifest,load_events
 from src.code.features import FEATURE_COLUMNS, make_windows
 from src.code.pipeline import split_episode_ids,choose_validation_threshold,episode_detection_metrics
+import numpy as _np
+THRESHOLD_CANDIDATES=[float(x) for x in _np.linspace(.05,.95,19)]+[.96,.97,.98,.99,.995,.999]
 from src.code.early_warning import early_warning_metrics
 
 
@@ -73,12 +75,13 @@ def _atomic_torch_save(path,record):
     torch.save(record,temp);temp.replace(path)
 
 
-def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed,causal_labels=False):
+def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed,causal_labels=False,
+                 val_fraction=.33,n_events=4):
     out_dir.mkdir(parents=True,exist_ok=True)
     final=out_dir/'complete.json'; ckpt=out_dir/'latest.pt'
     if final.exists():
         print(policy,': already complete; not overwriting',flush=True);return
-    tr_ids,va_ids=split_episode_ids(manifest,policy,seed)
+    tr_ids,va_ids=split_episode_ids(manifest,policy,seed,val_fraction)
     test_ids={eid for eid,v in manifest.items() if v['policy']=='test'}
     train=[r for r in windows if r['episode_id'] in tr_ids]
     valid=[r for r in windows if r['episode_id'] in va_ids]
@@ -127,7 +130,7 @@ def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed,
     if first_epoch>epochs and not ckpt.exists():raise ValueError('No checkpoint to evaluate')
     val_pred=inference(model,va,device)
     val_man={eid:manifest[eid] for eid in va_ids}
-    threshold=choose_validation_threshold(val_pred,val_man)
+    threshold=choose_validation_threshold(val_pred,val_man,candidates=THRESHOLD_CANDIDATES)
     preds=inference(model,te,device)
     test_man={eid:manifest[eid] for eid in test_ids}
     result={'policy':policy,'seed':seed,'causal_labels':causal_labels,'epochs':epochs,'device':str(device),
@@ -147,20 +150,33 @@ def train_policy(policy,manifest,windows,all_windows,out_dir,device,epochs,seed,
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--run',required=True);p.add_argument('--output',type=Path,required=True)
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--run',required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--epochs',type=int,default=60);p.add_argument('--device',choices=['auto','cuda','cpu'],default='auto')
-    p.add_argument('--seed',type=int,default=20261112);p.add_argument('--causal-labels',action='store_true');args=p.parse_args()
+    p.add_argument('--seed',type=int,default=20261112);p.add_argument('--causal-labels',action='store_true')
+    p.add_argument('--source',choices=['gateway','zeek'],default='gateway')
+    p.add_argument('--zeek-conn',type=Path,default=None)
+    p.add_argument('--n-events',type=int,default=None)
+    p.add_argument('--val-fraction',type=float,default=.33);args=p.parse_args()
     if args.epochs<1 or args.epochs>500:p.error('epochs 1..500')
     torch.set_num_threads(2)
     device=torch.device('cuda' if args.device=='auto' and torch.cuda.is_available() else ('cpu' if args.device=='auto' else args.device))
     if device.type=='cuda' and not torch.cuda.is_available():raise RuntimeError('CUDA requested but not available')
     raw=Path('src/data/raw/runs')/args.run
     manifest=load_manifest(raw/'episodes.jsonl')
-    observations=load_events(raw/'gateway_subset.jsonl',manifest,source='gateway')
-    train_windows=make_windows(observations,manifest,n_events=4,min_events=3,before_milestone_only=True,causal_stage_labels=args.causal_labels)
-    all_windows=make_windows(observations,manifest,n_events=4,min_events=3,before_milestone_only=False,causal_stage_labels=args.causal_labels)
-    print('GPU temporal baseline:',device, 'episodes',len(manifest),'training windows',len(train_windows),flush=True)
+    if args.source=='gateway':
+        events_path=raw/'gateway_subset.jsonl'
+    elif args.zeek_conn is not None:
+        events_path=args.zeek_conn
+    else:
+        p.error('--zeek-conn is required with --source zeek')
+    observations=load_events(events_path,manifest,source=args.source)
+    n_events=args.n_events if args.n_events else (8 if args.source=='zeek' else 4)
+    train_windows=make_windows(observations,manifest,n_events=n_events,min_events=n_events,before_milestone_only=True,causal_stage_labels=args.causal_labels)
+    all_windows=make_windows(observations,manifest,n_events=n_events,min_events=n_events,before_milestone_only=False,causal_stage_labels=args.causal_labels)
+    print('temporal baseline:',device,'source',args.source,'n_events',n_events,'episodes',len(manifest),'training windows',len(train_windows),flush=True)
     for policy in ('fixed','random','strategic'):
-        train_policy(policy,manifest,train_windows,all_windows,args.output/policy,device,args.epochs,args.seed,args.causal_labels)
+        train_policy(policy,manifest,train_windows,all_windows,args.output/policy,device,args.epochs,args.seed,
+                     args.causal_labels,args.val_fraction,n_events)
     print('GRU_FINISHED')
 if __name__=='__main__':main()

@@ -23,6 +23,7 @@ def early_warning_metrics(predictions, manifest, threshold=0.5, persistence=1):
     benign_seconds = 0.0
     incident_count = 0
     detected_incidents = 0
+    strict_first_alert_episodes = 0
     late_incidents = 0
     pre_onset_warning_episodes = 0
     for eid, ep in manifest.items():
@@ -32,6 +33,7 @@ def early_warning_metrics(predictions, manifest, threshold=0.5, persistence=1):
         if not start <= onset <= end:
             raise ValueError("Invalid onset timestamp")
         first_valid_alert = None
+        first_alert_any = None
         pre_onset_alarm = False
         streak = 0
         # We require non-decreasing observation time and do not count a post-milestone alert as early.
@@ -41,6 +43,8 @@ def early_warning_metrics(predictions, manifest, threshold=0.5, persistence=1):
                 raise ValueError("Prediction uses data outside its episode")
             # Pre-onset alarms on an incident are NOT valid early warnings.
             # Do not let a streak begun before onset meet persistence afterwards.
+            if first_alert_any is None and float(r["score"]) >= threshold:
+                first_alert_any = timestamp
             if ep["condition"] == "incident" and timestamp < onset:
                 pre_onset_alarm = pre_onset_alarm or float(r["score"]) >= threshold
                 streak = 0
@@ -58,6 +62,11 @@ def early_warning_metrics(predictions, manifest, threshold=0.5, persistence=1):
             incident_count += 1
             pre_onset_warning_episodes += int(pre_onset_alarm)
             impact = float(ep["milestone_ts"])
+            # Strict variant: the episode's FIRST alert of any kind must already lie
+            # inside [onset, milestone). A detector that fires before the anomalous
+            # stage begins has not demonstrated pre-impact warning.
+            if first_alert_any is not None and onset <= first_alert_any < impact:
+                strict_first_alert_episodes += 1
             if not onset < impact <= end:
                 raise ValueError("Invalid incident milestone ordering")
             if first_valid_alert is not None and first_valid_alert < impact:
@@ -72,7 +81,8 @@ def early_warning_metrics(predictions, manifest, threshold=0.5, persistence=1):
             else:
                 lead = None
                 outcome = "missed"
-            details.append({"episode_id": eid, "condition": "incident", "outcome": outcome, "lead_s": lead})
+            details.append({"episode_id": eid, "condition": "incident", "outcome": outcome, "lead_s": lead,
+                            "first_alert_ts": first_alert_any, "pre_onset_alarm": pre_onset_alarm})
     return {
         "n_incidents": incident_count, "n_benign": benign_count,
         "pre_milestone_coverage": detected_incidents / incident_count if incident_count else None,
@@ -82,6 +92,8 @@ def early_warning_metrics(predictions, manifest, threshold=0.5, persistence=1):
         "false_positive_episode_rate": false_episodes / benign_count if benign_count else None,
         "false_alarms_per_benign_hour": false_episodes / (benign_seconds / 3600) if benign_seconds > 0 else None,
         "pre_onset_warning_episodes": pre_onset_warning_episodes, "pre_onset_warning_rate": pre_onset_warning_episodes / incident_count if incident_count else None,
+        "strict_first_alert_episodes": strict_first_alert_episodes,
+        "strict_first_alert_coverage": strict_first_alert_episodes / incident_count if incident_count else None,
         "late_incidents": late_incidents, "missed_incidents": incident_count - detected_incidents - late_incidents,
         "episode_results": details,
     }

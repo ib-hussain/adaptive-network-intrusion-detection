@@ -7,7 +7,7 @@ import threading
 import time
 import pytest
 
-from lab.staged_generate import run, REQUESTS, HELD_OUT_PROFILE
+from lab.staged_generate import run, REQUESTS, profile_for_test_round, HELD_OUT_PROFILE
 from src.code.early_warning import early_warning_metrics
 from src.code.features import make_windows
 from src.code.ingest import load_manifest, load_events
@@ -56,7 +56,18 @@ def test_generation_resume_and_independent_onset(tmp_path):
         assert run(root, url, 3, 3, 8415, .01, resume=True)['episodes'] == 24
         manifest = load_manifest(root / 'episodes.jsonl')
         assert len(manifest) == 24
-        assert {e['profile'] for e in manifest.values() if e['policy'] == 'test' and e['condition']=='incident'} == {HELD_OUT_PROFILE}
+        # Scenario schema v2_2: the frozen test set is stratified so that the
+        # policy comparison is measurable, while the held-out family remains a
+        # separate, measurable novelty stratum.
+        test_profiles = {e['profile'] for e in manifest.values()
+                         if e['policy'] == 'test' and e['condition'] == 'incident'}
+        assert HELD_OUT_PROFILE in test_profiles
+        assert len(test_profiles) > 1
+        assert test_profiles == {profile_for_test_round(j) for j in range(3)}
+        for j in range(3):
+            round_episodes = [e for e in manifest.values()
+                              if e['policy'] == 'test' and e['episode_id'].startswith(f'v2-test-{j}-')]
+            assert {e['profile'] for e in round_episodes if e['condition'] == 'incident'} == {profile_for_test_round(j)}
         subset = tmp_path / 'subset.jsonl'
         info = extract(root / 'episodes.jsonl', log, subset)
         assert info['events'] == 24 * REQUESTS

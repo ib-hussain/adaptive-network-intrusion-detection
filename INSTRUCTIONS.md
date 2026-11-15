@@ -337,3 +337,40 @@ One exact next command if anything remains
 ```
 
 If a long job must be stopped, close the named capture, let the collector record status, preserve logs/checkpoints, and provide a tested resume command. Never call an unobserved job successful.
+
+---
+
+## 17. Execution record — 15 November 2026 (append-only)
+
+This queue was executed on the CPU-only machine. The active run is
+**`cpu_v3_main_v2_20261115T164430Z`**, evidence tag **`SENSOR_VALIDATED`**.
+
+| Stage | Outcome | Artefact |
+|---|---|---|
+| A machine/repo inventory | done | `outputs/logs/setup/20261115T162353Z/machine_inventory.log` |
+| B CPU virtualenv + environment record | done | `.venv/` (torch 2.7.1+cpu, cuda False); `outputs/environment/environment_20261115T162353Z.txt` |
+| C source audit, `bash -n`, `compileall`, focused pytest | done | 45 tests pass; `outputs/logs/setup/20261115T162353Z/stage_c_syntax_tests.log` |
+| C strict sensor gate + checksum repair (new) | done | `setup/staged_sensor_gate.py`, `setup/pcap_checksum_repair.py`, 13 new tests |
+| D Compose preflight, both networks internal | done | `outputs/logs/setup/20261115T162353Z/stage_d_compose_preflight.log` |
+| E fresh V3 pilot + strict validation | done | `cpu_v3_pilot_v2_20261115T164336Z` |
+| F main dataset (24 + 24 rounds) | done | `cpu_v3_main_v2_20261115T164430Z` (192 episodes, 3,840 events, 107,628 packets) |
+| F run inventory | done | `outputs/reports/<run>/run_inventory.json` |
+| G leakage-safe preprocessing, splits, leakage audit | done | `outputs/studies/<run>_zeek_*/dataset/` (9/9 leakage checks pass) |
+| H rule / Isolation Forest / Random Forest baselines | done | `outputs/studies/<run>_zeek_*/metrics.csv` |
+| H2 compact CPU GRU (optional) | done | `outputs/studies/<run>_gru_zeek/`, `outputs/reports/<run>/gru_metrics.csv` |
+| I policy comparison + feasible ablations | done | `outputs/studies/<run>_zeek_*/ablations.csv` |
+| J figures from saved metrics | done | `outputs/reports/<run>/figures/{zeek,gateway}/` (8 figures + source data each) |
+| K report, claim-to-artifact table, limitations, reproducibility | done | `outputs/reports/<run>/PHASE3_REPORT.md`, `claim_artifact_table.csv` |
+| Reproducibility verification | done | `python -m setup.verify_report_numbers` → 79 checks, 0 mismatches |
+
+**Deviations from this runbook** (all documented in the report, §1.2): the lab
+services and the capture sidecar had to be made able to write into the
+bind-mounted host data directory (services now run as the invoking host user;
+the capture file is pre-created 0666) — container capabilities were **not**
+widened; the scenario schema was versioned to `staged_v2_2` so the frozen test
+set is stratified between the held-out and the development behaviour families;
+the main run was scaled to 24 + 24 rounds so the false-alarm budget is
+estimable on a non-trivial validation set.
+
+**Not done, and listed as unavailable:** graph relations, topology
+generalisation, future-stage prediction, and a second independent seed.

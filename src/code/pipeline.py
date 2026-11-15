@@ -53,9 +53,12 @@ def episode_detection_metrics(predictions, manifest, threshold):
             "n_scored_episodes": len(y)}
 
 
-def choose_validation_threshold(predictions, manifest, max_false_positive_episodes=.15):
+def choose_validation_threshold(predictions, manifest, max_false_positive_episodes=.15, candidates=None):
     # Threshold selected strictly on validation episodes; prefer coverage-adjusted mean lead.
-    candidates = [float(x) for x in np.linspace(.25, .95, 15)]
+    # `candidates` may widen the search to the attainable score range of a saturating
+    # model; the default grid is unchanged.
+    if candidates is None:
+        candidates = [float(x) for x in np.linspace(.25, .95, 15)]
     eligible = []
     for threshold in candidates:
         metrics = early_warning_metrics(predictions, manifest, threshold)
