@@ -24,4 +24,10 @@ src/data/processed/*
 *.pth
 *.joblib
 # *.zip
-.gitignore
+*.aux
+*.fls
+*.out
+*.sync*
+*.log
+**latexmk*
+

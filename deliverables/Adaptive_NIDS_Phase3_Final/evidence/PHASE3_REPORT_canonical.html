@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8">
+<title>Phase 3 — Adaptive Network Intrusion Detection</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: "DejaVu Sans", Arial, sans-serif; font-size: 10.2pt; line-height: 1.38; color: #111; }
+h1 { font-size: 19pt; border-bottom: 2px solid #333; padding-bottom: 4px; }
+h2 { font-size: 14pt; margin-top: 20px; border-bottom: 1px solid #999; padding-bottom: 2px; }
+h3 { font-size: 11.5pt; margin-top: 14px; }
+table { border-collapse: collapse; width: 100%; font-size: 7.4pt; margin: 8px 0; }
+th, td { border: 1px solid #bbb; padding: 2.5px 3.5px; vertical-align: top; }
+th { background: #efefef; }
+code, pre { font-family: "DejaVu Sans Mono", monospace; font-size: 8pt; }
+pre { background: #f6f6f6; border: 1px solid #ddd; padding: 6px; overflow-wrap: anywhere; white-space: pre-wrap; }
+blockquote { border-left: 3px solid #999; margin-left: 0; padding-left: 10px; color: #444; }
+figure { page-break-inside: avoid; margin: 12px 0; }
+figure img { max-width: 100%; border: 1px solid #ddd; }
+figcaption { font-size: 8.4pt; color: #333; margin-top: 4px; }
+.appendix h2 { page-break-before: always; }
+</style></head>
+<body><h1 id="phase-3-adaptive-network-intrusion-detection-and-early-warning-through-game-theoretic-scenario-generation-and-temporal-network-analysis">Phase 3 — Adaptive Network Intrusion Detection and Early Warning through Game-Theoretic Scenario Generation and Temporal Network Analysis</h1>
+<p><strong>Run ID:</strong> <code>cpu_v3_main_v2_20261115T164430Z</code>
+<strong>Collection window (UTC):</strong> 2026-11-15 16:44:30 → 16:48:46
+<strong>Evidence tag:</strong> <code>SENSOR_VALIDATED</code> (PCAP + strict Zeek + independent controller journal aligned)
+<strong>Secondary study (gateway-only):</strong> <code>GATEWAY_DIAGNOSTIC</code>
+<strong>Author:</strong> Ibrahim Hussain — Computer Networks
+<strong>Report generated:</strong> 2026-11-15 (UTC)</p>
+<blockquote>
+<p>Every number in this report is copied from a stored artefact. The claim-to-artifact
+map is <code>claim_artifact_table.csv</code> in this directory. Nothing here is estimated,
+extrapolated or hand-edited.</p>
+</blockquote>
+<hr>
+<h2 id="1-implementation-objective-and-deviation-log">1. Implementation objective and deviation log</h2>
+<h3 id="11-what-was-implemented">1.1 What was implemented</h3>
+<p>A bounded, isolated Docker laboratory in which a <strong>scenario controller</strong> drives
+harmless HTTP traffic through two internal network segments, records an
+<strong>independent ground-truth journal</strong> (<code>onset_ts</code>, <code>escalation_ts</code>,
+<code>milestone_ts</code>), and is observed by <strong>two distinct sensors</strong>: an application
+gateway event log and a restricted <code>tcpdump</code> sidecar whose PCAP is re-read
+<strong>offline by Zeek</strong>. On top of that, three collection policies (fixed, uniform
+random, strategic EXP3-style) produce three different training corpora, which
+are evaluated against <strong>one frozen held-out test set</strong> to answer the research
+question:</p>
+<blockquote>
+<p>Under a matched collection budget and a common frozen test set, does a bounded
+strategic scenario selector produce a detector that warns earlier, or with
+fewer false alarms, than fixed or uniform-random selection?</p>
+</blockquote>
+<p>Implemented components (all importable and runnable as CLIs):</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Path</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scenario controller</td>
+<td><code>lab/staged_generate.py</code></td>
+<td>policies, profiles, independent journal, atomic rounds, resume</td>
+</tr>
+<tr>
+<td>Lab services</td>
+<td><code>lab/http_service.py</code>, <code>compose.yaml</code></td>
+<td>gateway + two backends on two internal networks</td>
+</tr>
+<tr>
+<td>Restricted capture</td>
+<td><code>setup/staged_collect_v3.sh</code>, <code>lab/Dockerfile.capture</code></td>
+<td>named sidecar, probe requests, bounded stop</td>
+</tr>
+<tr>
+<td>Structural PCAP audit</td>
+<td><code>setup/staged_capture_audit.py</code></td>
+<td>header/record/packet-count integrity</td>
+</tr>
+<tr>
+<td><strong>Strict sensor gate</strong></td>
+<td><code>setup/staged_sensor_gate.py</code></td>
+<td>7 declared checks → evidence tag, <code>sensor_audit.json</code></td>
+</tr>
+<tr>
+<td><strong>Checksum repair</strong></td>
+<td><code>setup/pcap_checksum_repair.py</code></td>
+<td>derived copy with recomputed checksums; raw PCAP untouched</td>
+</tr>
+<tr>
+<td>Environment record</td>
+<td><code>setup/record_environment.py</code></td>
+<td>versions, CPU/RAM/disk, SHA256 of core scripts</td>
+</tr>
+<tr>
+<td>Run inventory</td>
+<td><code>setup/run_inventory.py</code></td>
+<td>run identity, counts, hashes, evidence tag, paths</td>
+</tr>
+<tr>
+<td>Study driver</td>
+<td><code>src/code/study.py</code></td>
+<td>leakage-safe preprocessing, baselines, strata, ablations, metrics</td>
+</tr>
+<tr>
+<td>Rule baseline</td>
+<td><code>src/code/models.py</code> (<code>RuleRateBaseline</code>)</td>
+<td>transparent rate/rate rule referenced to benign training data</td>
+</tr>
+<tr>
+<td>Early warning</td>
+<td><code>src/code/early_warning.py</code></td>
+<td>lead time, coverage, misses, late alerts, episode bootstrap CI</td>
+</tr>
+<tr>
+<td>Temporal model</td>
+<td><code>src/code/temporal_gru_sprint.py</code></td>
+<td>compact CPU GRU, checkpointed, <strong>not</strong> a graph model</td>
+</tr>
+<tr>
+<td>Figures</td>
+<td><code>src/code/report_figures.py</code></td>
+<td>8 figures generated from saved metrics + saved source data</td>
+</tr>
+<tr>
+<td>Literature table</td>
+<td><code>setup/literature_comparison.py</code></td>
+<td>method/settings comparison extracted from the held PDFs</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-deviation-log-documented-departures-from-the-inherited-design">1.2 Deviation log (documented departures from the inherited design)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Deviation</th>
+<th>Reason</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1</td>
+<td>Lab services run as the <strong>host user</strong> (<code>LAB_UID:LAB_GID</code>), not container root</td>
+<td>All services carry <code>cap_drop: ALL</code>; container root has no <code>DAC_OVERRIDE</code> and could not write into the bind-mounted data directory, so the gateway silently lost every event</td>
+<td><code>compose.yaml</code>; capture at 16:33 UTC shows the first successful gateway log</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>Capture file <strong>pre-created mode 0666</strong> before starting the sidecar</td>
+<td>Same cause: the restricted sidecar cannot create a file in a 0755 host directory</td>
+<td><code>setup/staged_collect_v3.sh</code>; <code>tests/test_v3_launcher_contract.py</code></td>
+</tr>
+<tr>
+<td>D3</td>
+<td><code>setup/*.sh</code> restored to mode <strong>0755</strong></td>
+<td>The transferred tree lost every executable bit, so the documented <code>./setup/staged_collect_v3.sh</code> invocation failed with "Permission denied" and <code>staged_train_guard_v3.sh</code> could not <code>exec</code> its successor</td>
+<td><code>outputs/backups/setup_script_modes_20261115T162353Z/</code></td>
+</tr>
+<tr>
+<td>D4</td>
+<td>New scenario schema <strong><code>staged_v2_2</code></strong>: the frozen test set is <strong>stratified</strong> 50/50 between the held-out family (<code>slow_ramp</code>) and the three development families</td>
+<td>Under <code>staged_v2_1</code> the test set contained <em>only</em> the held-out family, so every policy scored ~0 and the policy comparison was uninformative. Stratification makes the primary hypothesis measurable and keeps the novelty question measurable as a separate stratum</td>
+<td><code>lab/staged_generate.py</code>; <code>tests/test_stage_v2.py</code>; <code>results.json → test_strata</code></td>
+</tr>
+<tr>
+<td>D5</td>
+<td>New strict sensor gate + checksum-repair utility</td>
+<td>The inherited guards were <strong>structural only</strong> (<code>-C</code> Zeek, packet counts). A strict, fail-closed semantic gate with an explicit evidence tag was required before any network-sensor result</td>
+<td><code>setup/staged_sensor_gate.py</code>; <code>outputs/audits/&lt;run&gt;/sensor_audit.json</code></td>
+</tr>
+<tr>
+<td>D6</td>
+<td>Main run scaled to <strong>24 + 24 rounds</strong> (not 8 + 8)</td>
+<td>The pilot established runtime and integrity, and 24 rounds give 8 validation benign episodes per policy — the minimum at which a 0.15 false-alarm budget is estimable at all</td>
+<td><code>outputs/reports/&lt;run&gt;/run_inventory.json</code>; <code>preprocessing_report.json</code></td>
+</tr>
+<tr>
+<td>D7</td>
+<td><code>min_events == n_events</code> in window construction</td>
+<td>Partial windows encode window <em>position</em> rather than network behaviour</td>
+<td><code>src/code/study.py</code>; <code>leakage_audit.json</code></td>
+</tr>
+<tr>
+<td>D8</td>
+<td>Window width <strong>8 flows for Zeek</strong>, 4 requests for the gateway</td>
+<td>One HTTP request through the gateway produces two TCP connections, so 8 flows correspond to 4 requests; this keeps the two sensor sources comparable</td>
+<td><code>src/code/study.py → default_n_events</code></td>
+</tr>
+<tr>
+<td>D9</td>
+<td>Added <code>strict_first_alert_coverage</code></td>
+<td>A detector that already fires <strong>before onset</strong> has not demonstrated pre-impact warning; the ordinary coverage metric alone would overstate it</td>
+<td><code>src/code/early_warning.py</code>; <code>metrics.csv</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Not done, and why:</strong> no graph neural network (a count such as <code>unique_links</code> is
+not a GNN, and no valid attributed graph corpus was built); no topology
+generalisation (only one network configuration exists); no future-stage
+prediction task (no independently defined future-positive set was built); no
+Optuna sweep (a bounded study on CPU is preferable to an unreproducible
+sweep). A <strong>second independent collection seed was added</strong> (run
+<code>cpu_v3_main_v2_seed2_20261115T165949Z</code>, §6.6); two seeds are still too few to
+establish a stable policy ranking, which is stated as a limitation.</p>
+<hr>
+<h2 id="2-isolated-lab-safety-and-sensordata-provenance">2. Isolated lab, safety and sensor/data provenance</h2>
+<h3 id="21-topology-and-containment">2.1 Topology and containment</h3>
+<pre><code>runner (profile) ──clients network (internal)──▶ gateway ──services network (internal)──▶ server_a
+                                                                                        └▶ server_b
+</code></pre>
+<p><code>docker network inspect</code> confirms <code>internal=true</code> for <strong>both</strong> segments
+(<code>phase3-adaptive-nids_clients</code>, <code>phase3-adaptive-nids_services</code>) —
+<code>outputs/logs/setup/20261115T162353Z/stage_d_compose_preflight.log</code>.
+Every service runs <code>cap_drop: ALL</code>, <code>no-new-privileges:true</code>, <code>read_only</code>
+root filesystem; the capture sidecar adds only <code>NET_RAW</code> and joins the
+gateway's <strong>network namespace</strong> (<code>--network container:&lt;gateway&gt;</code>), never
+<code>--privileged</code>, never <code>--network host</code>, never a host-wide <code>tcpdump</code>.
+Traffic is bounded to harmless HTTP POSTs of ≤ 4096 bytes to a private
+gateway; there is no public egress, no live malware, no exploitation and no
+external target enumeration.</p>
+<h3 id="22-sensors-are-distinct-entities-and-are-never-merged">2.2 Sensors are distinct entities and are never merged</h3>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Produced by</th>
+<th>Unit</th>
+<th>Provenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Controller journal</td>
+<td><code>lab/staged_generate.py</code></td>
+<td>episode with stage timestamps</td>
+<td><code>episodes.jsonl</code></td>
+</tr>
+<tr>
+<td>Application gateway observation</td>
+<td><code>lab/http_service.py</code> (gateway container)</td>
+<td>HTTP request</td>
+<td><code>gateway_subset.jsonl</code></td>
+</tr>
+<tr>
+<td>TCP connection observation</td>
+<td>Zeek 9.0.1 reading a PCAP</td>
+<td>TCP connection</td>
+<td><code>zeek/repaired_strict_000/conn.log</code></td>
+</tr>
+<tr>
+<td>Raw packet record</td>
+<td>restricted <code>tcpdump</code> sidecar</td>
+<td>packet</td>
+<td><code>traffic_*.pcap</code></td>
+</tr>
+</tbody>
+</table>
+<p>The study driver runs <strong>twice</strong>, once per source, and never merges records.
+Gateway-derived results are labelled <code>GATEWAY_DIAGNOSTIC</code>; Zeek-derived
+results are labelled <code>SENSOR_VALIDATED</code>.</p>
+<h3 id="23-the-strict-sensor-gate-outputsauditsrunsensor_auditjson">2.3 The strict sensor gate (<code>outputs/audits/&lt;run&gt;/sensor_audit.json</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Requirement</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C1</td>
+<td><code>complete.json</code>, <code>episodes.jsonl</code>, <code>gateway_subset.jsonl</code> and ≥1 PCAP exist</td>
+<td><strong>pass</strong></td>
+</tr>
+<tr>
+<td>C2</td>
+<td>PCAP complete and parseable, packet count plausible for episode count</td>
+<td><strong>pass</strong> — 107,628 packets ≥ 768 required</td>
+</tr>
+<tr>
+<td>C3</td>
+<td>Zeek exits 0 and emits <code>conn.log</code> entries</td>
+<td><strong>pass</strong> — rc 0, 7,688 entries</td>
+</tr>
+<tr>
+<td>C4</td>
+<td>expected TCP/8080 service traffic observed</td>
+<td><strong>pass</strong> — 7,688 / 7,688 on port 8080</td>
+</tr>
+<tr>
+<td>C5</td>
+<td>bidirectional byte visibility</td>
+<td><strong>pass</strong> — 7,680 / 7,680 = <strong>100 %</strong> with <code>orig_bytes&gt;0</code> <strong>and</strong> <code>resp_bytes&gt;0</code> (threshold 80 %)</td>
+</tr>
+<tr>
+<td>C6</td>
+<td>timestamps map to independently recorded episode intervals</td>
+<td><strong>pass</strong> — 7,680 assigned, <strong>0 ambiguous</strong>, 8 outside, 192 / 192 episodes covered</td>
+</tr>
+<tr>
+<td>C7</td>
+<td>frozen test episodes expose eligible pre-milestone windows</td>
+<td><strong>pass</strong> — 48 / 48</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-the-checksum-caveat-and-how-it-was-handled-honestly">2.4 The checksum caveat, and how it was handled honestly</h3>
+<p>The container veth leaves NIC <strong>transmit offloading</strong> in place, so the captured
+TCP checksums are invalid. Measured on the raw trace:</p>
+<ul>
+<li>strict Zeek (checksum validation <strong>enabled</strong>) → 15,376 connection records
+  with <code>orig_pkts=0</code>, <code>orig_bytes=0</code>, <code>history="C"</code> (control packets only) and
+  <code>bad_TCP_checksum</code> weird events — Zeek discards the payload of every data
+  segment and splits them differently;</li>
+<li>Zeek <code>-C</code> (checksum validation bypassed) → 7,688 connections, <strong>all</strong> with
+  positive bytes, <code>service=http</code>, port 8080.</li>
+</ul>
+<p><code>setup/pcap_checksum_repair.py</code> therefore derives a <strong>copy</strong> in which only the
+IPv4/TCP/UDP checksum fields are recomputed from the captured payload. The tool
+proves its own minimality: it compares the two buffers and asserts that no byte
+outside the checksum fields changed. The repaired trace was then re-read by
+Zeek <strong>with checksum validation enabled</strong>, yielding 7,688 connections with
+positive bytes and <strong>zero</strong> <code>weird.log</code> entries — and exactly the same
+connection count as the independent <code>-C</code> read of the raw trace. (The earlier
+24-episode pilot showed the same pattern at its own scale: 1,936 discarded
+records under strict validation versus 968 usable connections.)</p>
+<ul>
+<li>The raw PCAP is <strong>never modified</strong>; its SHA256 is recorded in the audit.</li>
+<li>The audit sets <code>checksum_validation_ignored: false</code> and
+  <code>checksum_repaired: true</code>, and carries an explicit caveat string.</li>
+<li>The repair is applied only because the <code>-C</code> count and the repaired-strict
+  count agree; a mismatch would downgrade the run to <code>ZEEK_CONDITIONAL</code>.</li>
+</ul>
+<p><strong>This is a documented, reproducible remediation of a known capture artefact, not
+a way of manufacturing bytes.</strong> Byte counters in every reported metric come
+from Zeek's own reassembly of captured payload.</p>
+<hr>
+<h2 id="3-scenarios-independent-ground-truth-and-the-early-warning-definition">3. Scenarios, independent ground truth and the early-warning definition</h2>
+<h3 id="31-scenario-space">3.1 Scenario space</h3>
+<ul>
+<li><strong>Development families (3):</strong> <code>rapid_repeat</code> (fast repeated requests to one
+  service), <code>destination_shift</code> (destination alternates), <code>jittered_burst</code>
+  (alternating fast/slow pauses).</li>
+<li><strong>Held-out family (1):</strong> <code>slow_ramp</code> — a <em>gradual</em> decrease of the inter-request
+  pause. Never used for training or threshold selection.</li>
+<li><strong>Benign variants (4):</strong> <code>steady</code>, <code>maintenance_burst</code>, <code>service_fanout</code>,
+  <code>approved_bulk</code> (includes 2 KiB transfers). These are deliberately not all
+  "easy" negatives: <code>maintenance_burst</code> is behaviourally close to
+  <code>rapid_repeat</code>, which is why a rate-based rule cannot separate them.</li>
+</ul>
+<h3 id="32-independent-ground-truth">3.2 Independent ground truth</h3>
+<p><code>onset_ts</code> (request 5), <code>escalation_ts</code> (12) and <code>milestone_ts</code> (19) are written
+by the controller <strong>before</strong> any model runs and are never derived from a
+detector output. The milestone is a harmless 2 KiB dummy transfer to the other
+service. The controller validates <code>start &lt; onset &lt; escalation &lt; milestone &lt; end</code>
+before publishing a round.</p>
+<h3 id="33-early-warning-definition-unchanged-from-phase-2">3.3 Early-warning definition (unchanged from Phase 2)</h3>
+<pre><code>valid early warning at t_alert  iff  t_onset &lt;= t_alert &lt; t_milestone
+lead time L_e                     =  t_milestone - t_alert      (valid warnings only)
+</code></pre>
+<p>A pre-onset alert is <strong>not</strong> a valid early warning; a post-milestone alert is a
+<strong>late detection</strong>; an incident with no alert is a <strong>miss</strong>. Coverage-adjusted
+mean lead assigns <strong>zero</strong> to every unwarned incident. Two coverage measures
+are reported:</p>
+<ul>
+<li><code>pre_milestone_coverage</code> — an alert exists in <code>[onset, milestone)</code>;</li>
+<li><code>strict_first_alert_coverage</code> — the episode's <strong>first</strong> alert of any kind
+  already lies in <code>[onset, milestone)</code>. This is the honest measure of
+  pre-impact warning, because a detector that fires before onset has not
+  demonstrated any reaction to the anomalous stage.</li>
+</ul>
+<hr>
+<h2 id="4-dataset-preprocessing-splits-and-leakage-controls">4. Dataset, preprocessing, splits and leakage controls</h2>
+<h3 id="41-the-dataset">4.1 The dataset</h3>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Episodes</td>
+<td><strong>192</strong> (96 benign + 96 incident)</td>
+</tr>
+<tr>
+<td>Requests per episode</td>
+<td>20 (controller journal)</td>
+</tr>
+<tr>
+<td>Gateway events</td>
+<td><strong>3,840</strong> (exactly 20 per episode)</td>
+</tr>
+<tr>
+<td>PCAP</td>
+<td>13,415,368 bytes, <strong>107,628</strong> packet records</td>
+</tr>
+<tr>
+<td>Zeek TCP connections</td>
+<td><strong>7,688</strong> (2 per HTTP request: client→gateway, gateway→service)</td>
+</tr>
+<tr>
+<td>Game rounds (policies)</td>
+<td>72</td>
+</tr>
+<tr>
+<td>Features</td>
+<td>15 causal window features</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>6,336 (train 3,168 / validation 1,584 / test 1,584)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-split-protocol-episode-level-before-windowing">4.2 Split protocol (episode level, before windowing)</h3>
+<ul>
+<li><code>test</code> policy episodes: <strong>48</strong> (24 benign, 24 incident = 12 <code>slow_ramp</code> +
+  12 seen-family). Frozen; never in training, validation, threshold selection
+  or any fitted transform.</li>
+<li><code>fixed</code> / <code>random</code> / <code>strategic</code>: 24 benign + 24 incident each; <strong>33 %</strong> of
+  each class held out as validation (8 benign + 8 incident) and the remainder
+  used for fitting (16 + 16). Train and validation are disjoint by episode.</li>
+</ul>
+<h3 id="43-leakage-audit-datasetleakage_auditjson-all-checks-pass">4.3 Leakage audit (<code>dataset/leakage_audit.json</code> — <strong>all checks pass</strong>)</h3>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No forbidden feature name (episode/policy/profile/scenario/milestone/onset/label/target/path/seed/host)</td>
+<td>pass</td>
+</tr>
+<tr>
+<td>Test episodes absent from train and validation</td>
+<td>pass</td>
+</tr>
+<tr>
+<td>Train and validation episode sets disjoint</td>
+<td>pass</td>
+</tr>
+<tr>
+<td>Every window inside its episode interval</td>
+<td>pass</td>
+</tr>
+<tr>
+<td>Every training window ends before the incident milestone</td>
+<td>pass</td>
+</tr>
+<tr>
+<td>Features recomputable from the window's own observations (random sample re-derived independently)</td>
+<td>pass</td>
+</tr>
+<tr>
+<td>Label not used as a feature</td>
+<td>pass</td>
+</tr>
+<tr>
+<td>Ground truth from the controller, not from a detector</td>
+<td>pass</td>
+</tr>
+<tr>
+<td>Scalers/encoders fitted on training windows only</td>
+<td>pass</td>
+</tr>
+</tbody>
+</table>
+<p>Of the 4,752 windows that belong to training/validation episodes, <strong>144</strong> end
+at or after the incident milestone and are therefore excluded from fitting,
+leaving <strong>4,608</strong> windows available for fitting and threshold selection. The
+exclusion and its reason are counted in <code>preprocessing_report.json</code>. No episode
+was dropped (<code>episodes_without_any_window: []</code>).</p>
+<hr>
+<h2 id="5-baselines-budgets-tuning-and-the-cpu-environment">5. Baselines, budgets, tuning and the CPU environment</h2>
+<ul>
+<li><strong>Rule/rate baseline</strong> — a transparent rule on one causal feature
+  (<code>rate_per_s</code>), referenced to the <strong>benign training</strong> distribution
+  (5th/95th percentile). No learning, fully auditable.</li>
+<li><strong>Isolation Forest</strong> — trained on <strong>benign training windows only</strong>
+  (the documented training assumption), <code>contamination="auto"</code>,
+  <code>StandardScaler</code> fitted inside the pipeline on those windows only.</li>
+<li><strong>Random Forest</strong> — supervised, <code>class_weight="balanced_subsample"</code>,
+  150 trees, fixed seed 20261115, <code>n_jobs</code> capped at 2.</li>
+<li><strong>Compact GRU (optional)</strong> — 1-layer GRU, hidden 32, 12 epochs, <code>device=cpu</code>,
+  2 torch threads, checkpoint written after <strong>every</strong> epoch. It is a <strong>temporal</strong>
+  model and <strong>not</strong> a graph model. Total runtime 10.5 s for all three policies.</li>
+<li><strong>Alert rule</strong> — one threshold per (policy, model), chosen on <strong>validation
+  episodes only</strong>, subject to a declared false-alarm budget of
+  <code>false-positive episode rate ≤ 0.15</code> and <code>pre-onset warning rate ≤ 0.15</code> on
+  validation. The candidate grid spans 0.05–0.999 because a saturating model
+  otherwise cannot exclude a false alarm at all. If no candidate satisfies the
+  budget the run is recorded as <code>threshold_unavailable_under_constraint</code> — an
+  admissible failure, never a relaxed budget.</li>
+<li><strong>Environment</strong> — Ubuntu 26.04, kernel 7.0.0-42, Intel i5-6500 (4 cores),
+  14.95 GiB RAM, <strong>no CUDA</strong> (<code>torch 2.7.1+cpu</code>, <code>cuda_available False</code>),
+  Docker 29.9.3, Compose v5.7.1, Zeek 9.0.1, Python 3.12.7 in
+  <code>.venv</code>; <code>OMP/MKL/OPENBLAS/NUMEXPR_NUM_THREADS=2</code>. Full record:
+  <code>outputs/environment/environment_20261115T162353Z.txt</code>.</li>
+</ul>
+<hr>
+<h2 id="6-results">6. Results</h2>
+<h3 id="61-primary-table-zeek-sensor-sensor_validated">6.1 Primary table — Zeek sensor (<code>SENSOR_VALIDATED</code>)</h3>
+<p><code>outputs/studies/cpu_v3_main_v2_20261115T164430Z_zeek_20261115T165446Z/metrics.csv</code>; 48 frozen test
+episodes (24 incident, 24 benign), 1,584 test windows.</p>
+<table>
+<thead>
+<tr>
+<th>Train policy</th>
+<th>Model</th>
+<th>Threshold</th>
+<th>Episode F1</th>
+<th>PR-AUC</th>
+<th>Warning coverage</th>
+<th><strong>Strict coverage</strong></th>
+<th>Coverage-adj. lead (s)</th>
+<th>FP-episode rate</th>
+<th>FA / benign h</th>
+<th>Pre-onset alarms</th>
+<th>Missed</th>
+<th>Runtime (s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fixed</td>
+<td>rule</td>
+<td>0.90</td>
+<td>0.432</td>
+<td>0.749</td>
+<td>0.333</td>
+<td>0.333</td>
+<td>0.116</td>
+<td>0.208</td>
+<td>537</td>
+<td>0</td>
+<td>16</td>
+<td>0.09</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>Isolation Forest</td>
+<td>0.999</td>
+<td>0.000</td>
+<td>0.835</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0</td>
+<td>0</td>
+<td>24</td>
+<td>0.27</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td><strong>Random Forest</strong></td>
+<td>0.85</td>
+<td>0.742</td>
+<td>0.863</td>
+<td><strong>0.958</strong></td>
+<td><strong>0.917</strong></td>
+<td><strong>0.664</strong></td>
+<td>0.625</td>
+<td>1612</td>
+<td>1</td>
+<td>1</td>
+<td>0.54</td>
+</tr>
+<tr>
+<td>random</td>
+<td>rule</td>
+<td>0.90</td>
+<td>0.457</td>
+<td>0.749</td>
+<td>0.333</td>
+<td>0.333</td>
+<td>0.115</td>
+<td>0.125</td>
+<td>322</td>
+<td>0</td>
+<td>16</td>
+<td>0.08</td>
+</tr>
+<tr>
+<td>random</td>
+<td>Isolation Forest</td>
+<td>0.999</td>
+<td>0.000</td>
+<td>0.789</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0</td>
+<td>0</td>
+<td>24</td>
+<td>0.25</td>
+</tr>
+<tr>
+<td>random</td>
+<td><strong>Random Forest</strong></td>
+<td>0.90</td>
+<td>0.588</td>
+<td>0.844</td>
+<td>0.833</td>
+<td>0.833</td>
+<td>0.567</td>
+<td>1.000</td>
+<td>2579</td>
+<td>0</td>
+<td>4</td>
+<td>0.54</td>
+</tr>
+<tr>
+<td>strategic</td>
+<td>rule</td>
+<td>0.85</td>
+<td>0.432</td>
+<td>0.749</td>
+<td>0.333</td>
+<td>0.333</td>
+<td>0.158</td>
+<td>0.208</td>
+<td>537</td>
+<td>0</td>
+<td>16</td>
+<td>0.08</td>
+</tr>
+<tr>
+<td>strategic</td>
+<td>Isolation Forest</td>
+<td>0.999</td>
+<td>0.000</td>
+<td>0.793</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0</td>
+<td>0</td>
+<td>24</td>
+<td>0.25</td>
+</tr>
+<tr>
+<td>strategic</td>
+<td><strong>Random Forest</strong></td>
+<td>0.90</td>
+<td>0.960</td>
+<td>1.000</td>
+<td><strong>1.000</strong></td>
+<td><strong>0.042</strong></td>
+<td>0.627</td>
+<td><strong>0.083</strong></td>
+<td>215</td>
+<td><strong>23</strong></td>
+<td>0</td>
+<td>0.53</td>
+</tr>
+</tbody>
+</table>
+<p>Raw window counts at the chosen threshold are in <code>metrics.csv</code>
+(<code>window_tp/fp/tn/fn</code>); e.g. strategic/RF: TP 261, FP 25, TN 839, FN 459 of
+1,584 windows.</p>
+<h3 id="62-the-honest-reading-of-the-policy-comparison">6.2 The honest reading of the policy comparison</h3>
+<p>The headline coverage numbers are <strong>not</strong> sufficient to rank the policies, and
+the strict first-alert measure changes the interpretation completely:</p>
+<ol>
+<li><strong>Fixed + Random Forest</strong> is the only configuration in seed 1 that combines
+   high warning coverage (0.958) with a <strong>strict</strong> coverage of 0.917 — i.e.
+   its first alert really does arrive after onset and before the milestone.
+   Its price is a very high false-alarm rate: 0.625 of benign episodes alarm
+   (1,612 false alarms per benign hour). That is not a usable detector; it is
+   a sensitive detector.</li>
+<li><strong>Strategic + Random Forest</strong> reaches coverage 1.000 with by far the lowest
+   false-alarm rate (0.083, 215 FA/h) — but <strong>23 of 24</strong> incident episodes also
+   carry a pre-onset alarm, so its <strong>strict coverage is 0.042</strong>. Its "valid
+   early warnings" are, in almost every episode, alarms that began <em>before the
+   anomalous stage started</em>. Under the strict definition, this configuration
+   does <strong>not</strong> demonstrate pre-impact warning.
+   The candidate mechanism is visible in the controller journal: the EXP3
+   selector chose <code>destination_shift</code> in <strong>11 of 24</strong> strategic rounds (fixed
+   8/8/8, random 5/11/8), so the strategic training corpus is skewed towards a
+   destination-diversity signature that is also present in the pre-onset
+   warm-up of the held-out episodes.
+   <strong>Section 6.6 shows that this pre-onset artefact does not reproduce in the
+   independent second seed, so it must be read as a seed-specific instability
+   and not as a structural property of the strategic policy.</strong></li>
+<li><strong>Isolation Forest never warns.</strong> With the declared budget the best
+   admissible threshold is 0.999 and the model produces zero alerts, zero
+   coverage and zero false alarms. Its PR-AUC (0.79–0.83) is non-trivial, so
+   the anomaly <em>ranking</em> exists, but no operating point survives the false-alarm
+   constraint. This is a genuine negative result, not a bug.</li>
+<li><strong>The rule/rate baseline</strong> is capped at 0.333 coverage because the benign
+   <code>maintenance_burst</code> variant is behaviourally indistinguishable from
+   <code>rapid_repeat</code> at the request-rate level.</li>
+</ol>
+<h3 id="63-behavioural-novelty-the-unseen-family-stratum">6.3 Behavioural novelty — the unseen family stratum</h3>
+<table>
+<thead>
+<tr>
+<th>Train policy</th>
+<th>Model</th>
+<th>Seen families (12 incidents) coverage / adj. lead</th>
+<th>Unseen <code>slow_ramp</code> (12 incidents) coverage / adj. lead</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fixed</td>
+<td>Random Forest</td>
+<td>1.000 / 0.613</td>
+<td>0.917 / 0.714</td>
+</tr>
+<tr>
+<td>random</td>
+<td>Random Forest</td>
+<td>1.000 / 0.521</td>
+<td>0.667 / 0.612</td>
+</tr>
+<tr>
+<td>strategic</td>
+<td>Random Forest</td>
+<td>1.000 / 0.523</td>
+<td>1.000 / 0.731</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>rule</td>
+<td>0.667 / 0.231</td>
+<td><strong>0.000 / 0.000</strong></td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>Isolation Forest</td>
+<td>0.000 / 0.000</td>
+<td>0.000 / 0.000</td>
+</tr>
+</tbody>
+</table>
+<p>The rule baseline is <strong>completely blind</strong> to the held-out family, and the
+Isolation Forest is blind to everything. Only the Random Forest retains
+coverage on <code>slow_ramp</code>, and even there its lead time is short.</p>
+<h3 id="64-the-compact-cpu-gru-zeek-sensor-12-epochs-105-s-total">6.4 The compact CPU GRU (Zeek sensor, 12 epochs, 10.5 s total)</h3>
+<p><code>outputs/reports/&lt;run&gt;/gru_metrics.csv</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Train policy</th>
+<th>Threshold</th>
+<th>Episode F1</th>
+<th>PR-AUC</th>
+<th>Coverage</th>
+<th>Strict coverage</th>
+<th>Coverage-adj. lead (s)</th>
+<th>FP-episode rate</th>
+<th>Pre-onset alarms</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fixed</td>
+<td>0.60</td>
+<td>0.778</td>
+<td>0.933</td>
+<td>0.875</td>
+<td>0.875</td>
+<td>0.353</td>
+<td>0.375</td>
+<td>0</td>
+</tr>
+<tr>
+<td>random</td>
+<td>0.75</td>
+<td>0.889</td>
+<td>0.965</td>
+<td>0.833</td>
+<td>0.833</td>
+<td><strong>0.440</strong></td>
+<td><strong>0.042</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td>strategic</td>
+<td>0.75</td>
+<td>0.667</td>
+<td>0.869</td>
+<td>0.500</td>
+<td>0.500</td>
+<td>0.199</td>
+<td><strong>0.000</strong></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>The temporal model <strong>never</strong> fires before onset. Under the GRU, the
+<strong>uniform-random</strong> policy gives the best balance (0.833 coverage at a 0.042
+false-alarm rate), while the strategic policy is again the most conservative
+(zero false alarms, 0.500 coverage).</p>
+<h3 id="65-observation-source-dependence-gateway_diagnostic-vs-sensor_validated">6.5 Observation-source dependence (<code>GATEWAY_DIAGNOSTIC</code> vs <code>SENSOR_VALIDATED</code>)</h3>
+<p><code>outputs/studies/cpu_v3_main_v2_20261115T164430Z_gateway_20261115T165446Z/metrics.csv</code>. The ordering of
+the policies is preserved (strategic/RF is the least noisy), but absolute
+numbers move: on the gateway sensor, strategic/RF reaches 1.000 coverage on the
+<strong>seen</strong> families yet only <strong>0.250</strong> on the unseen <code>slow_ramp</code> family, and
+random/RF drops from 0.833 to 0.667 overall. <strong>The sensor choice materially
+changes the measured performance</strong>, which is exactly why the two sources are
+reported separately and never merged.</p>
+<h3 id="66-independent-replication-second-collection-seed">6.6 Independent replication - second collection seed</h3>
+<p>A second, fully independent collection was made with <strong>seed 20261116</strong> under
+the identical protocol: run <code>cpu_v3_main_v2_seed2_20261115T165949Z</code>, 24 + 24
+rounds, 192 episodes, 3,840 gateway events, 107,629 packet records, 7,688 Zeek
+connections, <strong>also <code>SENSOR_VALIDATED</code></strong> with 100 % bidirectional visibility,
+0 ambiguous joins and 192 / 192 episodes covered. The capture pipeline
+reproduces its counts exactly across seeds.</p>
+<p><code>outputs/reports/&lt;run&gt;/seed_comparison.csv</code> and
+<code>figures/zeek/fig09_seed_comparison.png</code> compare the two seeds configuration
+by configuration.</p>
+<p><strong>Random Forest, Zeek sensor</strong></p>
+<table>
+<thead>
+<tr>
+<th>Train policy</th>
+<th style="text-align: right;">Strict coverage seed 1</th>
+<th style="text-align: right;">seed 2</th>
+<th style="text-align: right;">FP rate seed 1</th>
+<th style="text-align: right;">seed 2</th>
+<th style="text-align: right;">Pre-onset alarms seed 1</th>
+<th style="text-align: right;">seed 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fixed</td>
+<td style="text-align: right;">0.917</td>
+<td style="text-align: right;">0.917</td>
+<td style="text-align: right;">0.625</td>
+<td style="text-align: right;">0.167</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>random</td>
+<td style="text-align: right;">0.833</td>
+<td style="text-align: right;">0.542</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>strategic</td>
+<td style="text-align: right;"><strong>0.042</strong></td>
+<td style="text-align: right;"><strong>0.875</strong></td>
+<td style="text-align: right;">0.083</td>
+<td style="text-align: right;">0.208</td>
+<td style="text-align: right;"><strong>23</strong></td>
+<td style="text-align: right;"><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>GRU, Zeek sensor</strong></p>
+<table>
+<thead>
+<tr>
+<th>Train policy</th>
+<th style="text-align: right;">Coverage seed 1</th>
+<th style="text-align: right;">seed 2</th>
+<th style="text-align: right;">FP rate seed 1</th>
+<th style="text-align: right;">seed 2</th>
+<th style="text-align: right;">Pre-onset alarms (both seeds)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fixed</td>
+<td style="text-align: right;">0.875</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.375</td>
+<td style="text-align: right;">0.333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>random</td>
+<td style="text-align: right;">0.833</td>
+<td style="text-align: right;">0.917</td>
+<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">0.250</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>strategic</td>
+<td style="text-align: right;">0.500</td>
+<td style="text-align: right;">0.750</td>
+<td style="text-align: right;"><strong>0.000</strong></td>
+<td style="text-align: right;"><strong>0.042</strong></td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What replicates and what does not.</strong></p>
+<ul>
+<li><strong>Replicates:</strong> the capture and sensor pipeline (identical connection counts
+  and visibility); the GRU's total absence of pre-onset alarms (0 in all six
+  GRU configurations); the strategic policy's conservatism under the GRU (the
+  lowest false-alarm rate in <strong>both</strong> seeds); the weakness of the Isolation
+  Forest and of the rule baseline on the unseen family; the systematic EXP3
+  profile skew towards <code>destination_shift</code> (13 / 24 in seed 2, 11 / 24 in
+  seed 1).</li>
+<li><strong>Does not replicate:</strong> the pre-onset artefact of strategic/RF (23 / 24
+  episodes in seed 1, <strong>0 / 24</strong> in seed 2), and therefore the ordering of the
+  policies on warning coverage - in seed 1 the strategic policy looked <em>worst</em>
+  on strict coverage, in seed 2 the uniform-random policy is worst. The
+  coverage ranking moves with the seed.</li>
+<li><strong>Conclusion after two seeds:</strong> this study <strong>cannot</strong> establish a policy
+  ranking on warning coverage. The stable finding is a trade-off rather than a
+  winner - the strategic selector produces the most conservative detectors
+  (lowest false-alarm rate), the fixed selector the most sensitive ones, and
+  the difference between them is of the same order as the seed-to-seed
+  variation. Reporting a single-seed ranking as a result would be
+  over-interpretation; the two-seed comparison is reported instead.</li>
+</ul>
+<h3 id="67-figures">6.7 Figures</h3>
+<p>All under <code>outputs/reports/&lt;run&gt;/figures/{zeek,gateway}/</code>, each with its source
+data saved next to it (<code>*.data.json</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Figure</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fig01_dataset_composition</code></td>
+<td>episodes by policy, condition and profile</td>
+</tr>
+<tr>
+<td><code>fig02_pr_curves</code></td>
+<td>episode-level PR curves, three baselines</td>
+</tr>
+<tr>
+<td><code>fig03_warning_coverage</code></td>
+<td>warning coverage vs false-alarm rate, with episode-bootstrap 95 % CI</td>
+</tr>
+<tr>
+<td><code>fig04_policy_comparison</code></td>
+<td>coverage-adjusted lead, coverage, strict coverage, FPR by policy</td>
+</tr>
+<tr>
+<td><code>fig05_error_analysis</code></td>
+<td>early warning / late / missed / false-alarm breakdown</td>
+</tr>
+<tr>
+<td><code>fig06_lead_time</code></td>
+<td>per-episode lead time of valid warnings</td>
+</tr>
+<tr>
+<td><code>fig07_architecture</code></td>
+<td>implementation and data-provenance diagram (describes code, not measurement)</td>
+</tr>
+<tr>
+<td><code>fig08_sensor_evidence</code></td>
+<td>the seven declared sensor checks and their outcome</td>
+</tr>
+<tr>
+<td><code>fig09_seed_comparison</code></td>
+<td>seed 1 versus seed 2 for every policy/model configuration</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-ablations-and-error-analysis">7. Ablations and error analysis</h2>
+<p><code>outputs/studies/cpu_v3_main_v2_20261115T164430Z_zeek_20261115T165446Z/ablations.csv</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Ablation</th>
+<th>Status</th>
+<th>Minimum real comparison</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scenario policy</strong></td>
+<td><strong>run</strong></td>
+<td>fixed vs random vs strategic, same frozen test, same budget</td>
+<td>no policy dominates; strategic is least noisy but pre-onset, random is best balanced under the GRU, fixed is most sensitive and noisiest</td>
+</tr>
+<tr>
+<td><strong>Temporal causal features</strong></td>
+<td><strong>run</strong></td>
+<td>full 15 features vs the 10 features that survive removing <code>rate_per_s</code>, <code>gap_mean_s</code>, <code>gap_std_s</code>, <code>gap_cv</code>, <code>large_flow_fraction</code></td>
+<td><strong>the rule baseline collapses</strong>: coverage 0.333 → <strong>0.000</strong> for every policy once it must reference a non-temporal feature (<code>bytes_mean</code>), even though its PR-AUC stays at 0.742 — the ranking survives but no operating point does. The Random Forest degrades gracefully: fixed coverage 0.958 → 0.875 (strict 0.917 → 0.792), PR-AUC 0.863 → 0.681; random 0.833 → 0.667, PR-AUC 0.844 → 0.434; strategic 1.000 → 1.000 but strict coverage rises 0.042 → 0.500 and false alarms fall 0.083 → 0.000. Conclusion: on this lab a large part of the Random Forest's signal is <strong>not</strong> temporal — the destination-diversity and volume features carry most of it — while a rate rule depends on temporal evidence entirely</td>
+</tr>
+<tr>
+<td><strong>Warning rule</strong></td>
+<td><strong>run</strong></td>
+<td>persistence 1 vs persistence 2 (two consecutive alerting windows)</td>
+<td>a strong and consistent trade-off. Requiring persistence cuts coverage (fixed 0.958 → 0.667, random 0.833 → 0.500, strategic 1.000 → 0.625) and cuts false alarms just as sharply (fixed 0.625 → 0.125, random 1.000 → 0.000, strategic 0.083 → 0.000), while the <strong>strict first-alert coverage is unchanged</strong> (0.917 / 0.833 / 0.042). The alerts are already isolated single windows, so persistence mainly removes isolated false alarms and shortens the counted lead time (fixed 0.664 → 0.324 s)</td>
+</tr>
+<tr>
+<td><strong>Observation source</strong></td>
+<td><strong>run</strong></td>
+<td>Zeek-only vs gateway-only, each on its own gate</td>
+<td>see §6.5; conclusions are source-dependent, so they are reported per source</td>
+</tr>
+<tr>
+<td><strong>Unseen scenario</strong></td>
+<td><strong>run</strong></td>
+<td>seen families vs held-out <code>slow_ramp</code> within the same frozen test set</td>
+<td>rule 0.667 → 0.000, Isolation Forest 0.000 → 0.000, RF 1.000 → 0.667–1.000</td>
+</tr>
+<tr>
+<td><strong>Graph relations</strong></td>
+<td><strong>unavailable</strong></td>
+<td>—</td>
+<td>no graph model was implemented; <code>unique_links</code> is a count, not a GNN</td>
+</tr>
+<tr>
+<td><strong>Topology generalisation</strong></td>
+<td><strong>unavailable</strong></td>
+<td>—</td>
+<td>only one Docker network configuration exists; two subnet names are not two topologies</td>
+</tr>
+</tbody>
+</table>
+<p>A note on the rule ablation: with the temporal features removed, the rule
+baseline is re-pointed to <code>bytes_mean</code> (the surviving non-temporal reference),
+because a rule that still read <code>rate_per_s</code> would not have been an ablation at
+all. <code>src/code/models.py</code> now raises if a rule references a feature outside its
+declared set, so this cannot silently recur.</p>
+<h3 id="error-analysis-highlights">Error analysis highlights</h3>
+<ul>
+<li><strong>False alarms dominate the fixed and random policies</strong>: 15/24 and 24/24
+  benign episodes alarm. The benign <code>maintenance_burst</code> variant is the
+  principal confuser.</li>
+<li><strong>The Isolation Forest produces zero alerts at every admissible threshold</strong>;
+  its ranking ability (PR-AUC ≈ 0.8) is not convertible into an operating
+  point that respects the false-alarm budget.</li>
+<li><strong>Pre-onset alarms</strong> occur in 23/24 incident episodes for strategic/RF and
+  1/24 for fixed/RF; every other configuration has none. This single column is
+  the most consequential in the whole study.</li>
+<li><strong>Misses</strong>: 16/24 incident episodes are missed by the rule baseline and 24/24
+  by the Isolation Forest; the Random Forest misses 0 (strategic), 1 (fixed)
+  and 4 (random) episodes.</li>
+<li>Uncertainty: episode-level bootstrap CIs (500 resamples, seed 20261115) are
+  attached to every coverage and false-alarm figure in <code>results.json</code>. With 24
+  incident episodes per configuration the intervals are wide; the
+  strategic-vs-random difference in false-alarm rate (0.083 vs 1.000) is large
+  relative to its interval, whereas the coverage differences between fixed and
+  random are not.</li>
+</ul>
+<hr>
+<h2 id="8-literature-comparison-method-level-not-numeric">8. Literature comparison (method-level, not numeric)</h2>
+<p><code>outputs/reports/&lt;run&gt;/literature_comparison.csv</code> — 15 unique references
+extracted from the PDFs held in <code>researchPapers/base-papers/</code>.</p>
+<p>The held references work almost exclusively on <strong>public benchmark datasets</strong>
+(NSL-KDD, UNSW-NB15, CIC-IDS2017/2018, CTU-13, ToN-IoT, Edge-IIoTset, BoT-IoT,
+CICIoT2023) with <strong>offline feature vectors</strong>, and they are dominated by
+<strong>graph neural network</strong> and <strong>transformer</strong> architectures, several with
+adversarial-training or reinforcement-learning components.</p>
+<p><strong>Their reported scores are not comparable with the numbers in this report</strong>,
+for four independent reasons:</p>
+<ol>
+<li><strong>Different data.</strong> These benchmarks contain real attack captures with
+   labelled attack tools; this laboratory contains controlled, harmless HTTP
+   behaviour profiles generated by a scenario controller.</li>
+<li><strong>Different observation source.</strong> Their features come from offline dataset
+   rows; here the network features are computed from a <em>live captured</em> TCP
+   trace re-read by Zeek, and the ground truth comes from a controller journal.</li>
+<li><strong>Different split and label semantics.</strong> Their splits are table-level
+   random or time-based splits of a fixed corpus; here the split is by whole
+   episode, decided before windowing, with a frozen test set that includes a
+   held-out behaviour family.</li>
+<li><strong>Different task.</strong> Several papers predict <em>the next victim</em> or perform
+   <em>multi-stage</em> attack attribution; this study measures detection and
+   <strong>pre-milestone warning</strong> with a strict definition, and does not attempt
+   future-stage prediction.</li>
+</ol>
+<p>The legitimate comparison is therefore <strong>mechanistic</strong>: the literature shows
+that graph and attention architectures dominate current intrusion-detection
+research; this study deliberately implements the <em>simplest</em> defensible
+baselines so that the contribution of the <strong>collection policy</strong> can be isolated
+from the contribution of the model. The most transferable insight from the
+literature for this project is the reported <strong>cross-dataset distributional
+drift</strong> problem, which is the same phenomenon measured here as the
+seen-family → unseen-family collapse of the rule baseline.</p>
+<hr>
+<h2 id="9-limitations-and-threats-to-validity">9. Limitations and threats to validity</h2>
+<ol>
+<li><strong>Synthetic, harmless profiles.</strong> Every "incident" is a controlled timing or
+   destination pattern. Nothing here demonstrates detection of real malware,
+   exploitation or exfiltration. No zero-day claim is made or supported.</li>
+<li><strong>Two seeds only.</strong> The main results come from seed 20261115; one
+   independent replication (seed 20261116) was collected and evaluated under
+   the identical protocol (§6.6). It shows that the <em>capture and sensor
+   pipeline</em> replicates exactly, but that the <strong>coverage ranking of the
+   collection policies does not</strong> - it changes with the seed. The study remains
+   <strong>exploratory</strong>; two seeds cannot establish a ranking, and further seeds
+   would be required for a claim of that kind.</li>
+<li><strong>One topology.</strong> A single two-segment Docker configuration exists, so
+   topology generalisation is untestable and is listed as unavailable.</li>
+<li><strong>Checksum caveat.</strong> The raw capture carries invalid TCP checksums from NIC
+   transmit offloading. The reported Zeek results come from a derived copy with
+   recomputed checksum fields, re-read with checksum validation <strong>enabled</strong> and
+   corroborated by an independent <code>-C</code> read with an identical connection count.
+   The raw PCAP is preserved unmodified. On a host where offloading can be
+   disabled without changing system configuration, the gate would produce
+   <code>SENSOR_VALIDATED</code> on the raw trace directly.</li>
+<li><strong>Small statistical power.</strong> 24 incident and 24 benign test episodes;
+   8 validation episodes per class per policy. The false-alarm budget of 0.15
+   is only just estimable, and bootstrap intervals are wide.</li>
+<li><strong>Heuristic strategic reward.</strong> The EXP3 selector's reward is a
+   <em>heuristic</em> function of inter-request timing and destination diversity
+   computed by the controller (<code>game_reward()</code>), <strong>not</strong> measured detector
+   feedback. This is a bounded scenario-selection bandit, not a validated
+   co-evolution or Nash-equilibrium defence.</li>
+<li><strong>Behavioural separability.</strong> The development families are highly separable
+   in this lab (PR-AUC up to 1.000 for the RF). Such scores reflect a simple
+   synthetic laboratory and must not be read as production NIDS performance.</li>
+<li><strong>No graph model.</strong> The graph component of the proposal is <strong>not</strong>
+   implemented; <code>unique_links</code> and <code>unique_destinations</code> are aggregate
+   features, not a graph neural network.</li>
+<li><strong>No future-stage prediction.</strong> Prediction of a future milestone was not
+   attempted because no independently defined future-positive set was built.</li>
+<li><strong>Response/containment recommendations</strong> were out of scope for Phase 3.</li>
+</ol>
+<hr>
+<h2 id="10-reproducibility-appendix">10. Reproducibility appendix</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value / path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run ID</td>
+<td><code>cpu_v3_main_v2_20261115T164430Z</code></td>
+</tr>
+<tr>
+<td>Collection command</td>
+<td><code>./setup/staged_collect_v3.sh --run-id cpu_v3_main_v2_20261115T164430Z --rounds 24 --test-rounds 24 --seed 20261115 --capture</code></td>
+</tr>
+<tr>
+<td>Collection log</td>
+<td><code>outputs/logs/collection_cpu_v3_main_v2_20261115T164430Z.log</code></td>
+</tr>
+<tr>
+<td>Raw run directory</td>
+<td><code>src/data/raw/runs/cpu_v3_main_v2_20261115T164430Z/</code></td>
+</tr>
+<tr>
+<td>PCAP SHA256 (raw, unmodified)</td>
+<td><code>b2be8d939f9cd48b420779f12cb11909fd5ef6e90efb56915f304980a0a81530</code></td>
+</tr>
+<tr>
+<td>PCAP SHA256 (derived checksum-repaired copy)</td>
+<td><code>b3c9be1542ce136cbc037d9973be8a7d658175be7216127252b50cec8f3f0ad7</code></td>
+</tr>
+<tr>
+<td>Sensor audit</td>
+<td><code>outputs/audits/cpu_v3_main_v2_20261115T164430Z/sensor_audit.json</code></td>
+</tr>
+<tr>
+<td>Run inventory</td>
+<td><code>outputs/reports/cpu_v3_main_v2_20261115T164430Z/run_inventory.json</code></td>
+</tr>
+<tr>
+<td>Zeek study</td>
+<td><code>outputs/studies/cpu_v3_main_v2_20261115T164430Z_zeek_20261115T165446Z/</code></td>
+</tr>
+<tr>
+<td>Gateway study</td>
+<td><code>outputs/studies/cpu_v3_main_v2_20261115T164430Z_gateway_20261115T165446Z/</code></td>
+</tr>
+<tr>
+<td>GRU study</td>
+<td><code>outputs/studies/cpu_v3_main_v2_20261115T164430Z_gru_zeek/</code></td>
+</tr>
+<tr>
+<td>Seed-2 replication run</td>
+<td><code>src/data/raw/runs/cpu_v3_main_v2_seed2_20261115T165949Z/</code></td>
+</tr>
+<tr>
+<td>Seed-2 sensor audit</td>
+<td><code>outputs/audits/cpu_v3_main_v2_seed2_20261115T165949Z/sensor_audit.json</code></td>
+</tr>
+<tr>
+<td>Seed-2 Zeek study</td>
+<td><code>outputs/studies/cpu_v3_main_v2_seed2_20261115T165949Z_zeek_20261115T170436Z/</code></td>
+</tr>
+<tr>
+<td>Seed comparison table</td>
+<td><code>outputs/reports/cpu_v3_main_v2_20261115T164430Z/seed_comparison.csv</code></td>
+</tr>
+<tr>
+<td>Environment</td>
+<td><code>outputs/environment/environment_20261115T162353Z.txt</code></td>
+</tr>
+<tr>
+<td>Machine inventory</td>
+<td><code>outputs/logs/setup/20261115T162353Z/machine_inventory.log</code></td>
+</tr>
+<tr>
+<td>Setup logs</td>
+<td><code>outputs/logs/setup/20261115T162353Z/</code></td>
+</tr>
+<tr>
+<td>Tests</td>
+<td><code>PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests</code> → <strong>53 passed</strong> (final log: <code>outputs/logs/final_verification/20261115T174629Z/verification.log</code>)</td>
+</tr>
+<tr>
+<td>Seed</td>
+<td>20261115 (collection, models, bootstrap)</td>
+</tr>
+<tr>
+<td>Threads</td>
+<td><code>OMP/MKL/OPENBLAS/NUMEXPR_NUM_THREADS=2</code>, <code>torch.set_num_threads(2)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="101-claim-to-artifact-map">10.1 Claim-to-artifact map</h3>
+<p>See <code>claim_artifact_table.csv</code> (this directory). Every headline number above is
+traceable to a stored file; nothing is recomputed by hand.</p>
+<p>The mapping is machine-checked: <code>setup/verify_report_numbers.py</code> re-reads every
+artefact and compares <strong>102</strong> quoted values across both seeds with the stored
+ones at the report's own rounding. The run of that check is stored in
+<code>report_number_verification.json</code>:</p>
+<pre><code class="language-bash">python -m setup.verify_report_numbers \
+  --zeek-study outputs/studies/cpu_v3_main_v2_20261115T164430Z_zeek_20261115T165446Z \
+  --gateway-study outputs/studies/cpu_v3_main_v2_20261115T164430Z_gateway_20261115T165446Z \
+  --gru-csv outputs/reports/cpu_v3_main_v2_20261115T164430Z/gru_metrics.csv \
+  --audit outputs/audits/cpu_v3_main_v2_20261115T164430Z/sensor_audit.json \
+  --inventory outputs/reports/cpu_v3_main_v2_20261115T164430Z/run_inventory.json \
+  --seed2-study outputs/studies/cpu_v3_main_v2_seed2_20261115T165949Z_zeek_20261115T170436Z \
+  --seed2-gru-csv outputs/reports/cpu_v3_main_v2_seed2_20261115T165949Z/gru_metrics.csv
+# -&gt; {&quot;checks_performed&quot;: 102, &quot;mismatches&quot;: [], &quot;status&quot;: &quot;PASS&quot;}
+</code></pre>
+<h3 id="102-reproduce-from-scratch">10.2 Reproduce from scratch</h3>
+<pre><code class="language-bash">export PATH=&quot;/opt/zeek/bin:$PATH&quot; PYTHONUNBUFFERED=1 PYTHONHASHSEED=20261115 CUDA_VISIBLE_DEVICES=&quot;&quot;
+export OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 NUMEXPR_NUM_THREADS=2
+. .venv/bin/activate
+RUN=&quot;cpu_v3_main_v2_$(date -u +%Y%m%dT%H%M%SZ)&quot;
+./setup/staged_collect_v3.sh --run-id &quot;$RUN&quot; --rounds 24 --test-rounds 24 --seed 20261115 --capture \
+  2&gt;&amp;1 | tee &quot;outputs/logs/collection_${RUN}.log&quot;
+python -m setup.staged_sensor_gate --run &quot;$RUN&quot; --output &quot;outputs/audits/$RUN/sensor_audit.json&quot; --require-validated
+python -m src.code.study --run &quot;$RUN&quot; --source zeek \
+  --zeek-conn &quot;outputs/audits/$RUN/zeek/repaired_strict_000/conn.log&quot; \
+  --output &quot;outputs/studies/${RUN}_zeek&quot; --seed 20261115 --evidence-tag SENSOR_VALIDATED
+python -m src.code.temporal_gru_sprint --run &quot;$RUN&quot; --output &quot;outputs/studies/${RUN}_gru_zeek&quot; \
+  --epochs 12 --device cpu --seed 20261115 --causal-labels --source zeek \
+  --zeek-conn &quot;outputs/audits/$RUN/zeek/repaired_strict_000/conn.log&quot;
+</code></pre>
+<h3 id="103-raw-evidence-is-distributed-separately-from-git">10.3 Raw evidence is distributed separately from Git</h3>
+<p>The raw evidence — the PCAPs, the per-request gateway log, the controller
+journal and the Zeek connection logs — is <strong>intentionally outside Git</strong>:
+<code>.gitignore</code> excludes <code>*.pcap</code>, <code>src/data/raw/*</code> and derived bulk logs so that
+packet records and multi-megabyte datasets are never committed. The repository
+alone reproduces the <strong>analysis</strong> from the derived study tables, but not the raw
+capture. The raw run directories and the figures' source data are supplied in
+the submission evidence bundle (<code>submission_manifest.json</code>, <code>SHA256SUMS.txt</code>,
+<code>README_REPRODUCE.md</code> and the archive whose hash is recorded there), built by
+<code>setup/package_phase3_submission.py</code>. If the archive is absent, the exact
+missing paths are listed by that tool and no claim of end-to-end
+reproducibility is made.</p>
+<h3 id="104-preserved-failures-and-negatives">10.4 Preserved failures and negatives</h3>
+<ul>
+<li><code>cpu_v3_pilot_20261115T162845Z</code> — capture sidecar could not create the PCAP
+  (restricted writer); fixed by D2.</li>
+<li><code>cpu_v3_pilot_20261115T163008Z</code> — gateway could not write its event log
+  (restricted writer); fixed by D1.</li>
+<li><code>cpu_v3_pilot_20261115T163257Z</code> — first fully successful capture (24
+  episodes, 480 events, 13,551 packets), <code>SENSOR_VALIDATED</code>; retained.</li>
+<li><code>cpu_v3_main_20261115T163638Z</code> — first 8+8 main capture under schema
+  <code>staged_v2_1</code> (64 episodes, 1,280 events, 35,951 packets), <code>SENSOR_VALIDATED</code>;
+  retained, and superseded because its test set contained only the held-out
+  family (D4).</li>
+<li><code>cpu_v3_pilot_v2_20261115T164336Z</code> — schema <code>staged_v2_2</code> protocol pilot;
+  retained.</li>
+<li><code>cpu_v3_main_v2_20261115T164430Z</code> — <strong>the reported main run</strong> (seed 20261115).</li>
+<li><code>cpu_v3_main_v2_seed2_20261115T165949Z</code> — <strong>independent replication</strong>
+  (seed 20261116), 192 episodes, 3,840 gateway events, 107,629 packets,
+  7,688 Zeek connections, <code>SENSOR_VALIDATED</code>; used for §6.6.</li>
+<li>All earlier <code>outputs/studies/*</code>, <code>outputs/backups/*</code> and <code>src/data/raw/runs/*</code>
+  directories are retained unmodified.</li>
+</ul><div class="appendix">
+<h2>Appendix A — Generated figures</h2>
+<h3>Zeek sensor</h3>
+<figure><img src="figures/zeek/fig01_dataset_composition.png" alt="fig01_dataset_composition"><figcaption><strong>fig01_dataset_composition</strong> — Episodes by policy, condition and profile. <span class="src">source data: <code>figures/zeek/fig01_dataset_composition.data.json</code></span></figcaption></figure>
+<figure><img src="figures/zeek/fig02_pr_curves.png" alt="fig02_pr_curves"><figcaption><strong>fig02_pr_curves</strong> — Episode-level precision/recall curves for the three baselines. <span class="src">source data: <code>figures/zeek/fig02_pr_curves.data.json</code></span></figcaption></figure>
+<figure><img src="figures/zeek/fig03_warning_coverage.png" alt="fig03_warning_coverage"><figcaption><strong>fig03_warning_coverage</strong> — Warning coverage against false-alarm rate, with episode-bootstrap 95 % CI. <span class="src">source data: <code>figures/zeek/fig03_warning_coverage.data.json</code></span></figcaption></figure>
+<figure><img src="figures/zeek/fig04_policy_comparison.png" alt="fig04_policy_comparison"><figcaption><strong>fig04_policy_comparison</strong> — Coverage-adjusted lead time, coverage, strict coverage and false-positive rate by policy. <span class="src">source data: <code>figures/zeek/fig04_policy_comparison.data.json</code></span></figcaption></figure>
+<figure><img src="figures/zeek/fig05_error_analysis.png" alt="fig05_error_analysis"><figcaption><strong>fig05_error_analysis</strong> — Valid early warning, late alerts, misses and false alarms. <span class="src">source data: <code>figures/zeek/fig05_error_analysis.data.json</code></span></figcaption></figure>
+<figure><img src="figures/zeek/fig06_lead_time.png" alt="fig06_lead_time"><figcaption><strong>fig06_lead_time</strong> — Per-episode lead time of valid warnings. <span class="src">source data: <code>figures/zeek/fig06_lead_time.data.json</code></span></figcaption></figure>
+<figure><img src="figures/zeek/fig07_architecture.png" alt="fig07_architecture"><figcaption><strong>fig07_architecture</strong> — Implementation and data-provenance diagram (describes the code, not a measurement). <span class="src">source data: <code>figures/zeek/fig07_architecture.data.json</code></span></figcaption></figure>
+<figure><img src="figures/zeek/fig08_sensor_evidence.png" alt="fig08_sensor_evidence"><figcaption><strong>fig08_sensor_evidence</strong> — The seven declared sensor checks and their outcome. <span class="src">source data: <code>figures/zeek/fig08_sensor_evidence.data.json</code></span></figcaption></figure>
+<figure><img src="figures/zeek/fig09_seed_comparison.png" alt="fig09_seed_comparison"><figcaption><strong>fig09_seed_comparison</strong> — Seed 1 versus seed 2 for every policy/model configuration. <span class="src">source data: <code>figures/zeek/fig09_seed_comparison.data.json</code></span></figcaption></figure>
+<h3>Gateway sensor</h3>
+<figure><img src="figures/gateway/fig01_dataset_composition.png" alt="fig01_dataset_composition"><figcaption><strong>fig01_dataset_composition</strong> — Episodes by policy, condition and profile. <span class="src">source data: <code>figures/gateway/fig01_dataset_composition.data.json</code></span></figcaption></figure>
+<figure><img src="figures/gateway/fig02_pr_curves.png" alt="fig02_pr_curves"><figcaption><strong>fig02_pr_curves</strong> — Episode-level precision/recall curves for the three baselines. <span class="src">source data: <code>figures/gateway/fig02_pr_curves.data.json</code></span></figcaption></figure>
+<figure><img src="figures/gateway/fig03_warning_coverage.png" alt="fig03_warning_coverage"><figcaption><strong>fig03_warning_coverage</strong> — Warning coverage against false-alarm rate, with episode-bootstrap 95 % CI. <span class="src">source data: <code>figures/gateway/fig03_warning_coverage.data.json</code></span></figcaption></figure>
+<figure><img src="figures/gateway/fig04_policy_comparison.png" alt="fig04_policy_comparison"><figcaption><strong>fig04_policy_comparison</strong> — Coverage-adjusted lead time, coverage, strict coverage and false-positive rate by policy. <span class="src">source data: <code>figures/gateway/fig04_policy_comparison.data.json</code></span></figcaption></figure>
+<figure><img src="figures/gateway/fig05_error_analysis.png" alt="fig05_error_analysis"><figcaption><strong>fig05_error_analysis</strong> — Valid early warning, late alerts, misses and false alarms. <span class="src">source data: <code>figures/gateway/fig05_error_analysis.data.json</code></span></figcaption></figure>
+<figure><img src="figures/gateway/fig06_lead_time.png" alt="fig06_lead_time"><figcaption><strong>fig06_lead_time</strong> — Per-episode lead time of valid warnings. <span class="src">source data: <code>figures/gateway/fig06_lead_time.data.json</code></span></figcaption></figure>
+<figure><img src="figures/gateway/fig07_architecture.png" alt="fig07_architecture"><figcaption><strong>fig07_architecture</strong> — Implementation and data-provenance diagram (describes the code, not a measurement). <span class="src">source data: <code>figures/gateway/fig07_architecture.data.json</code></span></figcaption></figure>
+<figure><img src="figures/gateway/fig08_sensor_evidence.png" alt="fig08_sensor_evidence"><figcaption><strong>fig08_sensor_evidence</strong> — The seven declared sensor checks and their outcome. <span class="src">source data: <code>figures/gateway/fig08_sensor_evidence.data.json</code></span></figcaption></figure>
+</div></body></html>

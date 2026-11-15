@@ -1,0 +1,29 @@
+{
+  "generated_utc": "2026-11-15T17:46:50.494632+00:00",
+  "run": "cpu_v3_main_v2_20261115T164430Z",
+  "report_sha256": "da05544279694386b5dbd8012d46d11e3fd141eb298c822aa80395ef6eb3b7f5",
+  "html": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/deliverables/phase3_submission/PHASE3_REPORT.html",
+  "pdf": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/deliverables/phase3_submission/PHASE3_REPORT.pdf",
+  "renderer": "google-chrome",
+  "pdf_validation": {
+    "validated": true,
+    "pages": 20,
+    "characters": 49345,
+    "title_present": true,
+    "sections_present": {
+      "Implementation objective and deviation log": true,
+      "Isolated lab, safety and sensor/data provenance": true,
+      "Scenarios, independent ground truth and the early-warning definition": true,
+      "Dataset, preprocessing, splits and leakage controls": true,
+      "Baselines, budgets, tuning and the CPU environment": true,
+      "Results": true,
+      "Ablations and error analysis": true,
+      "Literature comparison (method-level, not numeric)": true,
+      "Limitations and threats to validity": true,
+      "Reproducibility appendix": true
+    },
+    "all_sections_present": true,
+    "figure_references": 9,
+    "table_markers_present": true
+  }
+}

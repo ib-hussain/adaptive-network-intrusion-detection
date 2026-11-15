@@ -1,0 +1,81 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.8 Chrome/140.0.7339.240 Electron/38.4.0 Safari/537.36" version="28.2.8">
+  <diagram id="adaptive-nids-architecture" name="Adaptive NIDS Architecture">
+    <mxGraphModel dx="2901" dy="834" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Implementation &amp;amp; Data Provenance&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;fontSize=23;fontColor=#111111;" parent="1" vertex="1">
+          <mxGeometry x="260" y="15" width="1080" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="controller" value="&lt;b&gt;scenario controller&lt;/b&gt;&lt;br&gt;lab/staged_generate.py&lt;br&gt;policies fixed/random/strategic/test" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e2f0dc;strokeColor=#344b63;strokeWidth=2;fontSize=18;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="7.5" y="100" width="312" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="dockerlab" value="Docker lab (internal networks)&lt;br&gt;clients -&gt; gateway -&gt; server_a/server_b&lt;br&gt;TCP/8080, harmless HTTP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff0d0;strokeColor=#344b63;strokeWidth=2;fontSize=18;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1030" y="90" width="366" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="sensors" value="&lt;font color=&quot;#344b63&quot;&gt;gateway_subset.jsonl&lt;/font&gt;&lt;br&gt;1. gateway event log (application layer)&lt;br&gt;2. restricted tcpdump sidecar -&gt; PCAP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1e4f4;strokeColor=#344b63;strokeWidth=2;fontSize=17;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="-20" y="250" width="367" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="zeek" value="Zeek 9.0.1 offline read&lt;br&gt;strict checksums on a derived&lt;br&gt;checksum-repaired copy of the PCAP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f0fa;strokeColor=#344b63;strokeWidth=2;fontSize=18;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="580" y="300" width="367" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="gate" value="&lt;b&gt;strict sensor gate&lt;/b&gt;&lt;br&gt;setup/staged_sensor_gate.py&lt;br&gt;C1-C7 -&gt; evidence tag" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7dddd;strokeColor=#344b63;strokeWidth=2;fontSize=18;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1153" y="390" width="380" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="preprocess" value="leakage-safe preprocessing&lt;br&gt;episode split BEFORE windowing&lt;br&gt;causal window features" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e2f0dc;strokeColor=#344b63;strokeWidth=2;fontSize=18;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="213" y="530" width="367" height="109" as="geometry" />
+        </mxCell>
+        <mxCell id="baselines" value="baselines (CPU)&lt;br&gt;rule/rate, Isolation Forest,&lt;br&gt;Random Forest" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff0d0;strokeColor=#344b63;strokeWidth=2;fontSize=18;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="680" y="530" width="367" height="109" as="geometry" />
+        </mxCell>
+        <mxCell id="warning" value="early warning&lt;br&gt;onset &amp;lt;= t_alert &amp;lt; milestone&lt;br&gt;coverage-adjusted lead" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1e4f4;strokeColor=#344b63;strokeWidth=2;fontSize=18;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1140" y="530" width="380" height="109" as="geometry" />
+        </mxCell>
+        <mxCell id="frozen" value="frozen test set: policy=test episodes (seen + unseen families)&lt;br&gt;validation episodes select the alert threshold only" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#344b63;strokeWidth=2;fontSize=17;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="90" y="707" width="613" height="103" as="geometry" />
+        </mxCell>
+        <mxCell id="outputs" value="outputs: metrics.csv, results.json, figures, run_inventory.json,&lt;br&gt;sensor_audit.json, leakage_audit.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#344b63;strokeWidth=2;fontSize=17;fontColor=#111111;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="770" y="707" width="598" height="103" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_http" value="HTTP requests" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#344b63;strokeWidth=2;fontSize=16;fontColor=#344b63;labelBackgroundColor=#ffffff;" parent="1" source="controller" target="dockerlab" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_journal" value="controller journal&lt;br&gt;onset/escalation/milestone" style="edgeStyle=none;curved=1;html=1;endArrow=block;strokeColor=#344b63;strokeWidth=2;fontSize=16;fontColor=#344b63;labelBackgroundColor=#ffffff;" parent="1" source="dockerlab" target="controller" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="238" />
+              <mxPoint x="565" y="238" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_controller_sensor" value="" style="edgeStyle=none;html=1;endArrow=block;strokeColor=#344b63;strokeWidth=2;" parent="1" source="controller" target="sensors" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_capture_zeek" value="traffic_*.pcap" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#344b63;strokeWidth=2;fontSize=16;fontColor=#344b63;labelBackgroundColor=#ffffff;" parent="1" source="sensors" target="zeek" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_connlog" value="conn.log" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#344b63;strokeWidth=2;fontSize=16;fontColor=#344b63;labelBackgroundColor=#ffffff;" parent="1" source="zeek" target="gate" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_sensor_preprocess" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#344b63;strokeWidth=2;" parent="1" source="sensors" target="preprocess" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_gate_preprocess" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#344b63;strokeWidth=2;" parent="1" source="gate" target="preprocess" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_preprocess_models" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#344b63;strokeWidth=2;" parent="1" source="preprocess" target="baselines" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_models_warning" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#344b63;strokeWidth=2;" parent="1" source="baselines" target="warning" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_preprocess_frozen" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;endArrow=block;strokeColor=#344b63;strokeWidth=2;" parent="1" source="preprocess" target="frozen" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_frozen_outputs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;endArrow=block;strokeColor=#344b63;strokeWidth=2;" parent="1" source="frozen" target="outputs" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

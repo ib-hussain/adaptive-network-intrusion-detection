@@ -1,0 +1,44 @@
+ADAPTIVE NETWORK INTRUSION DETECTION — PHASE 3 FINAL DELIVERABLES
+
+Primary submission
+------------------
+Phase3_Adaptive_NIDS_Academic_Report.pdf
+    Academic Phase 3 implementation and experimental-evaluation report.
+
+Phase3_Adaptive_NIDS_Academic_Report.tex
+    LaTeX source used to compile the PDF.
+
+Supporting evidence
+-------------------
+evidence/PHASE3_REPORT_canonical.md
+    Full canonical report with expanded tables, paths, commands and caveats.
+
+evidence/REPRODUCE.md
+    Reproduction instructions for the isolated CPU-only experiment.
+
+evidence/*.csv and evidence/*.json
+    Claim-to-artifact mapping, model metrics, replication comparison,
+    environment/runtime inventory, literature comparison, and automated
+    numerical verification.
+
+evidence/final_verification/
+    Final test and report-number verification records.
+
+figures/zeek/ and figures/gateway/
+    Figures and the machine-readable data used to produce them. Zeek figures
+    are the primary SENSOR_VALIDATED results; gateway figures are diagnostic.
+
+source/adaptive-network-intrusion-detection_source_5f87663.zip
+    Source snapshot at repository revision 5f87663.
+
+Evidence boundary
+-----------------
+Raw PCAPs and generated run directories are intentionally excluded from Git
+and are not included in this archive. They are reproducible using
+evidence/REPRODUCE.md. No raw evidence has been invented or substituted.
+
+Verification summary
+--------------------
+53 automated tests passed.
+102 report values were checked against stored artefacts with zero mismatches.
+The final academic PDF was compiled from the included LaTeX source.
