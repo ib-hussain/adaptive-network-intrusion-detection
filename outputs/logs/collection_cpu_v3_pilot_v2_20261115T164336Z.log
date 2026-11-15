@@ -1,0 +1,60 @@
+[2026-11-15T16:43:36Z] [STAGE-V3] Lab services will run as uid=1000 gid=1000 (host user; no added capabilities)
+{"episode_budget": 24, "initialised": true, "run_dir": "src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z"}
+[2026-11-15T16:43:37Z] [STAGE-V3] Starting run=cpu_v3_pilot_v2_20261115T164336Z rounds=3 test_rounds=3 seed=20261115 capture=1 resume=0
+[2026-11-15T16:43:37Z] [STAGE-V3] Checking Compose service configuration without the broken V2 capture overlay
+[2026-11-15T16:43:37Z] [STAGE-V3] Starting authorised isolated lab services
+ Container phase3-adaptive-nids-server_b-1 Running 
+ Container phase3-adaptive-nids-gateway-1 Running 
+ Container phase3-adaptive-nids-server_a-1 Running 
+[2026-11-15T16:43:37Z] [STAGE-V3] Both Compose network segments confirmed internal
+[2026-11-15T16:43:37Z] [STAGE-V3] Gateway and backends ready
+[2026-11-15T16:43:37Z] [STAGE-V3] Capture file pre-created for restricted writer: src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/traffic_20261115T164337Z_199105.pcap
+[2026-11-15T16:43:37Z] [STAGE-V3] Starting capture in gateway network namespace; file: /home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/traffic_20261115T164337Z_199105.pcap
+c5757e59ea1991f8572a94b3bcc495d7d7f4b1ae6c5b43840f7a888b994b4baf
+[2026-11-15T16:43:41Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
+ Container phase3-adaptive-nids-runner-run-acb979e14770 Creating 
+ Container phase3-adaptive-nids-runner-run-acb979e14770 Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-15T16:43:44Z] [STAGE-V3] Capture preflight passed: actual packet records observed
+[2026-11-15T16:43:44Z] [STAGE-V3] Launching runner; full per-round output: src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/generator_20261115T164337Z_199105.log
+[2026-11-15T16:43:49Z] [STAGE-V3] HEARTBEAT runner PID=199689 completed_rounds=1/12; last_output=fixed round 1/3 committed; 2 complete episodes
+[2026-11-15T16:43:54Z] [STAGE-V3] HEARTBEAT runner PID=199689 completed_rounds=3/12; last_output=fixed round 3/3 committed; 6 complete episodes
+[2026-11-15T16:43:59Z] [STAGE-V3] HEARTBEAT runner PID=199689 completed_rounds=5/12; last_output=random round 2/3 committed; 10 complete episodes
+[2026-11-15T16:44:05Z] [STAGE-V3] HEARTBEAT runner PID=199689 completed_rounds=7/12; last_output=strategic round 1/3 committed; 14 complete episodes
+[2026-11-15T16:44:10Z] [STAGE-V3] HEARTBEAT runner PID=199689 completed_rounds=9/12; last_output=strategic round 3/3 committed; 18 complete episodes
+[2026-11-15T16:44:15Z] [STAGE-V3] HEARTBEAT runner PID=199689 completed_rounds=11/12; last_output=test round 2/3 committed; 22 complete episodes
+[2026-11-15T16:44:20Z] [STAGE-V3] HEARTBEAT runner PID=199689 completed_rounds=12/12; last_output={"complete": true, "episodes": 24, "run_dir": "/out/runs/cpu_v3_pilot_v2_20261115T164336Z"}
+[2026-11-15T16:44:20Z] [STAGE-V3] Runner exit code: 0; last 15 lines of generator log:
+ Container phase3-adaptive-nids-runner-run-3333dd6ab22d Creating 
+ Container phase3-adaptive-nids-runner-run-3333dd6ab22d Created 
+fixed round 1/3 committed; 2 complete episodes
+fixed round 2/3 committed; 4 complete episodes
+fixed round 3/3 committed; 6 complete episodes
+random round 1/3 committed; 8 complete episodes
+random round 2/3 committed; 10 complete episodes
+random round 3/3 committed; 12 complete episodes
+strategic round 1/3 committed; 14 complete episodes
+strategic round 2/3 committed; 16 complete episodes
+strategic round 3/3 committed; 18 complete episodes
+test round 1/3 committed; 20 complete episodes
+test round 2/3 committed; 22 complete episodes
+test round 3/3 committed; 24 complete episodes
+{"complete": true, "episodes": 24, "run_dir": "/out/runs/cpu_v3_pilot_v2_20261115T164336Z"}
+[2026-11-15T16:44:20Z] [STAGE-V3] All round records committed. Closing packet capture before extraction.
+[2026-11-15T16:44:20Z] [STAGE-V3] Stopping only our capture container: p3cap_cpu_v3_pilot_v2_20261115T164336Z_20261115T164337Z_199105 (bounded Docker timeout)
+p3cap_cpu_v3_pilot_v2_20261115T164336Z_20261115T164337Z_199105
+[2026-11-15T16:44:21Z] [STAGE-V3] Capture log saved to src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/capture_container_20261115T164337Z_199105.log
+p3cap_cpu_v3_pilot_v2_20261115T164336Z_20261115T164337Z_199105
+[2026-11-15T16:44:21Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-15T16:44:21Z] [STAGE-V3] Extracting ground-truth-aligned gateway observations
+{
+  "status": "validated_observed_gateway_subset_not_real_attack_data",
+  "episodes": 24,
+  "events": 480,
+  "output": "src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/gateway_subset.jsonl"
+}
+[2026-11-15T16:44:21Z] [STAGE-V3] Validating closed PCAP structure and nonzero observed packet count
+{"complete": true, "issue": null, "linktype": 276, "min_packets": 96, "packets": 13545, "path": "src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/traffic_20261115T164337Z_199105.pcap", "payload_bytes": 1479380, "size_bytes": 1696124, "valid": true, "version": [2, 4]}
+[2026-11-15T16:44:21Z] [STAGE-V3] Packet audit written: src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/capture_audit_20261115T164337Z_199105.json (independent Zeek alignment still required)
+[2026-11-15T16:44:21Z] [STAGE-V3] SUCCESS: cpu_v3_pilot_v2_20261115T164336Z; manifest=src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/episodes.jsonl, gateway=src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/gateway_subset.jsonl, packet=src/data/raw/runs/cpu_v3_pilot_v2_20261115T164336Z/traffic_20261115T164337Z_199105.pcap
+[2026-11-15T16:44:21Z] [STAGE-V3] Reminder: benign laboratory behavioural profiles, NOT evidence of genuine network intrusion.

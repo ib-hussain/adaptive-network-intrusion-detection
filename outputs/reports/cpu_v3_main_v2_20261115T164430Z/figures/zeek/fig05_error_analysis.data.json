@@ -1,0 +1,57 @@
+{
+  "early_warning": [
+    0,
+    23,
+    8,
+    0,
+    20,
+    8,
+    0,
+    24,
+    8
+  ],
+  "false_alarm_episodes": [
+    0,
+    15,
+    5,
+    0,
+    24,
+    3,
+    0,
+    2,
+    5
+  ],
+  "labels": [
+    "fixed/Isolation Forest",
+    "fixed/Random Forest",
+    "fixed/rule/rate",
+    "random/Isolation Forest",
+    "random/Random Forest",
+    "random/rule/rate",
+    "strategic/Isolation Forest",
+    "strategic/Random Forest",
+    "strategic/rule/rate"
+  ],
+  "late_detection": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "missed": [
+    24,
+    1,
+    16,
+    24,
+    4,
+    16,
+    24,
+    0,
+    16
+  ]
+}

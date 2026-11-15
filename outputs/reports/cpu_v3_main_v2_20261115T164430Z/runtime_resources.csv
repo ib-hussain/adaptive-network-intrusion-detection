@@ -1,0 +1,22 @@
+source,train_policy,model,threshold,fit_and_predict_runtime_s,test_windows,episode_pr_auc
+zeek,fixed,rule,0.9,0.088,1584,0.749208733975419
+zeek,fixed,isolation_forest,0.999,0.264,1584,0.8345128042131529
+zeek,fixed,rf,0.85,0.552,1584,0.863425310525225
+zeek,random,rule,0.9,0.09,1584,0.749208733975419
+zeek,random,isolation_forest,0.999,0.269,1584,0.7886734965093323
+zeek,random,rf,0.9,0.551,1584,0.8436400760286644
+zeek,strategic,rule,0.85,0.081,1584,0.749208733975419
+zeek,strategic,isolation_forest,0.999,0.261,1584,0.7931857136816776
+zeek,strategic,rf,0.9,0.555,1584,1.0
+gateway,fixed,rule,0.85,0.078,816,0.749208733975419
+gateway,fixed,isolation_forest,0.65,0.239,816,0.7968938163568351
+gateway,fixed,rf,0.7,0.527,816,0.9366923463334067
+gateway,random,rule,0.85,0.071,816,0.749208733975419
+gateway,random,isolation_forest,0.65,0.259,816,0.7480713152958234
+gateway,random,rf,0.9,0.538,816,0.9517293206491576
+gateway,strategic,rule,0.85,0.071,816,0.749208733975419
+gateway,strategic,isolation_forest,0.65,0.238,816,0.6097283376653371
+gateway,strategic,rf,0.96,0.533,816,0.9688783438783439
+zeek,fixed,gru_temporal_cpu,0.6,10.51 (3 policies x 12 epochs),1584,0.9334618100166852
+zeek,random,gru_temporal_cpu,0.75,10.51 (3 policies x 12 epochs),1584,0.9648581463236636
+zeek,strategic,gru_temporal_cpu,0.75,10.51 (3 policies x 12 epochs),1584,0.8694126079498058

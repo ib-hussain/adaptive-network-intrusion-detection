@@ -1,0 +1,18 @@
+temporal baseline: cpu source zeek n_events 8 episodes 192 training windows 6144
+fixed epoch 1 train BCE 0.5924
+fixed epoch 10 train BCE 0.3741
+fixed epoch 12 train BCE 0.341
+fixed finished; output outputs/studies/cpu_v3_main_v2_20261115T164430Z_gru_zeek/fixed/complete.json
+random epoch 1 train BCE 0.5823
+random epoch 10 train BCE 0.3801
+random epoch 12 train BCE 0.361
+random finished; output outputs/studies/cpu_v3_main_v2_20261115T164430Z_gru_zeek/random/complete.json
+strategic epoch 1 train BCE 0.5921
+strategic epoch 10 train BCE 0.3619
+strategic epoch 12 train BCE 0.3375
+strategic finished; output outputs/studies/cpu_v3_main_v2_20261115T164430Z_gru_zeek/strategic/complete.json
+GRU_FINISHED
+
+real	0m10.510s
+user	0m13.880s
+sys	0m0.473s
