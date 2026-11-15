@@ -1,0 +1,1 @@
+{"ts":1794760717.897307,"node":"zeek","filter":"ip or not ip","init":true,"success":true}

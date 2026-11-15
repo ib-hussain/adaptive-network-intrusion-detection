@@ -14,3 +14,58 @@
 [2026-11-15T16:36:45Z] [STAGE-V3] Capture process running; executing 4 genuine HTTP probe requests BEFORE experiment
  Container phase3-adaptive-nids-runner-run-ddf9254a8b4b Creating 
  Container phase3-adaptive-nids-runner-run-ddf9254a8b4b Created 
+CAPTURE_PROBE_HTTP_OK 4
+[2026-11-15T16:36:52Z] [STAGE-V3] Capture preflight passed: actual packet records observed
+[2026-11-15T16:36:52Z] [STAGE-V3] Launching runner; full per-round output: src/data/raw/runs/cpu_v3_main_20261115T163638Z/generator_20261115T163638Z_185569.log
+[2026-11-15T16:36:57Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=0/32; last_output= Container phase3-adaptive-nids-runner-run-0870384da067 Created 
+[2026-11-15T16:37:02Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=2/32; last_output=fixed round 2/8 committed; 4 complete episodes
+[2026-11-15T16:37:07Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=4/32; last_output=fixed round 4/8 committed; 8 complete episodes
+[2026-11-15T16:37:12Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=7/32; last_output=fixed round 7/8 committed; 14 complete episodes
+[2026-11-15T16:37:17Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=9/32; last_output=random round 1/8 committed; 18 complete episodes
+[2026-11-15T16:37:22Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=11/32; last_output=random round 2/8 committed; 20 complete episodes
+[2026-11-15T16:37:27Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=12/32; last_output=random round 4/8 committed; 24 complete episodes
+[2026-11-15T16:37:32Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=14/32; last_output=random round 6/8 committed; 28 complete episodes
+[2026-11-15T16:37:37Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=16/32; last_output=random round 8/8 committed; 32 complete episodes
+[2026-11-15T16:37:42Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=18/32; last_output=strategic round 2/8 committed; 36 complete episodes
+[2026-11-15T16:37:47Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=20/32; last_output=strategic round 4/8 committed; 40 complete episodes
+[2026-11-15T16:37:52Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=23/32; last_output=strategic round 7/8 committed; 46 complete episodes
+[2026-11-15T16:37:57Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=24/32; last_output=strategic round 8/8 committed; 48 complete episodes
+[2026-11-15T16:38:02Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=26/32; last_output=test round 2/8 committed; 52 complete episodes
+[2026-11-15T16:38:07Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=28/32; last_output=test round 4/8 committed; 56 complete episodes
+[2026-11-15T16:38:12Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=29/32; last_output=test round 5/8 committed; 58 complete episodes
+[2026-11-15T16:38:17Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=31/32; last_output=test round 7/8 committed; 62 complete episodes
+[2026-11-15T16:38:22Z] [STAGE-V3] HEARTBEAT runner PID=186393 completed_rounds=32/32; last_output={"complete": true, "episodes": 64, "run_dir": "/out/runs/cpu_v3_main_20261115T163638Z"}
+[2026-11-15T16:38:22Z] [STAGE-V3] Runner exit code: 0; last 15 lines of generator log:
+strategic round 3/8 committed; 38 complete episodes
+strategic round 4/8 committed; 40 complete episodes
+strategic round 5/8 committed; 42 complete episodes
+strategic round 6/8 committed; 44 complete episodes
+strategic round 7/8 committed; 46 complete episodes
+strategic round 8/8 committed; 48 complete episodes
+test round 1/8 committed; 50 complete episodes
+test round 2/8 committed; 52 complete episodes
+test round 3/8 committed; 54 complete episodes
+test round 4/8 committed; 56 complete episodes
+test round 5/8 committed; 58 complete episodes
+test round 6/8 committed; 60 complete episodes
+test round 7/8 committed; 62 complete episodes
+test round 8/8 committed; 64 complete episodes
+{"complete": true, "episodes": 64, "run_dir": "/out/runs/cpu_v3_main_20261115T163638Z"}
+[2026-11-15T16:38:22Z] [STAGE-V3] All round records committed. Closing packet capture before extraction.
+[2026-11-15T16:38:22Z] [STAGE-V3] Stopping only our capture container: p3cap_cpu_v3_main_20261115T163638Z_20261115T163638Z_185569 (bounded Docker timeout)
+p3cap_cpu_v3_main_20261115T163638Z_20261115T163638Z_185569
+[2026-11-15T16:38:24Z] [STAGE-V3] Capture log saved to src/data/raw/runs/cpu_v3_main_20261115T163638Z/capture_container_20261115T163638Z_185569.log
+p3cap_cpu_v3_main_20261115T163638Z_20261115T163638Z_185569
+[2026-11-15T16:38:24Z] [STAGE-V3] Capture process confirmed stopped
+[2026-11-15T16:38:24Z] [STAGE-V3] Extracting ground-truth-aligned gateway observations
+{
+  "status": "validated_observed_gateway_subset_not_real_attack_data",
+  "episodes": 64,
+  "events": 1280,
+  "output": "src/data/raw/runs/cpu_v3_main_20261115T163638Z/gateway_subset.jsonl"
+}
+[2026-11-15T16:38:24Z] [STAGE-V3] Validating closed PCAP structure and nonzero observed packet count
+{"complete": true, "issue": null, "linktype": 276, "min_packets": 256, "packets": 35951, "path": "src/data/raw/runs/cpu_v3_main_20261115T163638Z/traffic_20261115T163638Z_185569.pcap", "payload_bytes": 3905044, "size_bytes": 4480284, "valid": true, "version": [2, 4]}
+[2026-11-15T16:38:24Z] [STAGE-V3] Packet audit written: src/data/raw/runs/cpu_v3_main_20261115T163638Z/capture_audit_20261115T163638Z_185569.json (independent Zeek alignment still required)
+[2026-11-15T16:38:24Z] [STAGE-V3] SUCCESS: cpu_v3_main_20261115T163638Z; manifest=src/data/raw/runs/cpu_v3_main_20261115T163638Z/episodes.jsonl, gateway=src/data/raw/runs/cpu_v3_main_20261115T163638Z/gateway_subset.jsonl, packet=src/data/raw/runs/cpu_v3_main_20261115T163638Z/traffic_20261115T163638Z_185569.pcap
+[2026-11-15T16:38:24Z] [STAGE-V3] Reminder: benign laboratory behavioural profiles, NOT evidence of genuine network intrusion.

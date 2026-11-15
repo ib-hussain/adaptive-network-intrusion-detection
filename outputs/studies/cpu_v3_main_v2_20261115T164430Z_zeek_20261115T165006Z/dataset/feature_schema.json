@@ -1,0 +1,135 @@
+{
+  "causal_cutoff": "every feature uses only observations with ts <= window_end_ts",
+  "created_utc": "2026-11-15T16:50:09Z",
+  "features": [
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "observations inside the window",
+      "name": "event_count",
+      "source_sensor": "zeek",
+      "unit": "count"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "window event rate",
+      "name": "rate_per_s",
+      "source_sensor": "zeek",
+      "unit": "1/s"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "mean inter-observation gap",
+      "name": "gap_mean_s",
+      "source_sensor": "zeek",
+      "unit": "s"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "standard deviation of inter-observation gap",
+      "name": "gap_std_s",
+      "source_sensor": "zeek",
+      "unit": "s"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "coefficient of variation of the gap",
+      "name": "gap_cv",
+      "source_sensor": "zeek",
+      "unit": "ratio"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "mean bidirectional bytes per observation",
+      "name": "bytes_mean",
+      "source_sensor": "zeek",
+      "unit": "bytes"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "total bidirectional bytes in the window",
+      "name": "bytes_total",
+      "source_sensor": "zeek",
+      "unit": "bytes"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "mean request-direction bytes",
+      "name": "origin_bytes_mean",
+      "source_sensor": "zeek",
+      "unit": "bytes"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "mean response-direction bytes",
+      "name": "response_bytes_mean",
+      "source_sensor": "zeek",
+      "unit": "bytes"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "mean observation duration",
+      "name": "duration_mean_s",
+      "source_sensor": "zeek",
+      "unit": "s"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "distinct observed destinations",
+      "name": "unique_destinations",
+      "source_sensor": "zeek",
+      "unit": "count"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "distinct observed (source, destination) pairs",
+      "name": "unique_links",
+      "source_sensor": "zeek",
+      "unit": "count"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "Shannon entropy of the destination distribution",
+      "name": "destination_entropy",
+      "source_sensor": "zeek",
+      "unit": "bits"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "fraction of observations above 1024 bytes",
+      "name": "large_flow_fraction",
+      "source_sensor": "zeek",
+      "unit": "ratio"
+    },
+    {
+      "causal_cutoff": "window_end_ts",
+      "dtype": "float64",
+      "meaning": "fraction of observations using TCP",
+      "name": "tcp_fraction",
+      "source_sensor": "zeek",
+      "unit": "ratio"
+    }
+  ],
+  "label_rule": "incident window iff window_end_ts >= controller onset_ts",
+  "labels": {
+    "source": "scenario controller journal (independent of any detector)",
+    "target": "incident_window"
+  },
+  "n_events_per_window": 8,
+  "schema": "phase3_feature_schema_v1",
+  "source_sensor": "zeek",
+  "window_rule": "the last n observations of the episode up to and including window_end_ts"
+}

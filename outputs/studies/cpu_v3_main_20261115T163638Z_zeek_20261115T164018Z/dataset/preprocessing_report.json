@@ -1,0 +1,77 @@
+{
+  "created_utc": "2026-11-15T16:40:20Z",
+  "exclusions": {
+    "episodes_without_any_window": [],
+    "exclusion_reason": "incident windows whose end is at or after the controller milestone",
+    "windows_excluded_from_training": 48
+  },
+  "fit_only_transforms": "StandardScaler for the Isolation Forest is fitted on benign TRAINING windows only; the Random Forest and the rule baseline are fitted on training windows only",
+  "inputs": {
+    "episodes": 64,
+    "events": "outputs/audits/cpu_v3_main_20261115T163638Z/zeek/repaired_strict_000/conn.log",
+    "events_sha256": "d33387be1bddd335f04fde734cb7bc28223dcb27995ca11e879b94d4ebf82e93",
+    "manifest": "/home/ibrahim/Downloads/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261115T163638Z/episodes.jsonl",
+    "manifest_sha256": "836ed4a9cad2f78a9716a60f6bd2a815515ff1e3a228796f55fd3196a9bb68ec",
+    "observations": 2560
+  },
+  "label_definition": {
+    "causal_stage_labels": true,
+    "milestone_source": "scenario controller (lab/staged_generate.py)",
+    "onset_source": "scenario controller (lab/staged_generate.py), independent of any detector"
+  },
+  "missing_value_strategy": "no imputation: every Zeek/gateway record carries numeric byte and duration fields; absent byte counters are read as 0.0 and recorded as such by the sensor audit",
+  "observations_by_episode": {
+    "max": 40,
+    "min": 40
+  },
+  "schema": "phase3_preprocessing_report_v1",
+  "source_sensor": "zeek",
+  "splits": {
+    "episodes_by_split": {
+      "test": 16,
+      "train": 36,
+      "validation": 12
+    },
+    "negative_windows_by_split": {
+      "test": 368,
+      "train": 828,
+      "validation": 276
+    },
+    "policy_seed": 20261115,
+    "positive_windows_by_split": {
+      "test": 240,
+      "train": 540,
+      "validation": 180
+    },
+    "test_episodes": [
+      "v2-test-0-27824cdaf71a-benign",
+      "v2-test-0-27824cdaf71a-incident",
+      "v2-test-1-a95fc35321a9-benign",
+      "v2-test-1-a95fc35321a9-incident",
+      "v2-test-2-126997309fd2-benign",
+      "v2-test-2-126997309fd2-incident",
+      "v2-test-3-dec9456edc8c-benign",
+      "v2-test-3-dec9456edc8c-incident",
+      "v2-test-4-370fb1f627c5-benign",
+      "v2-test-4-370fb1f627c5-incident",
+      "v2-test-5-55ce57aca3eb-benign",
+      "v2-test-5-55ce57aca3eb-incident",
+      "v2-test-6-29bc426146c3-benign",
+      "v2-test-6-29bc426146c3-incident",
+      "v2-test-7-e6e028c28c5e-benign",
+      "v2-test-7-e6e028c28c5e-incident"
+    ],
+    "test_episodes_with_pre_milestone_windows": 16,
+    "test_pre_milestone_windows": 592,
+    "windows_by_split": {
+      "test": 608,
+      "train": 1368,
+      "validation": 456
+    }
+  },
+  "window_parameters": {
+    "min_events": 3,
+    "n_events": 4,
+    "stride": 1
+  }
+}

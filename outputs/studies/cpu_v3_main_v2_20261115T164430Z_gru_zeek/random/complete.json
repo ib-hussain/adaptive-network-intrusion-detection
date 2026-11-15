@@ -1,0 +1,376 @@
+{
+  "causal_labels": true,
+  "detection": {
+    "episode_f1": 0.8888888888888888,
+    "episode_pr_auc": 0.9648581463236636,
+    "episode_precision": 0.9523809523809523,
+    "episode_recall": 0.8333333333333334,
+    "episode_roc_auc": 0.9583333333333334,
+    "n_scored_episodes": 48
+  },
+  "device": "cpu",
+  "early_warning": {
+    "conditional_mean_lead_s": 0.5280552387237549,
+    "conditional_median_lead_s": 0.6016842126846313,
+    "coverage_adjusted_mean_lead_s": 0.4400460322697957,
+    "false_alarms_per_benign_hour": 107.4698035860942,
+    "false_positive_episode_rate": 0.041666666666666664,
+    "late_incidents": 0,
+    "missed_incidents": 4,
+    "n_benign": 24,
+    "n_incidents": 24,
+    "pre_milestone_coverage": 0.8333333333333334,
+    "pre_onset_warning_episodes": 0,
+    "pre_onset_warning_rate": 0.0,
+    "strict_first_alert_coverage": 0.8333333333333334,
+    "strict_first_alert_episodes": 20
+  },
+  "epochs": 12,
+  "per_episode": [
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-11-0b654e79f61e-incident",
+      "first_alert_ts": 1794761287.716842,
+      "lead_s": 0.48927760124206543,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-16-818efcdd518a-incident",
+      "first_alert_ts": 1794761301.497024,
+      "lead_s": 0.4343252182006836,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-5-4b6e82161200-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-11-0b654e79f61e-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-8-84b9cc4e9e49-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-14-1c351620cc83-incident",
+      "first_alert_ts": 1794761295.555776,
+      "lead_s": 0.6518185138702393,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-20-8d0d97ee3749-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-17-c005503201fd-incident",
+      "first_alert_ts": 1794761303.999556,
+      "lead_s": 0.4832758903503418,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-6-7f2e28d30b7d-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-9-72a6751be340-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-15-056c92be182e-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-21-b2776206adb1-incident",
+      "first_alert_ts": null,
+      "lead_s": null,
+      "outcome": "missed",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-8-84b9cc4e9e49-incident",
+      "first_alert_ts": 1794761279.313649,
+      "lead_s": 0.656172513961792,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-0-f9a0071abff3-incident",
+      "first_alert_ts": 1794761258.279656,
+      "lead_s": 0.5777285099029541,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-23-6420d8127a3b-incident",
+      "first_alert_ts": 1794761319.990054,
+      "lead_s": 0.7229132652282715,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-7-1f1894f19022-incident",
+      "first_alert_ts": 1794761276.657224,
+      "lead_s": 0.25547218322753906,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-1-e395bc4e0319-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-14-1c351620cc83-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-2-72aaa10642b2-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-3-7ad82ef725e2-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-0-f9a0071abff3-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-7-1f1894f19022-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-2-72aaa10642b2-incident",
+      "first_alert_ts": 1794761263.064482,
+      "lead_s": 0.5781402587890625,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-10-5e5ed30c9685-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-18-a298d5c2c73c-incident",
+      "first_alert_ts": 1794761306.56227,
+      "lead_s": 0.6252281665802002,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-16-818efcdd518a-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-10-5e5ed30c9685-incident",
+      "first_alert_ts": 1794761284.895041,
+      "lead_s": 0.6373071670532227,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-3-7ad82ef725e2-incident",
+      "first_alert_ts": null,
+      "lead_s": null,
+      "outcome": "missed",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-4-84fca922d643-incident",
+      "first_alert_ts": 1794761268.728034,
+      "lead_s": 0.6472511291503906,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-22-67fa5d776205-incident",
+      "first_alert_ts": 1794761317.298122,
+      "lead_s": 0.6554388999938965,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-6-7f2e28d30b7d-incident",
+      "first_alert_ts": 1794761274.120527,
+      "lead_s": 0.6371169090270996,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-1-e395bc4e0319-incident",
+      "first_alert_ts": 1794761260.751341,
+      "lead_s": 0.25046348571777344,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-4-84fca922d643-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-12-a6ebe1f7f6c2-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-13-7c963086f395-incident",
+      "first_alert_ts": 1794761293.154977,
+      "lead_s": 0.21367478370666504,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-5-4b6e82161200-incident",
+      "first_alert_ts": 1794761271.528576,
+      "lead_s": 0.4980792999267578,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-19-27f82f77af52-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-21-b2776206adb1-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-23-6420d8127a3b-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-9-72a6751be340-incident",
+      "first_alert_ts": null,
+      "lead_s": null,
+      "outcome": "missed",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-18-a298d5c2c73c-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-12-a6ebe1f7f6c2-incident",
+      "first_alert_ts": 1794761290.558318,
+      "lead_s": 0.6624283790588379,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-22-67fa5d776205-benign",
+      "lead_s": null,
+      "outcome": "false_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-15-056c92be182e-incident",
+      "first_alert_ts": null,
+      "lead_s": null,
+      "outcome": "missed",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-17-c005503201fd-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-19-27f82f77af52-incident",
+      "first_alert_ts": 1794761309.141788,
+      "lead_s": 0.25177979469299316,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "incident",
+      "episode_id": "v2-test-20-8d0d97ee3749-incident",
+      "first_alert_ts": 1794761311.795272,
+      "lead_s": 0.6332128047943115,
+      "outcome": "early_warning",
+      "pre_onset_alarm": false
+    },
+    {
+      "condition": "benign",
+      "episode_id": "v2-test-13-7c963086f395-benign",
+      "lead_s": null,
+      "outcome": "no_alarm"
+    }
+  ],
+  "policy": "random",
+  "samples": {
+    "held_out": 1584,
+    "train": 1024,
+    "val": 512
+  },
+  "seed": 20261115,
+  "status": "LAB_TRAFFIC_ENGINEERING_BASELINE_NOT_CYBERSECURITY_EVIDENCE",
+  "threshold_validation_only": 0.75
+}

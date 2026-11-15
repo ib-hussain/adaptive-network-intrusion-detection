@@ -1,0 +1,80 @@
+{
+  "all_passed": true,
+  "checks": {
+    "features_recomputable_from_window_observations": {
+      "mismatches": [],
+      "passed": true,
+      "sampled_windows": 60
+    },
+    "fit_only_scalers": {
+      "note": "the Isolation Forest pipeline's StandardScaler is fitted inside fit_baseline on training windows only",
+      "passed": true
+    },
+    "ground_truth_from_controller": {
+      "note": "onset/escalation/milestone timestamps are written by lab/staged_generate.py before any model runs; no detector output is used as ground truth",
+      "passed": true
+    },
+    "label_not_used_as_feature": {
+      "note": "labels live in a separate 'label' column and are never part of FEATURE_COLUMNS",
+      "passed": true
+    },
+    "no_forbidden_feature_names": {
+      "feature_columns": [
+        "event_count",
+        "rate_per_s",
+        "gap_mean_s",
+        "gap_std_s",
+        "gap_cv",
+        "bytes_mean",
+        "bytes_total",
+        "origin_bytes_mean",
+        "response_bytes_mean",
+        "duration_mean_s",
+        "unique_destinations",
+        "unique_links",
+        "destination_entropy",
+        "large_flow_fraction",
+        "tcp_fraction"
+      ],
+      "forbidden_patterns": [
+        "episode",
+        "policy",
+        "profile",
+        "scenario",
+        "milestone",
+        "onset",
+        "escalation",
+        "label",
+        "target",
+        "path",
+        "filename",
+        "src_host",
+        "dst_host",
+        "ip_addr",
+        "seed"
+      ],
+      "hits": [],
+      "passed": true
+    },
+    "test_episodes_absent_from_train_and_validation": {
+      "passed": true,
+      "violations": []
+    },
+    "train_validation_disjoint": {
+      "overlap": [],
+      "passed": true,
+      "train_episodes": 96,
+      "validation_episodes": 48
+    },
+    "training_windows_end_before_milestone": {
+      "passed": true,
+      "violations": []
+    },
+    "windows_inside_episode_interval": {
+      "passed": true,
+      "violations": []
+    }
+  },
+  "created_utc": "2026-11-15T16:50:09Z",
+  "schema": "phase3_leakage_audit_v1"
+}
