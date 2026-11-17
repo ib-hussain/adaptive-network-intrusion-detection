@@ -1,0 +1,67 @@
+{
+  "deliverable_created": "2026-11-17T12:01:01.756157+00:00",
+  "run_id": "cpu_v3_main_v2_20261115T164430Z",
+  "evidence_tag": "SENSOR_VALIDATED",
+  "seed": 20261115,
+  "replication_seed": 20261116,
+  "files": {
+    "PHASE3_REPORT.md": "Main Phase 3 report with graph ablation section",
+    "comprehensive_results.json": "Comprehensive experiment results (RF HPO, GNN, ablations)",
+    "ablations_graph.csv": "Ablation study with graph_features ablation (30 rows)",
+    "gnn_evaluation.json": "GNN baseline results (GraphSAGE PR-AUC=0.825, GAT PR-AUC=0.720)",
+    "study_results.json": "Original study results with all baselines",
+    "metrics.csv": "Per-model metrics from study",
+    "ablations.csv": "Original ablations (no_temporal_features, persistence_2)"
+  },
+  "key_results": {
+    "random_forest": {
+      "test_pr_auc": 0.8737,
+      "test_roc_auc": 0.8634
+    },
+    "graph_sage_window": {
+      "test_pr_auc": 0.4545,
+      "test_roc_auc": 0.5
+    },
+    "gat_window": {
+      "test_pr_auc": 0.4827,
+      "test_roc_auc": 0.5326
+    },
+    "graph_sage_small": {
+      "test_pr_auc": 0.825,
+      "test_roc_auc": null
+    },
+    "gat_small": {
+      "test_pr_auc": 0.7197,
+      "test_roc_auc": null
+    },
+    "ablation_graph_reduced": {
+      "rf_pr_auc": 0.858,
+      "if_pr_auc": 0.6508
+    },
+    "ablation_temporal_reduced": {
+      "rf_pr_auc": 0.6619,
+      "if_pr_auc": 0.4035
+    },
+    "ablation_full": {
+      "rf_pr_auc": 0.8742,
+      "if_pr_auc": 0.6108
+    }
+  },
+  "policy_results": {
+    "fixed": {
+      "coverage": 0.958,
+      "strict_coverage": 0.917,
+      "fpr": 0.625
+    },
+    "random": {
+      "coverage": 0.833,
+      "strict_coverage": 0.833,
+      "fpr": 1.0
+    },
+    "strategic": {
+      "coverage": 1.0,
+      "strict_coverage": 0.042,
+      "fpr": 0.083
+    }
+  }
+}
