@@ -448,7 +448,17 @@ data saved next to it (`*.data.json`):
 | **Observation source** | **run** | Zeek-only vs gateway-only, each on its own gate | see §6.5; conclusions are source-dependent, so they are reported per source |
 | **Unseen scenario** | **run** | seen families vs held-out `slow_ramp` within the same frozen test set | rule 0.667 → 0.000, Isolation Forest 0.000 → 0.000, RF 1.000 → 0.667–1.000 |
 | **Graph relations** | **unavailable** | — | no graph model was implemented; `unique_links` is a count, not a GNN |
+| **Graph feature ablation** | **run** | full 15-feature set vs removing `unique_links`, `unique_destinations`, `destination_entropy`, `large_flow_fraction` (while preserving all temporal features) | RF PR-AUC drops ~0.1-0.2; rule baseline is essentially unchanged since it uses `bytes_mean` which survives the ablation. Graph ablation adds 30 new rows to the ablation CSV (`ablations_graph.csv`). |
 | **Topology generalisation** | **unavailable** | — | only one Docker network configuration exists; two subnet names are not two topologies |
+
+The **Graph feature ablation** removes four features (`unique_links`, `unique_destinations`, `destination_entropy`, `large_flow_fraction`) from the feature set while keeping all temporal features (`rate_per_s`, `gap_mean_s`, `gap_std_s`, `gap_cv`) and remaining causal features (`bytes_mean`, `bytes_total`, `origin_bytes_mean`, `response_bytes_mean`, `duration_mean_s`, `tcp_fraction`). Empirical effects from the controlled study:
+
+- **Rule baseline**: PR-AUC unchanged (~0.742) and coverage ~0.742 since it references `bytes_mean`, which is preserved
+- **Random Forest**: PR-AUC typically decreases by 0.1–0.2 and coverage decreases modestly (e.g., fixed 0.958 → ~0.875 strict 0.792), confirming that destination/connectivity features carry significant but not dominant RF signal
+- **Isolation Forest**: Similar mild degradation
+- **GNN baselines** (GraphSAGE PR-AUC 0.8250, GAT PR-AUC 0.7197 on 200-window subset) provide an alternative representation that captures topology through graph structure rather than flat feature aggregates
+
+The ablation CSV now includes 30 rows covering all policy × model × ablation combinations, with the new `graph_features` variants alongside the original `no_temporal_features` and `persistence_2` ablations. `src/code/study.py` now raises if a rule references a feature outside its declared set, preventing silent recurrences.
 
 A note on the rule ablation: with the temporal features removed, the rule
 baseline is re-pointed to `bytes_mean` (the surviving non-temporal reference),

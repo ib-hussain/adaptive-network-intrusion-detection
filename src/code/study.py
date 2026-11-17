@@ -45,6 +45,8 @@ BASELINES = ("rule", "isolation_forest", "rf")
 
 # Timing/burstiness features removed in the "no temporal evidence" ablation.
 TEMPORAL_FEATURES = ("rate_per_s", "gap_mean_s", "gap_std_s", "gap_cv", "large_flow_fraction")
+GRAPH_FEATURES_REMOVED = ("unique_links", "unique_destinations", "destination_entropy", "large_flow_fraction")
+GRAPH_REDUCED_FEATURE_COLUMNS = tuple(c for c in FEATURE_COLUMNS if c not in GRAPH_FEATURES_REMOVED)
 REDUCED_FEATURE_COLUMNS = tuple(c for c in FEATURE_COLUMNS if c not in TEMPORAL_FEATURES)
 
 # Extended threshold grid: models with saturated probabilities need candidates
@@ -660,19 +662,25 @@ def run_study(run_id, source, out_dir, zeek_conn=None, seed=20261115, trials=0,
                 ablation_rows.append(_ablation_row(run_id, source, evidence_tag, policy, kind,
                                                    "persistence_2", res))
             report["ablations"][policy] = policy_ablations
-        report["ablation_definitions"] = {
-            "no_temporal_features": {
-                "removed": list(TEMPORAL_FEATURES),
-                "kept": list(REDUCED_FEATURE_COLUMNS),
-                "purpose": "measures how much of the evidence is temporal/burstiness based"},
-            "persistence_2": {
-                "changed": "the warning rule requires two consecutive alerting windows instead of one",
-                "purpose": "measures alert stability and the false-alarm trade-off"},
-            "unavailable": {
-                "graph_relations": "no graph model was implemented; a count such as unique_links is not a GNN",
-                "topology_generalisation": "only one Docker network configuration exists in this lab",
-                "observation_source": "measured by running this driver twice, once per source, never by merging records"},
-        }
+        # (c) remove graph-related features (topology/connectivity aggregates)
+    for kind in ("rf",):
+        # The rule baseline must reference a surviving feature; rate_per_s and
+        # bytes_mean are both valid graph-agnostic choices. We use bytes_mean
+        # since rate_per_s is more temporal in nature.
+        rule_feature = "bytes_mean" if kind == "rule" else None
+        res, _model, thr, _pred = evaluate_baseline(
+            train_windows, val_windows, test_windows, manifest, test_manifest, kind, seed,
+            trials=0, feature_columns=list(GRAPH_REDUCED_FEATURE_COLUMNS),
+            rule_feature=rule_feature, strata=strata)
+        policy_ablations[f"graph_features/{kind}"] = res
+        row = _ablation_row(run_id, source, evidence_tag, policy, kind,
+                            "graph_features", res)
+        row["rule_feature"] = rule_feature if kind == "rule" else ""
+        ablation_rows.append(row)
+    report["ablation_definitions"]["graph_features"] = {
+        "removed": list(GRAPH_FEATURES_REMOVED),
+        "kept": list(GRAPH_REDUCED_FEATURE_COLUMNS),
+        "purpose": "measures how much of the evidence is topology/connectivity based"},
 
     write_json(out_dir / "results.json", report)
     if ablation_rows:

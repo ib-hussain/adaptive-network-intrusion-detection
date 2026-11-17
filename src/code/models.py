@@ -5,6 +5,7 @@ from sklearn.metrics import average_precision_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from .features import FEATURE_COLUMNS
+from .gnn_baseline import GraphSAGEModel, GATModel
 
 
 class RuleRateBaseline:
