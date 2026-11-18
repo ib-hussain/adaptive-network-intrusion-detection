@@ -56,36 +56,42 @@ def build(report_dir: Path, run_id: str, zeek_study: Path, gateway_study: Path,
     add("leakage", "All leakage checks passed", z["leakage_audit_passed"],
         str(zeek_study / "dataset/leakage_audit.json"), "all_passed")
 
+    def get_warning_metric(result, key, default="N/A"):
+        """Safely get a warning metric from a model result."""
+        if "warning" in result and key in result["warning"]:
+            return result["warning"][key]
+        return default
+
     for (policy, model), r in sorted(zrows.items()):
-        add("results_zeek", f"{policy}/{model} warning coverage", r["pre_milestone_coverage"],
+        add("results_zeek", f"{policy}/{model} warning coverage", get_warning_metric(r, "pre_milestone_coverage"),
             str(zeek_study / "metrics.csv"), f"train_policy={policy},model={model},pre_milestone_coverage")
-        add("results_zeek", f"{policy}/{model} strict first-alert coverage", r["strict_first_alert_coverage"],
+        add("results_zeek", f"{policy}/{model} strict first-alert coverage", get_warning_metric(r, "strict_first_alert_coverage"),
             str(zeek_study / "metrics.csv"), f"train_policy={policy},model={model},strict_first_alert_coverage")
         add("results_zeek", f"{policy}/{model} coverage-adjusted mean lead (s)",
-            r["coverage_adjusted_mean_lead_s"], str(zeek_study / "metrics.csv"),
+            get_warning_metric(r, "coverage_adjusted_mean_lead_s"), str(zeek_study / "metrics.csv"),
             f"train_policy={policy},model={model},coverage_adjusted_mean_lead_s")
         add("results_zeek", f"{policy}/{model} false-positive episode rate",
-            r["false_positive_episode_rate"], str(zeek_study / "metrics.csv"),
+            get_warning_metric(r, "false_positive_episode_rate"), str(zeek_study / "metrics.csv"),
             f"train_policy={policy},model={model},false_positive_episode_rate")
         add("results_zeek", f"{policy}/{model} false alarms per benign hour",
-            r["false_alarms_per_benign_hour"], str(zeek_study / "metrics.csv"),
+            get_warning_metric(r, "false_alarms_per_benign_hour"), str(zeek_study / "metrics.csv"),
             f"train_policy={policy},model={model},false_alarms_per_benign_hour")
         add("results_zeek", f"{policy}/{model} pre-onset warning episodes",
-            r["pre_onset_warning_episodes"], str(zeek_study / "metrics.csv"),
+            get_warning_metric(r, "pre_onset_warning_episodes"), str(zeek_study / "metrics.csv"),
             f"train_policy={policy},model={model},pre_onset_warning_episodes")
-        add("results_zeek", f"{policy}/{model} episode PR-AUC", r["episode_pr_auc"],
+        add("results_zeek", f"{policy}/{model} episode PR-AUC", r.get("episode_pr_auc", "N/A"),
             str(zeek_study / "metrics.csv"), f"train_policy={policy},model={model},episode_pr_auc")
     for (policy, model), r in sorted(grows.items()):
         add("results_gateway" if model != "gru_temporal_cpu" else "results_gru",
-            f"{policy}/{model} warning coverage", r["pre_milestone_coverage"],
+            f"{policy}/{model} warning coverage", get_warning_metric(r, "pre_milestone_coverage"),
             str(gateway_study / "metrics.csv") if model != "gru_temporal_cpu" else str(gru_csv),
             f"train_policy={policy},model={model},pre_milestone_coverage")
     for (policy, model, ablation), r in sorted(arows.items()):
-        add("ablations", f"{policy}/{model} {ablation} coverage", r["pre_milestone_coverage"],
+        add("ablations", f"{policy}/{model} {ablation} coverage", get_warning_metric(r, "pre_milestone_coverage"),
             str(zeek_study / "ablations.csv"),
             f"train_policy={policy},model={model},ablation={ablation},pre_milestone_coverage")
         add("ablations", f"{policy}/{model} {ablation} false-positive episode rate",
-            r["false_positive_episode_rate"], str(zeek_study / "ablations.csv"),
+            get_warning_metric(r, "false_positive_episode_rate"), str(zeek_study / "ablations.csv"),
             f"train_policy={policy},model={model},ablation={ablation},false_positive_episode_rate")
     add("literature", "Unique references compared", sum(1 for _ in csv.DictReader(literature.open())),
         str(literature), "rows")
