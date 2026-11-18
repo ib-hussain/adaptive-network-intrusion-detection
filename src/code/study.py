@@ -574,6 +574,27 @@ def run_study(run_id, source, out_dir, zeek_conn=None, seed=20261115, trials=0,
                          for name, sub in strata.items()},
         "methods": {},
         "ablations": {},
+        "ablation_definitions": {
+            "no_temporal_features": {
+                "removed": list(TEMPORAL_FEATURES),
+                "kept": list(REDUCED_FEATURE_COLUMNS),
+                "purpose": "measures how much of the evidence is temporal/burstiness based"
+            },
+            "persistence_2": {
+                "changed": "the warning rule requires two consecutive alerting windows instead of one",
+                "purpose": "measures alert stability and the false-alarm trade-off"
+            },
+            "graph_features": {
+                "removed": list(GRAPH_FEATURES_REMOVED),
+                "kept": list(GRAPH_REDUCED_FEATURE_COLUMNS),
+                "purpose": "measures how much of the evidence is topology/connectivity based"
+            },
+            "unavailable": {
+                "graph_relations": "no graph model was implemented; a count such as unique_links is not a GNN",
+                "topology_generalisation": "only one Docker network configuration exists in this lab",
+                "observation_source": "measured by running this driver twice, once per source, never by merging records"
+            },
+        },
         "environment": {"python": sys.version.split()[0], "platform": platform.platform(),
                         "numpy": np.__version__},
         "inputs": {"manifest_sha256": sha256(manifest_path), "events_sha256": sha256(events_path)},
@@ -677,10 +698,6 @@ def run_study(run_id, source, out_dir, zeek_conn=None, seed=20261115, trials=0,
                             "graph_features", res)
         row["rule_feature"] = rule_feature if kind == "rule" else ""
         ablation_rows.append(row)
-    report["ablation_definitions"]["graph_features"] = {
-        "removed": list(GRAPH_FEATURES_REMOVED),
-        "kept": list(GRAPH_REDUCED_FEATURE_COLUMNS),
-        "purpose": "measures how much of the evidence is topology/connectivity based"},
 
     write_json(out_dir / "results.json", report)
     if ablation_rows:
