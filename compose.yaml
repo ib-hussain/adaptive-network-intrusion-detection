@@ -1,7 +1,4 @@
 name: phase3-adaptive-nids
-# Every service runs with cap_drop: ALL, so container-root has no DAC_OVERRIDE and
-# cannot write into the bind-mounted host data directory. LAB_UID/LAB_GID make the
-# containers write as the invoking host user instead of widening capabilities.
 services:
   server_a:
     image: python:3.12-slim
@@ -10,9 +7,8 @@ services:
     command: ["python", "-m", "lab.http_service", "--role", "service", "--port", "8080"]
     volumes: ["./lab:/app/lab:ro"]
     networks: [services]
-    read_only: true
-    security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
+    cap_add: [CAP_DAC_OVERRIDE]
   server_b:
     image: python:3.12-slim
     user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
@@ -20,9 +16,8 @@ services:
     command: ["python", "-m", "lab.http_service", "--role", "service", "--port", "8080"]
     volumes: ["./lab:/app/lab:ro"]
     networks: [services]
-    read_only: true
-    security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
+    cap_add: [CAP_DAC_OVERRIDE]
   gateway:
     image: python:3.12-slim
     user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
@@ -31,8 +26,8 @@ services:
     volumes: ["./lab:/app/lab:ro", "./src/data/raw:/out"]
     networks: [clients, services]
     depends_on: [server_a, server_b]
-    security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
+    cap_add: [CAP_DAC_OVERRIDE]
   runner:
     image: python:3.12-slim
     user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
@@ -42,8 +37,8 @@ services:
     volumes: ["./lab:/app/lab:ro", "./src:/app/src:ro", "./src/data/raw:/out"]
     networks: [clients]
     depends_on: [gateway]
-    security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
+    cap_add: [CAP_DAC_OVERRIDE]
 networks:
   clients:
     internal: true

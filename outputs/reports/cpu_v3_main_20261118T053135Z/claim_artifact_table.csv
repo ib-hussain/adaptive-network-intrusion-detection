@@ -1,0 +1,92 @@
+section,claim,reported_value,artifact_path,artifact_field
+dataset,Episodes collected,64,outputs/reports/cpu_v3_main_20261118T053135Z/run_inventory.json,counts.episodes
+dataset,Gateway events collected,1280,outputs/reports/cpu_v3_main_20261118T053135Z/run_inventory.json,counts.gateway_events
+dataset,PCAP bytes,4447287,outputs/reports/cpu_v3_main_20261118T053135Z/run_inventory.json,counts.pcap_bytes
+dataset,PCAP packet records,35711,outputs/reports/cpu_v3_main_20261118T053135Z/run_inventory.json,counts.pcap_packets
+dataset,Zeek TCP connections,2550,outputs/reports/cpu_v3_main_20261118T053135Z/run_inventory.json,counts.zeek_conn_entries
+dataset,Raw PCAP SHA256,9196c4120676e1e1155aef6403ad87f288f1ad78b4abb341a43517893a58d40c,outputs/reports/cpu_v3_main_20261118T053135Z/run_inventory.json,source_hashes
+split,Frozen test episodes,16,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/results.json,test_episodes
+split,Test incident episodes,8,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/results.json,test_incident_episodes
+split,Test benign episodes,8,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/results.json,test_benign_episodes
+split,Total feature windows,2094,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/results.json,n_windows
+sensor,Evidence tag,SENSOR_VALIDATED,outputs/audits/cpu_v3_main_20261118T053135Z/sensor_audit.json,evidence_tag
+sensor,Bidirectional connection fraction,1.0,outputs/audits/cpu_v3_main_20261118T053135Z/sensor_audit.json,checks.C5.bidirectional_fraction
+sensor,Ambiguous timestamp joins,0,outputs/audits/cpu_v3_main_20261118T053135Z/sensor_audit.json,checks.C6.ambiguous_timestamp_matches
+sensor,Checksum validation ignored,False,outputs/audits/cpu_v3_main_20261118T053135Z/sensor_audit.json,checksum_validation_ignored
+sensor,Checksum repaired derived copy used,True,outputs/audits/cpu_v3_main_20261118T053135Z/sensor_audit.json,checksum_repaired
+sensor,Repaired-strict vs checksum-ignored connection count agreement,True,outputs/audits/cpu_v3_main_20261118T053135Z/sensor_audit.json,zeek.repair_consistency.counts_match
+leakage,All leakage checks passed,True,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/dataset/leakage_audit.json,all_passed
+results_zeek,fixed/isolation_forest warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=isolation_forest,pre_milestone_coverage"
+results_zeek,fixed/isolation_forest strict first-alert coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=isolation_forest,strict_first_alert_coverage"
+results_zeek,fixed/isolation_forest coverage-adjusted mean lead (s),N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=isolation_forest,coverage_adjusted_mean_lead_s"
+results_zeek,fixed/isolation_forest false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=isolation_forest,false_positive_episode_rate"
+results_zeek,fixed/isolation_forest false alarms per benign hour,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=isolation_forest,false_alarms_per_benign_hour"
+results_zeek,fixed/isolation_forest pre-onset warning episodes,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=isolation_forest,pre_onset_warning_episodes"
+results_zeek,fixed/isolation_forest episode PR-AUC,0.7490079365079365,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=isolation_forest,episode_pr_auc"
+results_zeek,fixed/rule warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=rule,pre_milestone_coverage"
+results_zeek,fixed/rule strict first-alert coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=rule,strict_first_alert_coverage"
+results_zeek,fixed/rule coverage-adjusted mean lead (s),N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=rule,coverage_adjusted_mean_lead_s"
+results_zeek,fixed/rule false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=rule,false_positive_episode_rate"
+results_zeek,fixed/rule false alarms per benign hour,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=rule,false_alarms_per_benign_hour"
+results_zeek,fixed/rule pre-onset warning episodes,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=rule,pre_onset_warning_episodes"
+results_zeek,fixed/rule episode PR-AUC,0.7656746031746031,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=fixed,model=rule,episode_pr_auc"
+results_zeek,random/isolation_forest warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=random,model=isolation_forest,pre_milestone_coverage"
+results_zeek,random/isolation_forest strict first-alert coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=random,model=isolation_forest,strict_first_alert_coverage"
+results_zeek,random/isolation_forest coverage-adjusted mean lead (s),N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=random,model=isolation_forest,coverage_adjusted_mean_lead_s"
+results_zeek,random/isolation_forest false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=random,model=isolation_forest,false_positive_episode_rate"
+results_zeek,random/isolation_forest false alarms per benign hour,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=random,model=isolation_forest,false_alarms_per_benign_hour"
+results_zeek,random/isolation_forest pre-onset warning episodes,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=random,model=isolation_forest,pre_onset_warning_episodes"
+results_zeek,random/isolation_forest episode PR-AUC,0.6495851370851371,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=random,model=isolation_forest,episode_pr_auc"
+results_zeek,strategic/isolation_forest warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=isolation_forest,pre_milestone_coverage"
+results_zeek,strategic/isolation_forest strict first-alert coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=isolation_forest,strict_first_alert_coverage"
+results_zeek,strategic/isolation_forest coverage-adjusted mean lead (s),N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=isolation_forest,coverage_adjusted_mean_lead_s"
+results_zeek,strategic/isolation_forest false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=isolation_forest,false_positive_episode_rate"
+results_zeek,strategic/isolation_forest false alarms per benign hour,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=isolation_forest,false_alarms_per_benign_hour"
+results_zeek,strategic/isolation_forest pre-onset warning episodes,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=isolation_forest,pre_onset_warning_episodes"
+results_zeek,strategic/isolation_forest episode PR-AUC,0.7425976800976801,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=isolation_forest,episode_pr_auc"
+results_zeek,strategic/rule warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=rule,pre_milestone_coverage"
+results_zeek,strategic/rule strict first-alert coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=rule,strict_first_alert_coverage"
+results_zeek,strategic/rule coverage-adjusted mean lead (s),N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=rule,coverage_adjusted_mean_lead_s"
+results_zeek,strategic/rule false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=rule,false_positive_episode_rate"
+results_zeek,strategic/rule false alarms per benign hour,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=rule,false_alarms_per_benign_hour"
+results_zeek,strategic/rule pre-onset warning episodes,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=rule,pre_onset_warning_episodes"
+results_zeek,strategic/rule episode PR-AUC,0.7656746031746031,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/metrics.csv,"train_policy=strategic,model=rule,episode_pr_auc"
+results_gru,fixed/gru_temporal_cpu warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_gru_zeek/gru_metrics.csv,"train_policy=fixed,model=gru_temporal_cpu,pre_milestone_coverage"
+results_gateway,fixed/isolation_forest warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_gateway/metrics.csv,"train_policy=fixed,model=isolation_forest,pre_milestone_coverage"
+results_gru,random/gru_temporal_cpu warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_gru_zeek/gru_metrics.csv,"train_policy=random,model=gru_temporal_cpu,pre_milestone_coverage"
+results_gateway,random/isolation_forest warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_gateway/metrics.csv,"train_policy=random,model=isolation_forest,pre_milestone_coverage"
+results_gru,strategic/gru_temporal_cpu warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_gru_zeek/gru_metrics.csv,"train_policy=strategic,model=gru_temporal_cpu,pre_milestone_coverage"
+results_gateway,strategic/isolation_forest warning coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_gateway/metrics.csv,"train_policy=strategic,model=isolation_forest,pre_milestone_coverage"
+ablations,fixed/isolation_forest no_temporal_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=isolation_forest,ablation=no_temporal_features,pre_milestone_coverage"
+ablations,fixed/isolation_forest no_temporal_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=isolation_forest,ablation=no_temporal_features,false_positive_episode_rate"
+ablations,fixed/isolation_forest persistence_2 coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=isolation_forest,ablation=persistence_2,pre_milestone_coverage"
+ablations,fixed/isolation_forest persistence_2 false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=isolation_forest,ablation=persistence_2,false_positive_episode_rate"
+ablations,fixed/rf no_temporal_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=rf,ablation=no_temporal_features,pre_milestone_coverage"
+ablations,fixed/rf no_temporal_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=rf,ablation=no_temporal_features,false_positive_episode_rate"
+ablations,fixed/rf persistence_2 coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=rf,ablation=persistence_2,pre_milestone_coverage"
+ablations,fixed/rf persistence_2 false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=rf,ablation=persistence_2,false_positive_episode_rate"
+ablations,fixed/rule no_temporal_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=rule,ablation=no_temporal_features,pre_milestone_coverage"
+ablations,fixed/rule no_temporal_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=fixed,model=rule,ablation=no_temporal_features,false_positive_episode_rate"
+ablations,random/isolation_forest no_temporal_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=isolation_forest,ablation=no_temporal_features,pre_milestone_coverage"
+ablations,random/isolation_forest no_temporal_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=isolation_forest,ablation=no_temporal_features,false_positive_episode_rate"
+ablations,random/isolation_forest persistence_2 coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=isolation_forest,ablation=persistence_2,pre_milestone_coverage"
+ablations,random/isolation_forest persistence_2 false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=isolation_forest,ablation=persistence_2,false_positive_episode_rate"
+ablations,random/rf no_temporal_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=rf,ablation=no_temporal_features,pre_milestone_coverage"
+ablations,random/rf no_temporal_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=rf,ablation=no_temporal_features,false_positive_episode_rate"
+ablations,random/rf persistence_2 coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=rf,ablation=persistence_2,pre_milestone_coverage"
+ablations,random/rf persistence_2 false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=rf,ablation=persistence_2,false_positive_episode_rate"
+ablations,random/rule no_temporal_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=rule,ablation=no_temporal_features,pre_milestone_coverage"
+ablations,random/rule no_temporal_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=random,model=rule,ablation=no_temporal_features,false_positive_episode_rate"
+ablations,strategic/isolation_forest no_temporal_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=isolation_forest,ablation=no_temporal_features,pre_milestone_coverage"
+ablations,strategic/isolation_forest no_temporal_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=isolation_forest,ablation=no_temporal_features,false_positive_episode_rate"
+ablations,strategic/isolation_forest persistence_2 coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=isolation_forest,ablation=persistence_2,pre_milestone_coverage"
+ablations,strategic/isolation_forest persistence_2 false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=isolation_forest,ablation=persistence_2,false_positive_episode_rate"
+ablations,strategic/rf graph_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=rf,ablation=graph_features,pre_milestone_coverage"
+ablations,strategic/rf graph_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=rf,ablation=graph_features,false_positive_episode_rate"
+ablations,strategic/rf no_temporal_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=rf,ablation=no_temporal_features,pre_milestone_coverage"
+ablations,strategic/rf no_temporal_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=rf,ablation=no_temporal_features,false_positive_episode_rate"
+ablations,strategic/rf persistence_2 coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=rf,ablation=persistence_2,pre_milestone_coverage"
+ablations,strategic/rf persistence_2 false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=rf,ablation=persistence_2,false_positive_episode_rate"
+ablations,strategic/rule no_temporal_features coverage,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=rule,ablation=no_temporal_features,pre_milestone_coverage"
+ablations,strategic/rule no_temporal_features false-positive episode rate,N/A,outputs/studies/cpu_v3_main_20261118T053135Z_zeek/ablations.csv,"train_policy=strategic,model=rule,ablation=no_temporal_features,false_positive_episode_rate"
+literature,Unique references compared,15,outputs/reports/cpu_v3_main_20261118T053135Z/literature_comparison.csv,rows

@@ -1,0 +1,214 @@
+{
+  "coverage_adjusted_mean_lead_s": {
+    "isolation_forest": {
+      "ci_high": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ci_low": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rf": {
+      "ci_high": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ci_low": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "values": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "rule": {
+      "ci_high": [
+        0.2773047089576721,
+        NaN,
+        0.2741940915584564
+      ],
+      "ci_low": [
+        0.0,
+        NaN,
+        0.0
+      ],
+      "values": [
+        0.09450864791870117,
+        NaN,
+        0.09139803051948547
+      ]
+    }
+  },
+  "false_positive_episode_rate": {
+    "isolation_forest": {
+      "ci_high": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ci_low": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rf": {
+      "ci_high": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ci_low": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "values": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "rule": {
+      "ci_high": [
+        0.375,
+        NaN,
+        0.0
+      ],
+      "ci_low": [
+        0.0,
+        NaN,
+        0.0
+      ],
+      "values": [
+        0.125,
+        NaN,
+        0.0
+      ]
+    }
+  },
+  "pre_milestone_coverage": {
+    "isolation_forest": {
+      "ci_high": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ci_low": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rf": {
+      "ci_high": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ci_low": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "values": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "rule": {
+      "ci_high": [
+        0.625,
+        NaN,
+        0.375
+      ],
+      "ci_low": [
+        0.0,
+        NaN,
+        0.0
+      ],
+      "values": [
+        0.25,
+        NaN,
+        0.125
+      ]
+    }
+  },
+  "strict_first_alert_coverage": {
+    "isolation_forest": {
+      "ci_high": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ci_low": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rf": {
+      "ci_high": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ci_low": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "values": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "rule": {
+      "ci_high": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ci_low": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "values": [
+        0.25,
+        NaN,
+        0.125
+      ]
+    }
+  }
+}

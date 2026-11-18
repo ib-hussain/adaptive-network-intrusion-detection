@@ -1,0 +1,62 @@
+{
+  "episodes": 64,
+  "episodes_by_condition": {
+    "benign": 32,
+    "incident": 32
+  },
+  "episodes_by_policy": {
+    "fixed": 16,
+    "random": 16,
+    "strategic": 16,
+    "test": 16
+  },
+  "episodes_by_policy_profile": {
+    "fixed/approved_bulk": 2,
+    "fixed/destination_shift": 3,
+    "fixed/jittered_burst": 2,
+    "fixed/maintenance_burst": 2,
+    "fixed/rapid_repeat": 3,
+    "fixed/service_fanout": 2,
+    "fixed/steady": 2,
+    "random/approved_bulk": 2,
+    "random/destination_shift": 3,
+    "random/jittered_burst": 3,
+    "random/maintenance_burst": 2,
+    "random/rapid_repeat": 2,
+    "random/service_fanout": 2,
+    "random/steady": 2,
+    "strategic/approved_bulk": 2,
+    "strategic/destination_shift": 4,
+    "strategic/jittered_burst": 2,
+    "strategic/maintenance_burst": 2,
+    "strategic/rapid_repeat": 2,
+    "strategic/service_fanout": 2,
+    "strategic/steady": 2,
+    "test/approved_bulk": 2,
+    "test/destination_shift": 1,
+    "test/jittered_burst": 1,
+    "test/maintenance_burst": 2,
+    "test/rapid_repeat": 2,
+    "test/service_fanout": 2,
+    "test/slow_ramp": 4,
+    "test/steady": 2
+  },
+  "episodes_by_profile": {
+    "approved_bulk": 8,
+    "destination_shift": 11,
+    "jittered_burst": 8,
+    "maintenance_burst": 8,
+    "rapid_repeat": 9,
+    "service_fanout": 8,
+    "slow_ramp": 4,
+    "steady": 8
+  },
+  "game_rounds": 24,
+  "gateway_events": 1280,
+  "gateway_events_per_episode": 20.0,
+  "pcap_bytes": 4447287,
+  "pcap_packets": 35711,
+  "pcap_segments": 1,
+  "requests_in_manifest": 1280,
+  "zeek_conn_entries": 2550
+}

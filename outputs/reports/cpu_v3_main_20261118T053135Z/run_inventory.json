@@ -1,0 +1,169 @@
+{
+  "collection_command": null,
+  "collection_log": null,
+  "complete_marker": {
+    "condition": "HARMLess_CONTROLLED_NETWORK_SCENARIOS_NOT_REAL_INTRUSIONS",
+    "episodes": 64,
+    "expected_episodes": 64,
+    "schema": "staged_v2_2"
+  },
+  "counts": {
+    "episodes": 64,
+    "episodes_by_condition": {
+      "benign": 32,
+      "incident": 32
+    },
+    "episodes_by_policy": {
+      "fixed": 16,
+      "random": 16,
+      "strategic": 16,
+      "test": 16
+    },
+    "episodes_by_policy_profile": {
+      "fixed/approved_bulk": 2,
+      "fixed/destination_shift": 3,
+      "fixed/jittered_burst": 2,
+      "fixed/maintenance_burst": 2,
+      "fixed/rapid_repeat": 3,
+      "fixed/service_fanout": 2,
+      "fixed/steady": 2,
+      "random/approved_bulk": 2,
+      "random/destination_shift": 3,
+      "random/jittered_burst": 3,
+      "random/maintenance_burst": 2,
+      "random/rapid_repeat": 2,
+      "random/service_fanout": 2,
+      "random/steady": 2,
+      "strategic/approved_bulk": 2,
+      "strategic/destination_shift": 4,
+      "strategic/jittered_burst": 2,
+      "strategic/maintenance_burst": 2,
+      "strategic/rapid_repeat": 2,
+      "strategic/service_fanout": 2,
+      "strategic/steady": 2,
+      "test/approved_bulk": 2,
+      "test/destination_shift": 1,
+      "test/jittered_burst": 1,
+      "test/maintenance_burst": 2,
+      "test/rapid_repeat": 2,
+      "test/service_fanout": 2,
+      "test/slow_ramp": 4,
+      "test/steady": 2
+    },
+    "episodes_by_profile": {
+      "approved_bulk": 8,
+      "destination_shift": 11,
+      "jittered_burst": 8,
+      "maintenance_burst": 8,
+      "rapid_repeat": 9,
+      "service_fanout": 8,
+      "slow_ramp": 4,
+      "steady": 8
+    },
+    "game_rounds": 24,
+    "gateway_events": 1280,
+    "gateway_events_per_episode": 20.0,
+    "pcap_bytes": 4447287,
+    "pcap_packets": 35711,
+    "pcap_segments": 1,
+    "requests_in_manifest": 1280,
+    "zeek_conn_entries": 2550
+  },
+  "environment": {
+    "host": "gup-admin-Precision-3680",
+    "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "evidence": {
+    "caveats": [
+      "The raw capture carries invalid TCP checksums because the container veth leaves NIC transmit offloading in place. Strict Zeek therefore discarded every data segment on the raw trace. The primary evidence was produced by a derived copy in which only the IPv4/TCP/UDP checksum fields were recomputed from the captured payload (setup/pcap_checksum_repair.py); the raw pcap is unchanged and its SHA256 is recorded. The repaired trace was re-read by Zeek WITH checksum validation enabled and produced the same connection count as an independent checksum-ignored read of the raw trace."
+    ],
+    "checks": {
+      "C1": {
+        "detail": "all required artefacts present",
+        "passed": true
+      },
+      "C2": {
+        "detail": "segments=1 complete=True packets=35711 required>=256",
+        "passed": true
+      },
+      "C3": {
+        "detail": "mode=strict_checksum_repaired zeek_rc=[0] conn_entries=2550 stderr=",
+        "passed": true
+      },
+      "C4": {
+        "detail": "tcp_connections=2550 on_port_8080=2550",
+        "passed": true
+      },
+      "C5": {
+        "detail": "bidirectional=2542/2542 fraction=1.0000 required>=0.8 (orig>0:2542, resp>0:2542)",
+        "passed": true
+      },
+      "C6": {
+        "detail": "assigned=2542 ambiguous=0 outside=8 episodes_with_conns=64/64",
+        "passed": true
+      },
+      "C7": {
+        "detail": "test_episodes_with_pre_milestone_windows=16/16 required>=1",
+        "passed": true
+      }
+    },
+    "checksum_repaired": true,
+    "checksum_validation_ignored": false,
+    "sensor_audit_path": "outputs/audits/cpu_v3_main_20261118T053135Z/sensor_audit.json",
+    "sensor_audit_sha256": "4e854646034419c4fb43160db8aab740ff3a9d3da665657a626f72cdfc2a5700",
+    "tag": "SENSOR_VALIDATED"
+  },
+  "generated_utc": "2026-11-18T05:38:02Z",
+  "paths": {
+    "capture_audits": [
+      "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/capture_audit_20261118T053135Z_38723.json"
+    ],
+    "capture_container_logs": [
+      "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/capture_container_20261118T053135Z_38723.log"
+    ],
+    "collector_logs": [
+      "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/collector_v3_20261118T053135Z_38723.log"
+    ],
+    "collector_status": "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/collector_status_v3.json",
+    "complete_marker": "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/complete.json",
+    "episodes_manifest": "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/episodes.jsonl",
+    "game_rounds": "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/game_rounds.jsonl",
+    "gateway_subset": "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/gateway_subset.jsonl",
+    "generator_logs": [
+      "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/generator_20261118T053135Z_38723.log"
+    ],
+    "pcaps": [
+      "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/traffic_20261118T053135Z_38723.pcap"
+    ],
+    "scenario_config": "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z/scenario_config.json"
+  },
+  "raw_dir": "/home/fastlab/deepFakeDetection/adaptive-network-intrusion-detection/src/data/raw/runs/cpu_v3_main_20261118T053135Z",
+  "run_id": "cpu_v3_main_20261118T053135Z",
+  "scenario_config": {
+    "delay_scale": 1.0,
+    "held_out_profile": "slow_ramp",
+    "requests": 20,
+    "rounds": 8,
+    "schema": "staged_v2_2",
+    "seed": 20261115,
+    "test_profile_rule": "j % 2 == 0 -> held_out_profile; else TRAIN_PROFILES[(j // 2) % 3]",
+    "test_rounds": 8,
+    "topology": "docker_two_internal_segments_two_services",
+    "train_profiles": [
+      "rapid_repeat",
+      "destination_shift",
+      "jittered_burst"
+    ]
+  },
+  "scenario_config_sha256": "b6f8566118e52dd1a58ec6368cdae0b495b0723cb2950ffd63f3038d6e9a84c9",
+  "schema": "phase3_run_inventory_v1",
+  "source_hashes": {
+    "complete.json": "52c0d21487c50234479131b18e903c123c73f640c13ed52a4e70355813e449d7",
+    "episodes.jsonl": "41d1dc9a234a1140e9dd41c0f1ea68e17a6686b4788b461ba6d8f53de0b5f619",
+    "game_rounds.jsonl": "7266c588c35e65d584dbca7b6455be4487dc19198d1cb058bf9f28f324fe1d28",
+    "gateway_subset.jsonl": "afe4e334e156d2670b081da4ec754255b43bc119d6e8c61c0b2328d6ad8aa6b4",
+    "scenario_config.json": "b6f8566118e52dd1a58ec6368cdae0b495b0723cb2950ffd63f3038d6e9a84c9",
+    "traffic_20261118T053135Z_38723.pcap": "9196c4120676e1e1155aef6403ad87f288f1ad78b4abb341a43517893a58d40c"
+  }
+}

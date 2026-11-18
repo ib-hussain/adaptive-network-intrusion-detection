@@ -1,0 +1,17 @@
+run_id,source,evidence_tag,train_policy,model,ablation,status,threshold,rule_feature,episode_f1,episode_precision,episode_recall,episode_pr_auc,pre_milestone_coverage,strict_first_alert_coverage,conditional_mean_lead_s,coverage_adjusted_mean_lead_s,false_positive_episode_rate,false_alarms_per_benign_hour,late_incidents,missed_incidents,runtime_s
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,fixed,rule,no_temporal_features,evaluated,0.999,bytes_mean,0.0,0.0,0.0,0.7805555555555556,0.0,0.0,,0.0,0.0,0.0,0,8,0.021
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,fixed,isolation_forest,no_temporal_features,evaluated,0.999,,0.0,0.0,0.0,0.6177579365079364,0.0,0.0,,0.0,0.0,0.0,0,8,0.107
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,fixed,rf,no_temporal_features,threshold_unavailable_under_constraint,,,,,,,,,,,,,,,0.194
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,fixed,rf,persistence_2,threshold_unavailable_under_constraint,,,,,,,,,,,,,,,0.182
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,fixed,isolation_forest,persistence_2,evaluated,0.999,,0.0,0.0,0.0,0.7490079365079365,0.0,0.0,,0.0,0.0,0.0,0,8,0.109
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,random,rule,no_temporal_features,evaluated,0.999,bytes_mean,0.0,0.0,0.0,0.7805555555555556,0.0,0.0,,0.0,0.0,0.0,0,8,0.02
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,random,isolation_forest,no_temporal_features,evaluated,0.999,,0.0,0.0,0.0,0.7510912698412698,0.0,0.0,,0.0,0.0,0.0,0,8,0.108
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,random,rf,no_temporal_features,threshold_unavailable_under_constraint,,,,,,,,,,,,,,,0.199
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,random,rf,persistence_2,threshold_unavailable_under_constraint,,,,,,,,,,,,,,,0.198
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,random,isolation_forest,persistence_2,evaluated,0.999,,0.0,0.0,0.0,0.6495851370851371,0.0,0.0,,0.0,0.0,0.0,0,8,0.099
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,strategic,rule,no_temporal_features,evaluated,0.999,bytes_mean,0.0,0.0,0.0,0.7805555555555556,0.0,0.0,,0.0,0.0,0.0,0,8,0.019
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,strategic,isolation_forest,no_temporal_features,evaluated,0.999,,0.0,0.0,0.0,0.6712301587301587,0.0,0.0,,0.0,0.0,0.0,0,8,0.101
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,strategic,rf,no_temporal_features,threshold_unavailable_under_constraint,,,,,,,,,,,,,,,0.194
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,strategic,rf,persistence_2,threshold_unavailable_under_constraint,,,,,,,,,,,,,,,0.191
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,strategic,isolation_forest,persistence_2,evaluated,0.999,,0.0,0.0,0.0,0.7425976800976801,0.0,0.0,,0.0,0.0,0.0,0,8,0.104
+cpu_v3_main_20261118T053135Z,zeek,SENSOR_VALIDATED,strategic,rf,graph_features,threshold_unavailable_under_constraint,,,,,,,,,,,,,,,0.196

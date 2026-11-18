@@ -1,0 +1,37 @@
+{
+  "early_warning": [
+    0,
+    2,
+    0,
+    0,
+    1
+  ],
+  "false_alarm_episodes": [
+    0,
+    1,
+    0,
+    0,
+    0
+  ],
+  "labels": [
+    "fixed/Isolation Forest",
+    "fixed/rule/rate",
+    "random/Isolation Forest",
+    "strategic/Isolation Forest",
+    "strategic/rule/rate"
+  ],
+  "late_detection": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "missed": [
+    8,
+    6,
+    8,
+    8,
+    7
+  ]
+}

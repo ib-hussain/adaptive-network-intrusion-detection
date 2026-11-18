@@ -1,0 +1,32 @@
+{
+  "deliverable_created": "2026-11-18T05:45:00Z",
+  "run_id": "cpu_v3_main_20261118T053135Z",
+  "evidence_tag": "SENSOR_VALIDATED",
+  "seed": 20261115,
+  "files": {
+    "PHASE3_REPORT.md": "Main Phase 3 report with ablation section",
+    "claim_artifact_table.csv": "91 mapped claims to artifacts",
+    "run_inventory.json": "Episode/event/PCAP/Zeek counts",
+    "literature_comparison.csv": "15 unique literature references",
+    "results.json": "Full study results with methods, ablations, definitions",
+    "metrics.csv": "Per-model metrics from study",
+    "ablations.csv": "Ablation study results",
+    "sensor_audit.json": "7-check sensor validation gate (all passed)"
+  },
+  "key_results": {
+    "fixed_rule": {"coverage": 0.250, "strict": 0.250, "fpr": 0.125, "pr_auc": 0.766},
+    "strategic_rule": {"coverage": 0.125, "strict": 0.125, "fpr": 0.000, "pr_auc": 0.766},
+    "random_if": {"coverage": 0.000, "strict": 0.000, "fpr": 0.000, "pr_auc": 0.650},
+    "ablation_temporal": "Rule baseline collapses to 0 coverage when temporal features removed",
+    "ablation_graph": "RF threshold unavailable under constraint",
+    "sensor_gate": "7/7 checks passed (SENSOR_VALIDATED)"
+  },
+  "limitations": [
+    "Synthetic harmless HTTP profiles only",
+    "Single topology (one Docker network)",
+    "Small validation set prevents RF threshold selection",
+    "Checksum repair caveat on raw PCAP",
+    "No GNN / topology generalisation / future-stage prediction",
+    "Heuristic strategic reward, not detector-in-the-loop"
+  ]
+}

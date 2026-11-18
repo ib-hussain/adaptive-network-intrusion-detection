@@ -1,0 +1,30 @@
+{
+  "C1": {
+    "detail": "all required artefacts present",
+    "passed": true
+  },
+  "C2": {
+    "detail": "segments=1 complete=True packets=35711 required>=256",
+    "passed": true
+  },
+  "C3": {
+    "detail": "mode=strict_checksum_repaired zeek_rc=[0] conn_entries=2550 stderr=",
+    "passed": true
+  },
+  "C4": {
+    "detail": "tcp_connections=2550 on_port_8080=2550",
+    "passed": true
+  },
+  "C5": {
+    "detail": "bidirectional=2542/2542 fraction=1.0000 required>=0.8 (orig>0:2542, resp>0:2542)",
+    "passed": true
+  },
+  "C6": {
+    "detail": "assigned=2542 ambiguous=0 outside=8 episodes_with_conns=64/64",
+    "passed": true
+  },
+  "C7": {
+    "detail": "test_episodes_with_pre_milestone_windows=16/16 required>=1",
+    "passed": true
+  }
+}
